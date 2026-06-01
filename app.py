@@ -1,5 +1,7 @@
 import streamlit as st
-from st_copy_to_clipboard import st_copy_to_clipboard", page_title="AWP Parser")from st_copy_to_clipboard import st_copy_to_clipboard
+from st_copy_to_clipboard import st_copy_to_clipboard
+import re
+
 
 st.title("AWP Parser")
 
