@@ -3,12 +3,13 @@ import pandas as pd
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
-st.title("AWP Full Parser")
+st.title("AWP Parser")
 
 raw = st.text_area("Paste raw AWP text here", height=300)
 
 # ---------- PROCESS ----------
 if st.button("Process"):
+
     if not raw.strip():
         st.warning("Paste data first")
         st.stop()
@@ -28,12 +29,13 @@ if st.button("Process"):
 
     st.session_state["data"] = data
 
+
 # ---------- LOAD ----------
 data = st.session_state.get("data", None)
 
 if data:
 
-    # ✅ FIX EMPTY FIELDS
+    # ---------- MAPPING ----------
     mapping = {
         "Company Name": "Account",
         "Applicants email": "Email address",
@@ -43,12 +45,15 @@ if data:
         "Detailed Location of Works": "Detailed location of works/activity",
         "Detailed Scope of Works": "Detailed scope of works/activity",
         "Proposed Start Date": "Proposed start date",
-        "Proposed End Date": "Proposed end date",
+        "Proposed End Date": "Proposed end date"
     }
 
     def get(field):
         key = mapping.get(field, field)
-        return data.get(key, "")
+        val = data.get(key, "")
+        if isinstance(val, str) and val.lower() == "true":
+            return "Yes"
+        return val
 
     # ---------- FIELDS ----------
     fields = [
@@ -60,31 +65,28 @@ if data:
         "Detailed Location of Works",
         "Detailed Scope of Works",
         "Proposed Start Date",
-        "Proposed End Date",
+        "Proposed End Date"
     ]
 
-    df = pd.DataFrame([[f, get(f)] for f in fields], columns=["Field","Value"])
+    df = pd.DataFrame([[f, get(f)] for f in fields], columns=["Field", "Value"])
 
     st.subheader("Parsed Output")
 
     # ---------- DISPLAY ----------
     for i, row in df.iterrows():
 
-        st.markdown(f"### {row['Field']}")
+        st.markdown("### " + row["Field"])
 
-        # ✅ CUSTOM BUTTON (THIS NOW WORKS PROPERLY)
-        if st.button("📋 Copy", key=f"copy_{i}"):
+        # ✅ YOUR CUSTOM BUTTON (works correctly)
+        if st.button("📋 Copy", key="btn_" + str(i)):
             st.session_state["copy_val"] = row["Value"]
 
-        # show value normally
+        # show value
         st.write(row["Value"])
 
-    # ✅ GLOBAL COPY BOX (REAL COPY)
+    # ✅ GLOBAL COPY BOX (this is the actual copy mechanism)
     if "copy_val" in st.session_state:
-        st.subheader("Copy Value")
 
-        st.code(
-            st.session_state["copy_val"], 
-            language="text"
-        )
-``
+        st.markdown("### Copy Value")
+
+        st.code(st.session_state["copy_val"], language="text")
