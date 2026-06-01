@@ -54,23 +54,26 @@ if data:
         val = data.get(key, "")
         return "Yes" if isinstance(val, str) and val.lower() == "true" else val
 
-    # ✅ FINAL BULLETPROOF CHECK FUNCTION
+    # ✅ BULLETPROOF CHECK FUNCTION
     def check(val, src):
         src = src.lower()
 
         # remove punctuation except commas
         src = re.sub(r'[^a-z0-9,\s]', '', src)
 
-        # split into parts
         parts = [p.strip() for p in src.split(",") if p.strip()]
 
-        return "☑" if any(val.lower() == p or val.lower() in p for p in parts) else "☐"
+        return "☑" if any(val.lower() in p for p in parts) else "☐"
 
-    # ---------- SOURCES ----------
-    area = (
-        data.get("What area(s) is the work/activity located in", "")
-        or data.get("Detailed location of works/activity", "")
-    )
+    # ✅ FIX: dynamic key detection (handles "?" issue)
+    area = ""
+    for k, v in data.items():
+        if "what area(s) is the work/activity located in" in k.lower():
+            area = v
+            break
+
+    if not area:
+        area = data.get("Detailed location of works/activity", "")
 
     days = data.get("Days required", "")
     hours = data.get("Working Hours", "")
