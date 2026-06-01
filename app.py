@@ -53,12 +53,11 @@ if data:
         val = data.get(key, "")
         return "Yes" if isinstance(val, str) and val.lower() == "true" else val
 
-    # ✅ IMPROVED CHECK (robust)
+    # ✅ FIXED CHECK FUNCTION (ONLY CHANGE NEEDED)
     def check(val, src):
-        parts = [p.strip().lower() for p in src.split(",")]
-        return "☑" if val.lower() in parts else "☐"
+        return "☑" if val.lower() in src.lower() else "☐"
 
-    # ---------- SOURCES (✅ FIXED LOCATION) ----------
+    # ---------- SOURCES (FIXED LOCATION) ----------
     area = (
         data.get("What area(s) is the work/activity located in", "")
         or data.get("Detailed location of works/activity", "")
