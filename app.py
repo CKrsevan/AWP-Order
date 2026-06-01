@@ -34,7 +34,7 @@ data = st.session_state.get("data", None)
 
 if data:
 
-    # ✅ MAPPING (FIXED)
+    # ---------- MAPPING ----------
     mapping = {
         "Company Name": "Account",
         "Applicants email": "Email address",
@@ -53,13 +53,17 @@ if data:
         val = data.get(key, "")
         return "Yes" if isinstance(val, str) and val.lower() == "true" else val
 
-    # ✅ FIXED CHECK FUNCTION (important)
+    # ✅ IMPROVED CHECK (robust)
     def check(val, src):
         parts = [p.strip().lower() for p in src.split(",")]
         return "☑" if val.lower() in parts else "☐"
 
-    # ---------- SOURCES ----------
-    area = data.get("Detailed location of works/activity", "")
+    # ---------- SOURCES (✅ FIXED LOCATION) ----------
+    area = (
+        data.get("What area(s) is the work/activity located in", "")
+        or data.get("Detailed location of works/activity", "")
+    )
+
     days = data.get("Days required", "")
     hours = data.get("Working Hours", "")
     access = data.get("What Access point will be required for personnel and deliveries", "")
@@ -70,7 +74,6 @@ if data:
     st.markdown("""
     <style>
     .section { font-size:18px; font-weight:700; margin-top:20px; }
-    .row { border-bottom:1px solid #333; padding:6px 0; }
     .label { font-weight:600; font-size:13px; }
     .value { font-family:monospace; font-size:13px; }
     </style>
@@ -81,6 +84,7 @@ if data:
         val = get(name)
 
         col1, col2 = st.columns([6,1])
+
         with col1:
             st.markdown(f"<div class='label'>{name}</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='value'>{val}</div>", unsafe_allow_html=True)
@@ -117,7 +121,7 @@ if data:
     ]):
         show_field(f, i + 200)
 
-    # ---------- LOCATION (FIXED ✅) ----------
+    # ---------- LOCATION ----------
     st.markdown("<div class='section'>Location of Works</div>", unsafe_allow_html=True)
 
     location_fields = [
