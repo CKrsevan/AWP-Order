@@ -29,7 +29,6 @@ data = st.session_state.get("data")
 
 if data:
 
-    # ---------- HELPERS ----------
     def find_value(keyword):
         for k, v in data.items():
             if keyword.lower() in k.lower():
@@ -77,7 +76,6 @@ if data:
     hours = find_value("working hours")
     systems = find_value("systems will be affected")
 
-    # ✅ PERMIT FIX (unchanged from previous)
     permits = find_value("What sub permits will be required throughout the duration of the works")
 
     shutdown = find_value("shutdown")
@@ -85,13 +83,11 @@ if data:
 
     combined_shutdown = shutdown + " " + permits + " " + shutdown_main
 
-    # OTHER
     other_area = find_other("area")
     other_access = find_other("access")
     other_system = find_other("system")
     other_reason = find_other("reason")
 
-    # ---------- STYLE ----------
     st.markdown("""
     <style>
     .section { font-size:18px; font-weight:700; margin-top:20px; }
@@ -112,7 +108,7 @@ if data:
     # ---------- GENERAL ----------
     st.markdown("<div class='section'>General</div>", unsafe_allow_html=True)
 
-    general_fields = [
+    for i,(l,k) in enumerate([
         ("AWP Number","AWP Number"),
         ("Date Updated","Date Updated"),
         ("Updated By","Updated By"),
@@ -120,9 +116,7 @@ if data:
         ("Approval Conditions","Approval Conditions"),
         ("Company Name","Account"),
         ("Company Description","Company Description"),
-    ]
-
-    for i,(l,k) in enumerate(general_fields):
+    ]):
         field(l,k,i)
 
     # ---------- APPROVAL ----------
@@ -139,10 +133,9 @@ if data:
     field("Email","Email address",101)
     field("Phone","Phone",102)
 
-    # ✅ FIXED
     field("WSI Rep","Who is your WSI representative",103)
 
-    field("WSI Rep Name","WSI Representative Name",104)
+    # ✅ WSI Rep Name REMOVED ONLY
 
     # ---------- SUPERVISION ----------
     st.markdown("<div class='section'>Supervision</div>", unsafe_allow_html=True)
@@ -150,9 +143,7 @@ if data:
     field("Supervisor Name","Supervisor name",120)
     field("Supervisor Phone","Supervisor phone",121)
 
-    # ✅ FIXED
     field("Emergency Contact Name","Site Emergency/After Hours Contact person name",122)
-
     field("Emergency Contact Phone","after hours contact person phone number",123)
 
     # ---------- WORK ----------
