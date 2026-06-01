@@ -5,6 +5,7 @@ import re
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
+st.image("logo.png", width=150)
 st.title("AWP Formatter")
 
 raw = st.text_area("Paste raw AWP text here", height=250)
