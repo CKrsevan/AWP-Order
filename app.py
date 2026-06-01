@@ -279,4 +279,4 @@ if data:
 
     field("Shutdown Start","start date of the shutdown",500)
     field("Shutdown End","end date of the shutdown",501)
-    field("Shutdown Duration","duration",502)
+    field("Shutdown Duration","Total duration of the Shutdown/Isolations",502)
