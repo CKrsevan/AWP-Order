@@ -2,6 +2,7 @@ import streamlit as st
 from st_copy_to_clipboard import st_copy_to_clipboard
 import re
 
+st.set_page_config(layout="wide", page_title="AWP Parser")
 
 st.title("AWP Parser")
 
@@ -27,21 +28,19 @@ data = st.session_state.get("data")
 
 if data:
 
-    # ---------- FLEXIBLE FIND ----------
+    # ---------- HELPERS ----------
     def find_value(keyword):
         for k, v in data.items():
             if keyword.lower() in k.lower():
                 return v
         return ""
 
-    # ---------- CLEAN MATCH ----------
     def check(val, src):
         src = src.lower()
         src = re.sub(r'[^a-z0-9,\s]', '', src)
         parts = [p.strip() for p in src.split(",") if p.strip()]
         return "☑" if any(val.lower() in p for p in parts) else "☐"
 
-    # ---------- YES/NO ----------
     def yesno(val):
         val = val.lower()
         if "yes" in val:
@@ -57,13 +56,16 @@ if data:
     hours = find_value("working hours")
     systems = find_value("systems will be affected")
 
-    # ✅ FIXED SOURCES
     permits = find_value("sub permits will be required")
     shutdown = find_value("shutdown")
     shutdown_main = find_value("require any shutdowns")
 
-    # combine for better checkbox matching
     combined_shutdown = shutdown + " " + permits + " " + shutdown_main
+
+    # ✅ OTHER VALUES
+    other_location = find_value("other location")
+    other_access = find_value("other access")
+    description_other = find_value("description other")
 
     # ---------- STYLE ----------
     st.markdown("""
@@ -74,7 +76,6 @@ if data:
     </style>
     """, unsafe_allow_html=True)
 
-    # ---------- FIELD DISPLAY ----------
     def field(label, keyword, i):
         val = find_value(keyword)
         col1, col2 = st.columns([6,1])
@@ -82,7 +83,7 @@ if data:
             st.markdown(f"<div class='label'>{label}</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='value'>{val}</div>", unsafe_allow_html=True)
         with col2:
-            st_copy_to_clipboard(val, before_copy_label="Copy", after_copy_label="Done", key=f"{label}_{i}")
+            st_copy_to_clipboard(val, "Copy", "Done", key=f"{label}_{i}")
 
     # ---------- GENERAL ----------
     st.markdown("<div class='section'>General</div>", unsafe_allow_html=True)
@@ -100,39 +101,33 @@ if data:
     for i,(l,k) in enumerate(general_fields):
         field(l,k,i)
 
-    # ---------- NEW SECTION (YOUR FEATURE) ----------
-    st.markdown("<div class='section'>Shutdown / Isolation / Sub Permits Required</div>", unsafe_allow_html=True)
+    # ---------- SHUTDOWN FLAG ----------
+    st.markdown("<div class='section'>Shutdown / Isolation / Permit Required</div>", unsafe_allow_html=True)
     st.markdown(yesno(shutdown_main))
 
     # ---------- CONTACT ----------
     st.markdown("<div class='section'>Contact</div>", unsafe_allow_html=True)
 
-    contact_fields = [
+    for i,(l,k) in enumerate([
         ("Applicant","Requested by"),
         ("Email","Email address"),
         ("Phone","Phone"),
         ("WSI Rep","WSI representative"),
         ("WSI Rep Name","WSI Representative Name"),
-    ]
-
-    for i,(l,k) in enumerate(contact_fields):
+    ]):
         field(l,k,i+100)
 
     # ---------- WORK ----------
     st.markdown("<div class='section'>Work</div>", unsafe_allow_html=True)
 
-    work_fields = [
+    for i,(l,k) in enumerate([
         ("Type of Work","Type of Work"),
         ("Type of Work Other","Type of Work (Other)"),
         ("Detailed Location","Detailed location"),
         ("Detailed Scope","Detailed scope"),
         ("Start Date","start date"),
         ("End Date","end date"),
-        ("Impacts","Impacts"),
-        ("Mitigation","Mitigation"),
-    ]
-
-    for i,(l,k) in enumerate(work_fields):
+    ]):
         field(l,k,i+200)
 
     # ---------- LOCATION ----------
@@ -148,8 +143,11 @@ if data:
 
     c1,c2 = st.columns(2)
     for i,l in enumerate(locs):
-        txt = f"{check(l, area)} {l}"
-        (c1 if i%2==0 else c2).markdown(txt)
+        (c1 if i%2==0 else c2).markdown(f"{check(l, area)} {l}")
+
+    # ✅ SHOW OTHER LOCATION VALUE
+    if "other location" in area.lower() or other_location:
+        st.markdown(f"**Other Location:** {other_location}")
 
     # ---------- ACCESS ----------
     st.markdown("<div class='section'>Access</div>", unsafe_allow_html=True)
@@ -163,13 +161,14 @@ if data:
     for i,a in enumerate(access_list):
         (c1 if i%2==0 else c2).markdown(f"{check(a, access)} {a}")
 
+    if "other" in access.lower() or other_access:
+        st.markdown(f"**Other Access:** {other_access}")
+
     # ---------- DAYS ----------
     st.markdown("<div class='section'>Days</div>", unsafe_allow_html=True)
 
-    days_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
-
     c1,c2 = st.columns(2)
-    for i,d in enumerate(days_list):
+    for i,d in enumerate(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]):
         (c1 if i%2==0 else c2).markdown(f"{check(d, days)} {d}")
 
     # ---------- HOURS ----------
@@ -181,50 +180,40 @@ if data:
     # ---------- SYSTEMS ----------
     st.markdown("<div class='section'>Systems</div>", unsafe_allow_html=True)
 
-    systems_list = [
+    for s in [
         "Electrical LV","Electrical HV","HVAC","Technology & Network",
         "Security","Hydraulics","Roads and Signage","Fire Systems","Vertical Transport"
-    ]
-
-    for s in systems_list:
+    ]:
         st.markdown(f"{check(s, systems)} {s}")
 
     # ---------- PERMITS ----------
     st.markdown("<div class='section'>Permits</div>", unsafe_allow_html=True)
 
-    permits_list = [
+    for p in [
         "Confined Space","Out of Hours","Crane Lift","Gantry Access",
-        "Protected Areas","Excavation","Hot Work","Isolation","Material Import",
-        "Road Occupancy","Controlled Activity","Discharge Water",
-        "Vegetation","Working at Height","Fire Isolation"
-    ]
-
-    for p in permits_list:
+        "Protected Areas","Excavation","Hot Work","Isolation","Material Import"
+    ]:
         st.markdown(f"{check(p, permits)} {p}")
 
-    # ---------- SHUTDOWNS ----------
+    # ---------- SHUTDOWN TYPES ----------
     st.markdown("<div class='section'>Shutdowns</div>", unsafe_allow_html=True)
 
-    shutdown_list = [
+    for s in [
         "Electrical","Data","HVAC","Water",
         "Fire detection system","High Voltage","Other"
-    ]
-
-    for s in shutdown_list:
+    ]:
         st.markdown(f"{check(s, combined_shutdown)} {s}")
 
     # ---------- EXTRA ----------
     st.markdown("<div class='section'>Shutdown Details</div>", unsafe_allow_html=True)
 
-    extra_fields = [
-        ("Shutdown Type","Maintenance"),
-        ("Shutdown Reason","Other Reason"),
+    for i,(l,k) in enumerate([
         ("Shutdown Start","start date of the shutdown"),
         ("Shutdown End","end date of the shutdown"),
         ("Shutdown Duration","duration")
-    ]
-
-    for i,(l,k) in enumerate(extra_fields):
+    ]):
         field(l,k,i+500)
-import re
 
+    # ✅ OTHER DESCRIPTION
+    if description_other:
+        st.markdown(f"**Other Description:** {description_other}")
