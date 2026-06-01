@@ -88,33 +88,46 @@ if data:
     other_system = find_other("system")
     other_reason = find_other("reason")
 
-    
+    # ✅ ✅ ✅ IMPROVED STYLE ONLY
     st.markdown("""
-        <style>
-        .section {
-            font-size:20px;
-            font-weight:700;
-            margin-top:25px;
-            margin-bottom:10px;
-            padding-bottom:5px;
-            border-bottom:2px solid #e6e6e6;
-        }
-        .label {
-            font-weight:600;
-            font-size:13px;
-            color:#555;
-        }
-        .value {
-            font-family:monospace;
-            font-size:13px;
-            padding:6px 8px;
-            background:#f7f7f7;
-            border-radius:6px;
-            margin-bottom:6px;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+    <style>
+    .section {
+        font-size:20px;
+        font-weight:700;
+        margin-top:30px;
+        margin-bottom:10px;
+        padding-bottom:6px;
+        border-bottom:2px solid #e6e6e6;
+        color:#1f77b4;
+    }
 
+    .label {
+        font-weight:600;
+        font-size:13px;
+        color:#555;
+        margin-bottom:2px;
+    }
+
+    .value {
+        font-family:monospace;
+        font-size:13px;
+        padding:6px 8px;
+        background:#f7f7f7;
+        border-radius:6px;
+        margin-bottom:8px;
+        border:1px solid #eee;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    def field(label, keyword, i):
+        val = find_value(keyword)
+        col1, col2 = st.columns([6,1])
+        with col1:
+            st.markdown(f"<div class='label'>{label}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='value'>{val}</div>", unsafe_allow_html=True)
+        with col2:
+            st_copy_to_clipboard(val, "Copy", "Done", key=f"{label}_{i}")
 
     # ---------- GENERAL ----------
     st.markdown("<div class='section'>General</div>", unsafe_allow_html=True)
@@ -145,8 +158,6 @@ if data:
     field("Phone","Phone",102)
 
     field("WSI Rep","Who is your WSI representative",103)
-
-    # ✅ WSI Rep Name REMOVED ONLY
 
     # ---------- SUPERVISION ----------
     st.markdown("<div class='section'>Supervision</div>", unsafe_allow_html=True)
