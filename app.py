@@ -53,11 +53,19 @@ if data:
         val = data.get(key, "")
         return "Yes" if isinstance(val, str) and val.lower() == "true" else val
 
-    # ✅ FIXED CHECK FUNCTION (ONLY CHANGE NEEDED)
+    # ✅ FINAL CHECK FUNCTION (FIXED PROPERLY)
     def check(val, src):
-        return "☑" if val.lower() in src.lower() else "☐"
+        src = src.lower()
 
-    # ---------- SOURCES (FIXED LOCATION) ----------
+        # normalize separators
+        for ch in [";", "/", "-", "(", ")", "\n"]:
+            src = src.replace(ch, ",")
+
+        parts = [p.strip() for p in src.split(",") if p.strip()]
+
+        return "☑" if any(val.lower() in p for p in parts) else "☐"
+
+    # ---------- SOURCES ----------
     area = (
         data.get("What area(s) is the work/activity located in", "")
         or data.get("Detailed location of works/activity", "")
