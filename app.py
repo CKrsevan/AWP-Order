@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
+from st_copy_to_clipboard import st_copy_to_clipboard
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
-st.title("AWP Parser")
+st.title("AWP Full Parser")
 
 raw = st.text_area("Paste raw AWP text here", height=300)
 
@@ -45,7 +46,10 @@ if data:
         "Detailed Location of Works": "Detailed location of works/activity",
         "Detailed Scope of Works": "Detailed scope of works/activity",
         "Proposed Start Date": "Proposed start date",
-        "Proposed End Date": "Proposed end date"
+        "Proposed End Date": "Proposed end date",
+        "Impacts on Airport Ops": "Impacts on Airport Operations",
+        "Mitigation Measures for Op impacts": "Mitigation Measures for operational impacts",
+        "Waste Management Plan Details": "Provide details of your waste management plan"
     }
 
     def get(field):
@@ -55,38 +59,120 @@ if data:
             return "Yes"
         return val
 
-    # ---------- FIELDS ----------
+    def check(val, source):
+        return "Yes" if val.lower() in source.lower() else ""
+
+    # ---------- SOURCE TEXT ----------
+    area = data.get("Detailed location of works/activity", "")
+    days = data.get("Days required", "")
+    hours = data.get("Working Hours", "")
+    systems = data.get("What systems will be affected by the works?", "")
+    permits = data.get("What sub permits will be required throughout the duration of the works?", "")
+    access = data.get("What Access point will be required for personnel and deliveries", "")
+    shutdown = data.get("Will the work require any shutdowns and/or isolations?", "")
+
+    # ---------- CORE FIELDS ----------
     fields = [
-        "Company Name",
-        "Person making the application",
-        "Applicants email",
-        "Applicants phone number",
-        "WSI Representative",
-        "Detailed Location of Works",
-        "Detailed Scope of Works",
-        "Proposed Start Date",
-        "Proposed End Date"
+        "AWP Number","Date Updated","Updated By","Description",
+        "Approval Conditions or Requirements","Company Name","Company Description",
+        "Person making the application","Applicants email","Applicants phone number",
+        "WSI Representative","WSI Representative Name",
+        "Do you have ABC and ALC approval?",
+        "ABC Ban Number and ALC Permit Number",
+        "Reason ABC and ALC Approval Not Required",
+        "Type of Work","Type of Work (Other)",
+        "Detailed Location of Works","Detailed Scope of Works",
+        "Proposed Start Date","Proposed End Date",
+        "Impacts on Airport Ops","Mitigation Measures for Op impacts",
+        "Do you require any asset information?",
+        "Provide details of your communication plan",
+        "Work hours site Supervisor name","Work hours site Supervisor Number",
+        "Site Emergency/After Hours Contact Name",
+        "Site Emergency/After Hours Contact Number",
+        "Will tools be carried in and out of the Airport Terminal sterile areas?",
+        "Will the work include tapping into any existing services?",
+        "Details associated with tapping into the existing service",
+        "Do you require WSI owned and managed equipment?",
+        "Details for Required Equipment",
+        "Waste Management Plan Details",
+        "Will Equipment, Materials or Chemicals be stored onsite?",
+        "Management plan for equipment, materials or chemicals on site",
+        "Hoarding, Barricading or Signage Required",
+        "Hoarding, Barricading or Signage Acknowledged",
+        "Road Occupancy or Traffic Management Plans Required",
+        "Road Occupancy and Traffic Management Plans Acknowledged",
+        "Sub Permit Documentation Read and Understood",
+        "Will Temporary Services be Required",
+        "Provide Details of Temporary Services Required",
+        "Will the work require lighting",
+        "Lighting Acknowledged",
+        "Special conditions or requirements associated with site Access"
     ]
 
-    df = pd.DataFrame([[f, get(f)] for f in fields], columns=["Field", "Value"])
+    results = [[f, get(f)] for f in fields]
+
+    # ---------- CHECKBOX GROUPS ----------
+
+    for loc in [
+        "Terminal Departures","Terminal Arrivals","Terminal Basement",
+        "Terminal Loading Dock","Terminal Bag Room","Gate Lounges",
+        "Landside","Apron","Aircraft Bay","Cargo Precinct",
+        "Public Carpark","AOCC/AOMF","Terminal Roof",
+        "Ancillary Building","Site Wide","Other Location"
+    ]:
+        results.append([loc, check(loc, area)])
+
+    for a in [
+        "Airside Vehicle Gate","Terminal Main Entry",
+        "Terminal Staff Entry","Loading Dock","Other Access Point"
+    ]:
+        results.append([a, check(a, access)])
+
+    for d in ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]:
+        results.append([d, check(d, days)])
+
+    for h in ["Morning","Afternoon","Night"]:
+        results.append([h, check(h, hours)])
+
+    for s in [
+        "Electrical LV","Electrical HV","HVAC",
+        "Technology & Network","Security","Hydraulics",
+        "Roads and Signage","Fire Systems","Vertical Transport"
+    ]:
+        results.append([s, check(s, systems)])
+
+    for p in [
+        "Confined Space Sub Permit","Out of Hours Works",
+        "Crane Lift Sub Permit","Gantry Access Sub Permit",
+        "Permit to Enter Protected Areas or No-Go Areas",
+        "Excavation & Penetration Sub Permit",
+        "Hot Work Sub Permit",
+        "Isolation Sub Permit",
+        "Material Import Permit"
+    ]:
+        results.append([p, check(p, permits)])
+
+    for s in [
+        "Electrical","Data","HVAC",
+        "Water (potable/recycled/sewer etc)",
+        "Fire detection system","High Voltage","Other Shutdown/Isolation"
+    ]:
+        results.append([s, check(s, shutdown)])
+
+    df = pd.DataFrame(results, columns=["Field","Value"])
 
     st.subheader("Parsed Output")
 
-    # ---------- DISPLAY ----------
+    # ---------- DISPLAY WITH REAL COPY ----------
     for i, row in df.iterrows():
 
         st.markdown("### " + row["Field"])
 
-        # ✅ YOUR CUSTOM BUTTON (works correctly)
-        if st.button("📋 Copy", key="btn_" + str(i)):
-            st.session_state["copy_val"] = row["Value"]
+        # ✅ THIS IS THE REAL WORKING COPY BUTTON
+        st_copy_to_clipboard(
+            row["Value"],
+            before_copy_label="📋 Copy",
+            after_copy_label="✅ Copied"
+        )
 
-        # show value
-        st.write(row["Value"])
-
-    # ✅ GLOBAL COPY BOX (this is the actual copy mechanism)
-    if "copy_val" in st.session_state:
-
-        st.markdown("### Copy Value")
-
-        st.code(st.session_state["copy_val"], language="text")
+        st.code(row["Value"], language="text")
