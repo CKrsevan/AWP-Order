@@ -1,3 +1,4 @@
+
 import streamlit as st
 from st_copy_to_clipboard import st_copy_to_clipboard
 import re
@@ -75,7 +76,10 @@ if data:
     days = find_value("days")
     hours = find_value("working hours")
     systems = find_value("systems will be affected")
-    permits = find_value("sub permits")
+
+    # ✅ FIXED PERMIT MAPPING
+    permits = find_value("What sub permits will be required throughout the duration of the works")
+
     shutdown = find_value("shutdown")
     shutdown_main = find_value("require any shutdown")
 
@@ -144,7 +148,10 @@ if data:
 
     field("Supervisor Name","Supervisor name",120)
     field("Supervisor Phone","Supervisor phone",121)
-    field("Emergency Contact Name","Emergency contact person name",122)
+
+    # ✅ FIXED mapping
+    field("Emergency Contact Name","Work hours site Supervisor phone number",122)
+
     field("Emergency Contact Phone","after hours contact person phone number",123)
 
     # ---------- WORK ----------
