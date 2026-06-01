@@ -235,8 +235,17 @@ if data:
     for i,l in enumerate(locs):
         (c1 if i%2==0 else c2).markdown(f"{check(l, area)} {l}")
 
+
     if check("Other", area) == "☑" and other_area:
-        st.markdown(f"Other Area: {other_area}")
+        col1, col2 = st.columns([6,1])
+
+        with col1:
+            st.markdown(f"<div class='label'>Other Area</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='value'>{other_area}</div>", unsafe_allow_html=True)
+
+        with col2:
+            st_copy_to_clipboard(other_area, "Copy", "Done", key="other_area_copy")
+
 
     # ---------- ACCESS ----------
     st.markdown("<div class='section'>Access</div>", unsafe_allow_html=True)
