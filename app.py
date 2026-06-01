@@ -1,5 +1,6 @@
 import streamlit as st
 from st_copy_to_clipboard import st_copy_to_clipboard
+import re
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
@@ -53,17 +54,17 @@ if data:
         val = data.get(key, "")
         return "Yes" if isinstance(val, str) and val.lower() == "true" else val
 
-    # ✅ FINAL CHECK FUNCTION (FIXED PROPERLY)
+    # ✅ FINAL BULLETPROOF CHECK FUNCTION
     def check(val, src):
         src = src.lower()
 
-        # normalize separators
-        for ch in [";", "/", "-", "(", ")", "\n"]:
-            src = src.replace(ch, ",")
+        # remove punctuation except commas
+        src = re.sub(r'[^a-z0-9,\s]', '', src)
 
+        # split into parts
         parts = [p.strip() for p in src.split(",") if p.strip()]
 
-        return "☑" if any(val.lower() in p for p in parts) else "☐"
+        return "☑" if any(val.lower() == p or val.lower() in p for p in parts) else "☐"
 
     # ---------- SOURCES ----------
     area = (
