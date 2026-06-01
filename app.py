@@ -78,7 +78,7 @@ if data:
 
     permits = find_value("What sub permits will be required throughout the duration of the works")
 
-    shutdown = find_value("shutdown")
+    shutdown = find_value("What type of Shutdown or Isolation is required")
     shutdown_main = find_value("require any shutdown")
 
     combined_shutdown = shutdown + " " + permits + " " + shutdown_main
