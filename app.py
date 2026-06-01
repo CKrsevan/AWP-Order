@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 from st_copy_to_clipboard import st_copy_to_clipboard
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
@@ -29,12 +28,13 @@ if st.button("Process"):
 
     st.session_state["data"] = data
 
+
 # ---------- LOAD ----------
 data = st.session_state.get("data", None)
 
 if data:
 
-    # ✅ MAPPING (IMPORTANT FIX)
+    # ✅ MAPPING (FIXED)
     mapping = {
         "Company Name": "Account",
         "Applicants email": "Email address",
@@ -45,10 +45,7 @@ if data:
         "Detailed Scope of Works": "Detailed scope of works/activity",
         "Proposed Start Date": "Proposed start date",
         "Proposed End Date": "Proposed end date",
-        "Impacts on Airport Ops": "Impacts on Airport Operations",
-        "Mitigation Measures for Op impacts": "Mitigation Measures for operational impacts",
-        "Waste Management Plan Details": "Provide details of your waste management plan",
-        "Description": "Work/Activity Description"  # ✅ YOUR REQUEST
+        "Description": "Work/Activity Description"
     }
 
     def get(field):
@@ -56,8 +53,10 @@ if data:
         val = data.get(key, "")
         return "Yes" if isinstance(val, str) and val.lower() == "true" else val
 
+    # ✅ FIXED CHECK FUNCTION (important)
     def check(val, src):
-        return "☑" if val.lower() in src.lower() else "☐"
+        parts = [p.strip().lower() for p in src.split(",")]
+        return "☑" if val.lower() in parts else "☐"
 
     # ---------- SOURCES ----------
     area = data.get("Detailed location of works/activity", "")
@@ -70,107 +69,86 @@ if data:
     # ---------- STYLE ----------
     st.markdown("""
     <style>
-    .section {
-        font-size: 18px;
-        font-weight: 700;
-        margin-top: 20px;
-    }
-
-    .field-row {
-        padding: 6px 0;
-        border-bottom: 1px solid #333;
-    }
-
-    .field-title {
-        font-weight: 600;
-        font-size: 13px;
-    }
-
-    .value {
-        font-family: monospace;
-        font-size: 13px;
-    }
+    .section { font-size:18px; font-weight:700; margin-top:20px; }
+    .row { border-bottom:1px solid #333; padding:6px 0; }
+    .label { font-weight:600; font-size:13px; }
+    .value { font-family:monospace; font-size:13px; }
     </style>
     """, unsafe_allow_html=True)
 
-    # ---------- FIELD DISPLAY FUNCTION ----------
-    def show_field(name, key):
+    # ---------- FIELD DISPLAY ----------
+    def show_field(name, i):
+        val = get(name)
 
-        value = get(name)
-
-        col1, col2 = st.columns([6, 1])
-
+        col1, col2 = st.columns([6,1])
         with col1:
-            st.markdown(f"<div class='field-title'>{name}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div class='value'>{value}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='label'>{name}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='value'>{val}</div>", unsafe_allow_html=True)
 
         with col2:
             st_copy_to_clipboard(
-                value,
+                val,
                 before_copy_label="Copy",
                 after_copy_label="Done",
-                key=key
+                key=f"{name}_{i}"
             )
 
     # ---------- GENERAL ----------
     st.markdown("<div class='section'>General Information</div>", unsafe_allow_html=True)
     for i, f in enumerate([
         "AWP Number","Date Updated","Updated By","Description",
-        "Approval Conditions or Requirements","Company Name","Company Description"
+        "Company Name","Company Description"
     ]):
-        show_field(f, f"gen_{i}")
+        show_field(f, i)
 
     # ---------- CONTACT ----------
     st.markdown("<div class='section'>Contact</div>", unsafe_allow_html=True)
     for i, f in enumerate([
         "Person making the application","Applicants email","Applicants phone number",
-        "WSI Representative","WSI Representative Name"
+        "WSI Representative"
     ]):
-        show_field(f, f"contact_{i}")
+        show_field(f, i + 100)
 
     # ---------- WORK ----------
     st.markdown("<div class='section'>Work Details</div>", unsafe_allow_html=True)
     for i, f in enumerate([
-        "Type of Work","Detailed Location of Works","Detailed Scope of Works",
+        "Detailed Location of Works","Detailed Scope of Works",
         "Proposed Start Date","Proposed End Date"
     ]):
-        show_field(f, f"work_{i}")
+        show_field(f, i + 200)
 
-# ---------- LOCATION (FIXED) ----------
-st.markdown("<div class='section'>Location of Works</div>", unsafe_allow_html=True)
+    # ---------- LOCATION (FIXED ✅) ----------
+    st.markdown("<div class='section'>Location of Works</div>", unsafe_allow_html=True)
 
-location_fields = [
-    "Terminal Departures","Terminal Arrivals","Terminal Basement",
-    "Terminal Loading Dock","Terminal Bag Room","Gate Lounges",
-    "Landside","Apron","Aircraft Bay","Cargo Precinct",
-    "Public Carpark","AOCC/AOMF","Terminal Roof",
-    "Ancillary Building","Site Wide","Other Location"
-]
+    location_fields = [
+        "Terminal Departures","Terminal Arrivals","Terminal Basement",
+        "Terminal Loading Dock","Terminal Bag Room","Gate Lounges",
+        "Landside","Apron","Aircraft Bay","Cargo Precinct",
+        "Public Carpark","AOCC/AOMF","Terminal Roof",
+        "Ancillary Building","Site Wide","Other Location"
+    ]
 
-col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
-for i, loc in enumerate(location_fields):
-
-    # ✅ ALWAYS use check()
-    value = check(loc, area)
-
-    text = f"{value} {loc}"
-
-    if i % 2 == 0:
-        col1.markdown(text)
-    else:
-        col2.markdown(text)
+    for i, loc in enumerate(location_fields):
+        text = f"{check(loc, area)} {loc}"
+        if i % 2 == 0:
+            col1.markdown(text)
+        else:
+            col2.markdown(text)
 
     # ---------- ACCESS ----------
     st.markdown("<div class='section'>Access</div>", unsafe_allow_html=True)
 
-    access_fields = ["Airside Vehicle Gate","Terminal Main Entry","Terminal Staff Entry"]
+    access_fields = [
+        "Airside Vehicle Gate","Terminal Main Entry",
+        "Terminal Staff Entry","Loading Dock"
+    ]
 
     col1, col2 = st.columns(2)
 
     for i, a in enumerate(access_fields):
         text = f"{check(a, access)} {a}"
-
         if i % 2 == 0:
             col1.markdown(text)
         else:
@@ -183,7 +161,6 @@ for i, loc in enumerate(location_fields):
 
     for i, d in enumerate(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]):
         text = f"{check(d, days)} {d}"
-
         if i % 2 == 0:
             col1.markdown(text)
         else:
