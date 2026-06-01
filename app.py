@@ -1,8 +1,5 @@
 import streamlit as st
-from st_copy_to_clipboard import st_copy_to_clipboard
-import re
-
-st.set_page_config(layout="wide", page_title="AWP Parser")
+from st_copy_to_clipboard import st_copy_to_clipboard", page_title="AWP Parser")from st_copy_to_clipboard import st_copy_to_clipboard
 
 st.title("AWP Parser")
 
@@ -42,14 +39,29 @@ if data:
         parts = [p.strip() for p in src.split(",") if p.strip()]
         return "☑" if any(val.lower() in p for p in parts) else "☐"
 
+    # ---------- YES/NO ----------
+    def yesno(val):
+        val = val.lower()
+        if "yes" in val:
+            return "☑ Yes    ☐ No"
+        if "no" in val:
+            return "☐ Yes    ☑ No"
+        return "☐ Yes    ☐ No"
+
     # ---------- SOURCES ----------
     area = find_value("located in")
     access = find_value("access point")
     days = find_value("days")
     hours = find_value("working hours")
     systems = find_value("systems will be affected")
-    permits = find_value("sub permits")
+
+    # ✅ FIXED SOURCES
+    permits = find_value("sub permits will be required")
     shutdown = find_value("shutdown")
+    shutdown_main = find_value("require any shutdowns")
+
+    # combine for better checkbox matching
+    combined_shutdown = shutdown + " " + permits + " " + shutdown_main
 
     # ---------- STYLE ----------
     st.markdown("""
@@ -85,6 +97,10 @@ if data:
 
     for i,(l,k) in enumerate(general_fields):
         field(l,k,i)
+
+    # ---------- NEW SECTION (YOUR FEATURE) ----------
+    st.markdown("<div class='section'>Shutdown / Isolation / Sub Permits Required</div>", unsafe_allow_html=True)
+    st.markdown(yesno(shutdown_main))
 
     # ---------- CONTACT ----------
     st.markdown("<div class='section'>Contact</div>", unsafe_allow_html=True)
@@ -193,7 +209,7 @@ if data:
     ]
 
     for s in shutdown_list:
-        st.markdown(f"{check(s, shutdown)} {s}")
+        st.markdown(f"{check(s, combined_shutdown)} {s}")
 
     # ---------- EXTRA ----------
     st.markdown("<div class='section'>Shutdown Details</div>", unsafe_allow_html=True)
@@ -208,3 +224,5 @@ if data:
 
     for i,(l,k) in enumerate(extra_fields):
         field(l,k,i+500)
+import re
+
