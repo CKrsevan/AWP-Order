@@ -136,24 +136,30 @@ if data:
     ]):
         show_field(f, f"work_{i}")
 
-    # ---------- LOCATION (CHECKBOX STYLE) ----------
-    st.markdown("<div class='section'>Locations</div>", unsafe_allow_html=True)
+# ---------- LOCATION (FIXED) ----------
+st.markdown("<div class='section'>Location of Works</div>", unsafe_allow_html=True)
 
-    location_fields = [
-        "Terminal Departures","Terminal Arrivals","Terminal Basement",
-        "Terminal Loading Dock","Terminal Bag Room","Gate Lounges",
-        "Landside","Apron","Aircraft Bay","Cargo Precinct"
-    ]
+location_fields = [
+    "Terminal Departures","Terminal Arrivals","Terminal Basement",
+    "Terminal Loading Dock","Terminal Bag Room","Gate Lounges",
+    "Landside","Apron","Aircraft Bay","Cargo Precinct",
+    "Public Carpark","AOCC/AOMF","Terminal Roof",
+    "Ancillary Building","Site Wide","Other Location"
+]
 
-    col1, col2 = st.columns(2)
+col1, col2 = st.columns(2)
 
-    for i, loc in enumerate(location_fields):
-        text = f"{check(loc, area)} {loc}"
+for i, loc in enumerate(location_fields):
 
-        if i % 2 == 0:
-            col1.markdown(text)
-        else:
-            col2.markdown(text)
+    # ✅ ALWAYS use check()
+    value = check(loc, area)
+
+    text = f"{value} {loc}"
+
+    if i % 2 == 0:
+        col1.markdown(text)
+    else:
+        col2.markdown(text)
 
     # ---------- ACCESS ----------
     st.markdown("<div class='section'>Access</div>", unsafe_allow_html=True)
