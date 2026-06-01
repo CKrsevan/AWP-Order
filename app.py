@@ -30,13 +30,12 @@ if st.button("Process"):
 
     st.session_state["data"] = data
 
-
 # ---------- LOAD ----------
 data = st.session_state.get("data", None)
 
 if data:
 
-    # ---------- MAPPING ----------
+    # ---------- FIELD MAPPING (FIXES EMPTY FIELDS) ----------
     mapping = {
         "Company Name": "Account",
         "Applicants email": "Email address",
@@ -163,16 +162,25 @@ if data:
 
     st.subheader("Parsed Output")
 
-    # ---------- DISPLAY WITH REAL COPY ----------
+    # ---------- DISPLAY ----------
     for i, row in df.iterrows():
 
         st.markdown("### " + row["Field"])
 
-        # ✅ THIS IS THE REAL WORKING COPY BUTTON
+        # ✅ FIXED: unique key prevents duplicate error
         st_copy_to_clipboard(
             row["Value"],
             before_copy_label="📋 Copy",
-            after_copy_label="✅ Copied"
+            after_copy_label="✅ Copied",
+            key=f"copy_{i}"
         )
 
         st.code(row["Value"], language="text")
+
+    # ---------- DOWNLOAD ----------
+    st.download_button(
+        "Download CSV",
+        df.to_csv(index=False),
+        "awp_output.csv",
+        "text/csv"
+    )
