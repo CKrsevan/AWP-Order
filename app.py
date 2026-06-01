@@ -89,8 +89,23 @@ if data:
     other_reason = find_other("reason")
 
     # ✅ ✅ ✅ IMPROVED STYLE ONLY
+
     st.markdown("""
     <style>
+
+    /* Light mode */
+    [data-theme="light"] .value {
+        color: black;
+        background: #f7f7f7;
+    }
+
+    /* Dark mode */
+    [data-theme="dark"] .value {
+        color: white;
+        background: #333333;
+    }
+
+    /* Section styling (same for both) */
     .section {
         font-size:20px;
         font-weight:700;
@@ -101,24 +116,26 @@ if data:
         color:#1f77b4;
     }
 
+    /* Labels */
     .label {
         font-weight:600;
         font-size:13px;
-        color:#555;
         margin-bottom:2px;
     }
 
+    /* Default value box */
     .value {
         font-family:monospace;
         font-size:13px;
         padding:6px 8px;
-        background:#f7f7f7;
         border-radius:6px;
         margin-bottom:8px;
-        border:1px solid #eee;
+        border:1px solid #444;
     }
+
     </style>
     """, unsafe_allow_html=True)
+
 
     def field(label, keyword, i):
         val = find_value(keyword)
