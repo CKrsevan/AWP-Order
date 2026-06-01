@@ -259,8 +259,17 @@ if data:
     for i,a in enumerate(access_list):
         (c1 if i%2==0 else c2).markdown(f"{check(a, access)} {a}")
 
+
     if check("Other", access) == "☑" and other_access:
-        st.markdown(f"Other Access: {other_access}")
+        col1, col2 = st.columns([6,1])
+
+        with col1:
+            st.markdown(f"<div class='label'>Other Access</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='value'>{other_access}</div>", unsafe_allow_html=True)
+
+        with col2:
+            st_copy_to_clipboard(other_access, "Copy", "Done", key="other_access_copy")
+
 
     # ---------- DAYS ----------
     st.markdown("<div class='section'>Days</div>", unsafe_allow_html=True)
