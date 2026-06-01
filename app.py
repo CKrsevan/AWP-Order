@@ -4,9 +4,9 @@ from st_copy_to_clipboard import st_copy_to_clipboard
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
-st.title("AWP Full Parser")
+st.title("AWP Parser")
 
-raw = st.text_area("Paste raw AWP text here", height=300)
+raw = st.text_area("Paste raw AWP text here", height=250)
 
 # ---------- PROCESS ----------
 if st.button("Process"):
@@ -30,12 +30,13 @@ if st.button("Process"):
 
     st.session_state["data"] = data
 
+
 # ---------- LOAD ----------
 data = st.session_state.get("data", None)
 
 if data:
 
-    # ---------- FIELD MAPPING (FIXES EMPTY FIELDS) ----------
+    # ---------- FIELD MAPPING ----------
     mapping = {
         "Company Name": "Account",
         "Applicants email": "Email address",
@@ -58,129 +59,123 @@ if data:
             return "Yes"
         return val
 
-    def check(val, source):
-        return "Yes" if val.lower() in source.lower() else ""
+    def check(val, src):
+        return "Yes" if val.lower() in src.lower() else ""
 
-    # ---------- SOURCE TEXT ----------
+    # ---------- SOURCES ----------
     area = data.get("Detailed location of works/activity", "")
     days = data.get("Days required", "")
     hours = data.get("Working Hours", "")
+    access = data.get("What Access point will be required for personnel and deliveries", "")
     systems = data.get("What systems will be affected by the works?", "")
     permits = data.get("What sub permits will be required throughout the duration of the works?", "")
-    access = data.get("What Access point will be required for personnel and deliveries", "")
     shutdown = data.get("Will the work require any shutdowns and/or isolations?", "")
 
-    # ---------- CORE FIELDS ----------
-    fields = [
-        "AWP Number","Date Updated","Updated By","Description",
-        "Approval Conditions or Requirements","Company Name","Company Description",
-        "Person making the application","Applicants email","Applicants phone number",
-        "WSI Representative","WSI Representative Name",
-        "Do you have ABC and ALC approval?",
-        "ABC Ban Number and ALC Permit Number",
-        "Reason ABC and ALC Approval Not Required",
-        "Type of Work","Type of Work (Other)",
-        "Detailed Location of Works","Detailed Scope of Works",
-        "Proposed Start Date","Proposed End Date",
-        "Impacts on Airport Ops","Mitigation Measures for Op impacts",
-        "Do you require any asset information?",
-        "Provide details of your communication plan",
-        "Work hours site Supervisor name","Work hours site Supervisor Number",
-        "Site Emergency/After Hours Contact Name",
-        "Site Emergency/After Hours Contact Number",
-        "Will tools be carried in and out of the Airport Terminal sterile areas?",
-        "Will the work include tapping into any existing services?",
-        "Details associated with tapping into the existing service",
-        "Do you require WSI owned and managed equipment?",
-        "Details for Required Equipment",
-        "Waste Management Plan Details",
-        "Will Equipment, Materials or Chemicals be stored onsite?",
-        "Management plan for equipment, materials or chemicals on site",
-        "Hoarding, Barricading or Signage Required",
-        "Hoarding, Barricading or Signage Acknowledged",
-        "Road Occupancy or Traffic Management Plans Required",
-        "Road Occupancy and Traffic Management Plans Acknowledged",
-        "Sub Permit Documentation Read and Understood",
-        "Will Temporary Services be Required",
-        "Provide Details of Temporary Services Required",
-        "Will the work require lighting",
-        "Lighting Acknowledged",
-        "Special conditions or requirements associated with site Access"
-    ]
+    # ---------- GROUPS ----------
+    sections = {
+        "General Information": [
+            "AWP Number","Date Updated","Updated By","Description",
+            "Approval Conditions or Requirements","Company Name","Company Description"
+        ],
+        "Contact Details": [
+            "Person making the application","Applicants email","Applicants phone number",
+            "WSI Representative","WSI Representative Name"
+        ],
+        "Work Details": [
+            "Type of Work","Type of Work (Other)",
+            "Detailed Location of Works","Detailed Scope of Works",
+            "Proposed Start Date","Proposed End Date",
+            "Impacts on Airport Ops","Mitigation Measures for Op impacts"
+        ],
+        "Location": [
+            "Terminal Departures","Terminal Arrivals","Terminal Basement",
+            "Terminal Loading Dock","Terminal Bag Room","Gate Lounges",
+            "Landside","Apron","Aircraft Bay","Cargo Precinct"
+        ],
+        "Access & Schedule": [
+            "Airside Vehicle Gate","Terminal Main Entry","Terminal Staff Entry",
+            "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday",
+            "Morning","Afternoon","Night"
+        ],
+        "Systems & Permits": [
+            "Electrical LV","Electrical HV","HVAC",
+            "Technology & Network","Security","Hydraulics",
+            "Confined Space Sub Permit","Hot Work Sub Permit"
+        ],
+        "Shutdowns": [
+            "Electrical","Data","HVAC","Water (potable/recycled/sewer etc)",
+            "Fire detection system","High Voltage"
+        ]
+    }
 
-    results = [[f, get(f)] for f in fields]
+    # ---------- STYLING ----------
+    st.markdown("""
+    <style>
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
 
-    # ---------- CHECKBOX GROUPS ----------
+    .field-row {
+        padding: 6px;
+        border-bottom: 1px solid #333;
+        margin-bottom: 6px;
+    }
 
-    for loc in [
-        "Terminal Departures","Terminal Arrivals","Terminal Basement",
-        "Terminal Loading Dock","Terminal Bag Room","Gate Lounges",
-        "Landside","Apron","Aircraft Bay","Cargo Precinct",
-        "Public Carpark","AOCC/AOMF","Terminal Roof",
-        "Ancillary Building","Site Wide","Other Location"
-    ]:
-        results.append([loc, check(loc, area)])
+    .field-title {
+        font-weight: 600;
+        font-size: 13px;
+    }
 
-    for a in [
-        "Airside Vehicle Gate","Terminal Main Entry",
-        "Terminal Staff Entry","Loading Dock","Other Access Point"
-    ]:
-        results.append([a, check(a, access)])
-
-    for d in ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]:
-        results.append([d, check(d, days)])
-
-    for h in ["Morning","Afternoon","Night"]:
-        results.append([h, check(h, hours)])
-
-    for s in [
-        "Electrical LV","Electrical HV","HVAC",
-        "Technology & Network","Security","Hydraulics",
-        "Roads and Signage","Fire Systems","Vertical Transport"
-    ]:
-        results.append([s, check(s, systems)])
-
-    for p in [
-        "Confined Space Sub Permit","Out of Hours Works",
-        "Crane Lift Sub Permit","Gantry Access Sub Permit",
-        "Permit to Enter Protected Areas or No-Go Areas",
-        "Excavation & Penetration Sub Permit",
-        "Hot Work Sub Permit",
-        "Isolation Sub Permit",
-        "Material Import Permit"
-    ]:
-        results.append([p, check(p, permits)])
-
-    for s in [
-        "Electrical","Data","HVAC",
-        "Water (potable/recycled/sewer etc)",
-        "Fire detection system","High Voltage","Other Shutdown/Isolation"
-    ]:
-        results.append([s, check(s, shutdown)])
-
-    df = pd.DataFrame(results, columns=["Field","Value"])
-
-    st.subheader("Parsed Output")
+    .value-text {
+        font-family: monospace;
+        font-size: 13px;
+        margin-top: 3px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
     # ---------- DISPLAY ----------
-    for i, row in df.iterrows():
+    for section, fields in sections.items():
 
-        st.markdown("### " + row["Field"])
+        st.markdown(f"<div class='section-title'>{section}</div>", unsafe_allow_html=True)
 
-        # ✅ FIXED: unique key prevents duplicate error
-        st_copy_to_clipboard(
-            row["Value"],
-            before_copy_label="📋 Copy",
-            after_copy_label="✅ Copied",
-            key=f"copy_{i}"
-        )
+        for f in fields:
 
-        st.code(row["Value"], language="text")
+            value = get(f)
 
-    # ---------- DOWNLOAD ----------
-    st.download_button(
-        "Download CSV",
-        df.to_csv(index=False),
-        "awp_output.csv",
-        "text/csv"
-    )
+            # checkbox logic
+            if f in area:
+                value = check(f, area)
+            if f in days:
+                value = check(f, days)
+            if f in hours:
+                value = check(f, hours)
+            if f in access:
+                value = check(f, access)
+            if f in systems:
+                value = check(f, systems)
+            if f in permits:
+                value = check(f, permits)
+            if f in shutdown:
+                value = check(f, shutdown)
+
+            st.markdown("<div class='field-row'>", unsafe_allow_html=True)
+
+            col1, col2 = st.columns([6, 1])
+
+            with col1:
+                st.markdown(f"<div class='field-title'>{f}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='value-text'>{value}</div>", unsafe_allow_html=True)
+
+            with col2:
+                st_copy_to_clipboard(
+                    value,
+                    before_copy_label="Copy",
+                    after_copy_label="Done",
+                    key=f"{section}_{f}"
+                )
+
+            st.markdown("</div>", unsafe_allow_html=True)
