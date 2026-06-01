@@ -77,7 +77,7 @@ if data:
     hours = find_value("working hours")
     systems = find_value("systems will be affected")
 
-    # ✅ FIXED PERMIT MAPPING
+    # ✅ PERMIT FIX (unchanged from previous)
     permits = find_value("What sub permits will be required throughout the duration of the works")
 
     shutdown = find_value("shutdown")
@@ -85,7 +85,7 @@ if data:
 
     combined_shutdown = shutdown + " " + permits + " " + shutdown_main
 
-    # ✅ OTHER HANDLING
+    # OTHER
     other_area = find_other("area")
     other_access = find_other("access")
     other_system = find_other("system")
@@ -103,11 +103,9 @@ if data:
     def field(label, keyword, i):
         val = find_value(keyword)
         col1, col2 = st.columns([6,1])
-
         with col1:
             st.markdown(f"<div class='label'>{label}</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='value'>{val}</div>", unsafe_allow_html=True)
-
         with col2:
             st_copy_to_clipboard(val, "Copy", "Done", key=f"{label}_{i}")
 
@@ -140,7 +138,10 @@ if data:
     field("Applicant","Requested by",100)
     field("Email","Email address",101)
     field("Phone","Phone",102)
-    field("WSI Rep","WSI representative",103)
+
+    # ✅ FIXED
+    field("WSI Rep","Who is your WSI representative",103)
+
     field("WSI Rep Name","WSI Representative Name",104)
 
     # ---------- SUPERVISION ----------
@@ -149,8 +150,8 @@ if data:
     field("Supervisor Name","Supervisor name",120)
     field("Supervisor Phone","Supervisor phone",121)
 
-    # ✅ FIXED mapping
-    field("Emergency Contact Name","Work hours site Supervisor phone number",122)
+    # ✅ FIXED
+    field("Emergency Contact Name","Site Emergency/After Hours Contact person name",122)
 
     field("Emergency Contact Phone","after hours contact person phone number",123)
 
