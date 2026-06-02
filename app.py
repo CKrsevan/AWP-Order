@@ -39,21 +39,6 @@ if process_clicked:
 
 
 # ---------- PARSER ----------
-if st.button("Process"):
-    st.session_state["raw_text"] = raw
-    lines = [l.strip() for l in raw.split("\n") if l.strip()]
-    data = {}
-    key = None
-
-    for line in lines:
-        if ":" in line:
-            k, v = line.split(":", 1)
-            key = k.strip()
-            data[key] = v.strip()
-        elif key:
-            data[key] += " " + line.strip()
-
-    st.session_state["data"] = data
 
 data = st.session_state.get("data")
 
