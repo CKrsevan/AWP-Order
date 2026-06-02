@@ -25,11 +25,14 @@ col1, col2 = st.columns([1,1])
 with col1:
     process_clicked = st.button("Process", key="process_button")
 
+
 with col2:
     if st.button("Clear", key="clear_button"):
         st.session_state["raw_text"] = ""
+        st.session_state["text_input"] = ""   # ✅ ADD THIS LINE
         st.session_state["data"] = None
         st.rerun()
+
 
 # ✅ Only ONE trigger
 
