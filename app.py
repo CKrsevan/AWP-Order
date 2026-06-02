@@ -340,8 +340,17 @@ if data:
     ]:
         st.markdown(f"{check(s, combined_shutdown)} {s}")
 
+
     if check("Other", shutdown) == "☑" and other_reason:
-        st.markdown(f"Other Reason: {other_reason}")
+        col1, col2 = st.columns([6,1])
+
+        with col1:
+            st.markdown("<div class='label'>Other Reason</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='value'>{other_reason}</div>", unsafe_allow_html=True)
+
+        with col2:
+            st_copy_to_clipboard(other_reason, "Copy", "Done", key="other_reason_copy")
+
 
     # ---------- SHUTDOWN DETAILS ----------
     st.markdown("<div class='section'>Shutdown Details</div>", unsafe_allow_html=True)
