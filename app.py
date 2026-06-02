@@ -19,8 +19,20 @@ raw = st.text_area(
     key="text_input"
 )
 
+col1, col2 = st.columns([1,1])
+
+with col1:
+    process_clicked = st.button("Process")
+
+with col2:
+    if st.button("Clear"):
+        st.session_state["raw_text"] = ""
+        st.session_state["data"] = None
+        st.rerun()
+
 # ---------- PARSER ----------
 if st.button("Process"):
+    st.session_state["raw_text"] = raw
     lines = [l.strip() for l in raw.split("\n") if l.strip()]
     data = {}
     key = None
