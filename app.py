@@ -300,8 +300,17 @@ if data:
     for s in systems_list:
         st.markdown(f"{check(s, systems)} {s}")
 
+
     if check("Other", systems) == "☑" and other_system:
-        st.markdown(f"Other System: {other_system}")
+        col1, col2 = st.columns([6,1])
+
+        with col1:
+            st.markdown("<div class='label'>Other System</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='value'>{other_system}</div>", unsafe_allow_html=True)
+
+        with col2:
+            st_copy_to_clipboard(other_system, "Copy", "Done", key="other_system_copy")
+
 
     # ---------- PERMITS ----------
     st.markdown("<div class='section'>Permits</div>", unsafe_allow_html=True)
