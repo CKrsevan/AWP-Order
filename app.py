@@ -34,7 +34,7 @@ with col2:
     if st.button("Clear", key="clear_button", use_container_width=True):
         st.session_state["clear_trigger"] = True
         st.session_state["data"] = None
-        st.rerun(
+        st.rerun()
 
 
 
