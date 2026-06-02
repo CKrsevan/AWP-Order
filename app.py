@@ -32,10 +32,24 @@ with col2:
         st.rerun()
 
 # ✅ Only ONE trigger
+
 if process_clicked:
     st.session_state["raw_text"] = raw
 
-    # your parsing logic here
+    lines = [l.strip() for l in raw.split("\n") if l.strip()]
+    data = {}
+    key = None
+
+    for line in lines:
+        if ":" in line:
+            k, v = line.split(":", 1)
+            key = k.strip()
+            data[key] = v.strip()
+        elif key:
+            data[key] += " " + line.strip()
+
+    st.session_state["data"] = data
+
 
 
 # ---------- PARSER ----------
