@@ -9,6 +9,7 @@ st.image("logo.png", width=150)
 st.title("AWP Formatter")
 
 
+
 if "raw_text" not in st.session_state:
     st.session_state["raw_text"] = ""
 
@@ -22,13 +23,20 @@ raw = st.text_area(
 col1, col2 = st.columns([1,1])
 
 with col1:
-    process_clicked = st.button("Process")
+    process_clicked = st.button("Process", key="process_button")
 
 with col2:
-    if st.button("Clear"):
+    if st.button("Clear", key="clear_button"):
         st.session_state["raw_text"] = ""
         st.session_state["data"] = None
         st.rerun()
+
+# ✅ Only ONE trigger
+if process_clicked:
+    st.session_state["raw_text"] = raw
+
+    # your parsing logic here
+
 
 # ---------- PARSER ----------
 if st.button("Process"):
