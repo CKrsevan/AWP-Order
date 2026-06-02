@@ -148,6 +148,7 @@ if data:
             st_copy_to_clipboard(val, "Copy", "Done", key=f"{label}_{i}")
 
     
+   
     # ---------- GENERAL ----------
     st.markdown("<div class='section'>General</div>", unsafe_allow_html=True)
 
@@ -162,62 +163,68 @@ if data:
     ]):
         field(l,k,i)
 
-    # ---------- CONTACT ----------
-    st.markdown("<div class='section'>Application / Contact</div>", unsafe_allow_html=True)
-
-    field("Person making the application","Requested by",100)
-    field("Applicants email","Email address",101)
-    field("Applicants phone number","Phone",102)
-    field("WSI Representative","Who is your WSI representative",103)
-
     # ---------- APPROVAL ----------
     st.markdown("<div class='section'>Approval</div>", unsafe_allow_html=True)
 
-    field("Do you have ABC and ALC approval?","ABC",50)
-    field("ABC Ban Number and ALC Permit Number","BAN",51)
-    field("Reason ABC and ALC Approval Not Required","not applicable",52)
+    field("ABC / ALC Approval","ABC",50)
+    field("BAN Number","BAN",51)
+    field("Reason Not Required","not applicable",52)
 
-    # ---------- WORK ----------
-    st.markdown("<div class='section'>Work Details</div>", unsafe_allow_html=True)
+    # ---------- CONTACT ----------
+    st.markdown("<div class='section'>Contact</div>", unsafe_allow_html=True)
 
-    field("Type of Work","Type of Work",200)
-    field("Type of Work (Other)","Type of Work (Other)",201)
-    field("Detailed Location of Works","Detailed location",202)
-    field("Detailed Scope of Works","Detailed scope",203)
-    field("Proposed Start Date","start date",204)
-    field("Proposed End Date","end date",205)
-    field("Impacts on Airport Ops","Impacts",206)
-    field("Mitigation Measures for Op impacts","Mitigation",207)
+    field("Applicant","Requested by",100)
+    field("Email","Email address",101)
+    field("Phone","Phone",102)
 
-    # ---------- PLANS ----------
-    st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
-
-    field("Do you require any asset information?","asset information",300)
-    field("Provide details of your communication plan","communication plan",301)
-    field("Waste Management Plan Details","waste management",302)
+    field("WSI Rep","Who is your WSI representative",103)
 
     # ---------- SUPERVISION ----------
     st.markdown("<div class='section'>Supervision</div>", unsafe_allow_html=True)
 
-    field("Work hours site Supervisor name","Supervisor name",120)
-    field("Work hours site Supervisor Number","Supervisor phone",121)
-    field("Site Emergency/After Hours Contact Name","Site Emergency/After Hours Contact person name",122)
-    field("Site Emergency/After Hours Contact Number","after hours contact person phone number",123)
+    field("Supervisor Name","Supervisor name",120)
+    field("Supervisor Phone","Supervisor phone",121)
+
+    field("Emergency Contact Name","Site Emergency/After Hours Contact person name",122)
+    field("Emergency Contact Phone","after hours contact person phone number",123)
+
+    # ---------- WORK ----------
+    st.markdown("<div class='section'>Work</div>", unsafe_allow_html=True)
+
+    field("Type of Work","Type of Work",200)
+    field("Type of Work Other","Type of Work (Other)",201)
+    field("Detailed Location","Detailed location",202)
+    field("Detailed Scope","Detailed scope",203)
+    field("Start Date","start date",204)
+    field("End Date","end date",205)
+    field("Impacts","Impacts",206)
+    field("Mitigation","Mitigation",207)
+
+    # ---------- PLANS ----------
+    st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
+
+    field("Asset Info","asset information",300)
+    field("Communication Plan","communication plan",301)
 
     # ---------- SERVICES ----------
     st.markdown("<div class='section'>Services</div>", unsafe_allow_html=True)
 
-    field("Will tools be carried in and out of the Airport Terminal sterile areas?","tools",320)
-    field("Will the work include tapping into any existing services?","tapping",321)
-    field("Details associated with tapping into the existing service","details associated",322)
+    field("Tools in Terminal","tools",320)
+    field("Tapping Services","tapping",321)
+    field("Tapping Details","details associated",322)
 
     # ---------- ACKNOWLEDGEMENTS ----------
     st.markdown("<div class='section'>Acknowledgements</div>", unsafe_allow_html=True)
 
-    st.markdown(f"Working on the Airfield Acknowledged: {ack('airfield')}")
-    st.markdown(f"Accessing the Airfield Acknowledged: {ack('accessing the airfield')}")
-    st.markdown(f"Working and Accessing Landside Areas Acknowledged: {ack('landside')}")
-    st.markdown(f"Working in the Terminal Acknowledged: {ack('terminal acknowledged')}")
+    st.markdown(f"Working on Airfield: {ack('airfield')}")
+    st.markdown(f"Accessing Airfield: {ack('accessing the airfield')}")
+    st.markdown(f"Working Landside: {ack('landside')}")
+    st.markdown(f"Working Terminal: {ack('terminal acknowledged')}")
+
+    # ---------- WASTE MANAGEMENT ----------
+    st.markdown("<div class='section'>Waste Management</div>", unsafe_allow_html=True)
+
+    field("Waste Plan","waste management",302)
 
     # ---------- LOCATION ----------
     st.markdown("<div class='section'>Location</div>", unsafe_allow_html=True)
@@ -236,9 +243,11 @@ if data:
 
     if check("Other", area) == "☑" and other_area:
         col1, col2 = st.columns([6,1])
+
         with col1:
-            st.markdown("<div class='label'>Other Location</div>", unsafe_allow_html=True)
+            st.markdown("<div class='label'>Other Area</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='value'>{other_area}</div>", unsafe_allow_html=True)
+
         with col2:
             st_copy_to_clipboard(other_area, "Copy", "Done", key="other_area_copy")
 
@@ -256,9 +265,11 @@ if data:
 
     if check("Other", access) == "☑" and other_access:
         col1, col2 = st.columns([6,1])
+
         with col1:
-            st.markdown("<div class='label'>Other Access Point</div>", unsafe_allow_html=True)
+            st.markdown("<div class='label'>Other Access</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='value'>{other_access}</div>", unsafe_allow_html=True)
+
         with col2:
             st_copy_to_clipboard(other_access, "Copy", "Done", key="other_access_copy")
 
@@ -308,11 +319,10 @@ if data:
         st.markdown(f"{check(p, permits)} {p}")
 
     # ---------- SHUTDOWN ----------
-    st.markdown("<div class='section'>Shutdown</div>", unsafe_allow_html=True)
-
-    st.markdown("Will the work require any shutdowns and/or isolations?")
+    st.markdown("<div class='section'>Shutdown Required</div>", unsafe_allow_html=True)
     st.markdown(yesno(shutdown_main))
 
+    # ---------- SHUTDOWN TYPES ----------
     st.markdown("<div class='section'>Shutdown Types</div>", unsafe_allow_html=True)
 
     for s in [
@@ -324,8 +334,9 @@ if data:
     if check("Other", shutdown) == "☑" and other_reason:
         st.markdown(f"Other Reason: {other_reason}")
 
+    # ---------- SHUTDOWN DETAILS ----------
     st.markdown("<div class='section'>Shutdown Details</div>", unsafe_allow_html=True)
 
-    field("Proposed Start date of the shutdown/isolations","start date of the shutdown",500)
-    field("Proposed End date of the shutdown/isolations","end date of the shutdown",501)
-    field("Total duration of the shutdown/isolations","Total duration of the Shutdown/Isolations",502)
+    field("Shutdown Start","start date of the shutdown",500)
+    field("Shutdown End","end date of the shutdown",501)
+    field("Shutdown Duration","Total duration of the Shutdown/Isolations",502)
