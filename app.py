@@ -15,10 +15,12 @@ if st.session_state.get("clear_trigger"):
 
 
 
+
 raw = st.text_area(
-    "Paste raw AWP text here="raw_text"    "Paste raw AWP text here",
-)
+    "Paste raw AWP text here",
     height=250,
+    key="raw_text"
+)
 
 
 
