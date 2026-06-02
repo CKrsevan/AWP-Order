@@ -8,17 +8,12 @@ st.set_page_config(layout="wide", page_title="AWP Parser")
 st.image("logo.png", width=150)
 st.title("AWP Formatter")
 
-
-
-if "raw_text" not in st.session_state:
-    st.session_state["raw_text"] = ""
-
 raw = st.text_area(
     "Paste raw AWP text here",
-    value=st.session_state["raw_text"],
     height=250,
-    key="text_input"
+    key="raw_text"
 )
+
 
 col1, col2 = st.columns([1,1])
 
@@ -29,7 +24,6 @@ with col1:
 with col2:
     if st.button("Clear", key="clear_button"):
         st.session_state["raw_text"] = ""
-        st.session_state["text_input"] = ""   # ✅ ADD THIS LINE
         st.session_state["data"] = None
         st.rerun()
 
