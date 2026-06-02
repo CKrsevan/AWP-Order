@@ -8,11 +8,18 @@ st.set_page_config(layout="wide", page_title="AWP Parser")
 st.image("logo.png", width=150)
 st.title("AWP Formatter")
 
+
+if st.session_state.get("clear_trigger"):
+    st.session_state["raw_text"] = ""
+    st.session_state["clear_trigger"] = False
+
+
+
 raw = st.text_area(
-    "Paste raw AWP text here",
-    height=250,
-    key="raw_text"
+    "Paste raw AWP text here="raw_text"    "Paste raw AWP text here",
 )
+    height=250,
+
 
 
 col1, col2 = st.columns([1,1])
@@ -21,11 +28,12 @@ with col1:
     process_clicked = st.button("Process", key="process_button")
 
 
-with col2:
-    if st.button("Clear", key="clear_button"):
-        st.session_state["raw_text"] = ""
-        st.session_state["data"] = None
-        st.rerun()
+
+if st.button("Clear", key="clear_button"):
+    st.session_state["clear_trigger"] = True
+    st.session_state["data"] = None
+    st.rerun()
+
 
 
 # ✅ Only ONE trigger
