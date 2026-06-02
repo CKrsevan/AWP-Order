@@ -8,7 +8,16 @@ st.set_page_config(layout="wide", page_title="AWP Parser")
 st.image("logo.png", width=150)
 st.title("AWP Formatter")
 
-raw = st.text_area("Paste raw AWP text here", height=250)
+
+if "raw_text" not in st.session_state:
+    st.session_state["raw_text"] = ""
+
+raw = st.text_area(
+    "Paste raw AWP text here",
+    value=st.session_state["raw_text"],
+    height=250,
+    key="text_input"
+)
 
 # ---------- PARSER ----------
 if st.button("Process"):
