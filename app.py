@@ -31,7 +31,6 @@ with col2:
 # ✅ Only ONE trigger
 
 if process_clicked:
-    st.session_state["raw_text"] = raw
 
     lines = [l.strip() for l in raw.split("\n") if l.strip()]
     data = {}
