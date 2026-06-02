@@ -24,17 +24,18 @@ raw = st.text_area(
 
 
 
+
 col1, col2 = st.columns([1,1])
 
 with col1:
-    process_clicked = st.button("Process", key="process_button")
+    process_clicked = st.button("Process", key="process_button", use_container_width=True)
 
+with col2:
+    if st.button("Clear", key="clear_button", use_container_width=True):
+        st.session_state["clear_trigger"] = True
+        st.session_state["data"] = None
+        st.rerun(
 
-
-if st.button("Clear", key="clear_button"):
-    st.session_state["clear_trigger"] = True
-    st.session_state["data"] = None
-    st.rerun()
 
 
 
