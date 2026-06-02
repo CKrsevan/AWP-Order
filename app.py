@@ -45,11 +45,18 @@ if data:
                 return v
         return ""
 
+    
     def check(val, src):
-        src = src.lower()
-        src = re.sub(r'[^a-z0-9,\s]', '', src)
-        parts = [p.strip() for p in src.split(",") if p.strip()]
-        return "☑" if any(val.lower() in p for p in parts) else "☐"
+        def clean(text):
+            text = text.lower()
+            text = text.replace("&amp;", "&")
+            text = re.sub(r'[^a-z0-9\s]', '', text)
+            return text.strip()
+
+        src_parts = [clean(p) for p in src.split(",") if p.strip()]
+        val_clean = clean(val)
+
+        return "☑" if any(val_clean in p for p in src_parts) else "☐"
 
     def yesno(val):
         val = val.lower()
