@@ -123,7 +123,7 @@ if data:
 
     shutdown = find_value("What type of Shutdown or Isolation is required")
     shutdown_main = find_value("require any shutdown")
-
+    shutdown_reason = find_value("reason for shutdown")
     combined_shutdown = shutdown + " " + permits + " " + shutdown_main
 
     other_area = find_other("area")
@@ -393,6 +393,19 @@ if data:
         with col2:
             st_copy_to_clipboard(other_reason, "Copy", "Done", key="other_reason_copy")
 
+    # ---------- REASON FOR SHUTDOWN ----------
+    st.markdown("<div class='section'>Reason For Shutdown</div>", unsafe_allow_html=True)
+
+    reason_list = [
+        "Maintenance",
+        "Repair",
+        "Installation",
+        "Testing"
+    ]
+
+    c1, c2 = st.columns(2)
+    for i, r in enumerate(reason_list):
+        (c1 if i % 2 == 0 else c2).markdown(f"{check(r, shutdown_reason)} {r}")
 
     # ---------- SHUTDOWN DETAILS ----------
     st.markdown("<div class='section'>Shutdown Details</div>", unsafe_allow_html=True)
