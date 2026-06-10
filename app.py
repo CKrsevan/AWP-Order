@@ -245,8 +245,8 @@ if data:
         st_copy_to_clipboard(other_work, "Copy", "Done", key="type_of_work_other")
 
 
-    field("Detailed Location","Detailed location",202)
-    field("Detailed Scope","Detailed scope",203)
+    field("Detailed Location of Works","Detailed location",202)
+    field("Detailed Scope of Works","Detailed scope",203)
     field("Start Date","start date",204)
     field("End Date","end date",205)
     field("Impacts on Airport Ops","Impacts",206)
