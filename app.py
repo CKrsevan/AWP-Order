@@ -123,7 +123,7 @@ if data:
 
     shutdown = find_value("What type of Shutdown or Isolation is required")
     shutdown_main = find_value("require any shutdown")
-    shutdown_reason = find_value("reason for shutdown")
+    shutdown_reason = find_value("reason for the shutdown")
     combined_shutdown = shutdown + " " + permits + " " + shutdown_main
 
     other_area = find_other("area")
