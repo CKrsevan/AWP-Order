@@ -211,8 +211,8 @@ if data:
     st.markdown("<div class='section'>Contact</div>", unsafe_allow_html=True)
 
     field("Person making the application","Requested by",100)
-    field("Email","Email address",101)
-    field("Phone","Phone",102)
+    field("Applicants Email","Email address",101)
+    field("Applicants Phone","Phone",102)
 
     field("WSI Rep","Who is your WSI representative",103)
 
