@@ -199,9 +199,6 @@ if data:
     st.markdown("<div class='section'>General</div>", unsafe_allow_html=True)
 
     for i,(l,k) in enumerate([
-        ("AWP Number","AWP Number"),
-        ("Date Updated","Date Updated"),
-        ("Updated By","Updated By"),
         ("Description","Work/Activity Description"),
         ("Approval Conditions","Approval Conditions"),
         ("Company Name","Account"),
