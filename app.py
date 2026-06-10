@@ -263,7 +263,7 @@ if data:
     st.markdown(f"Working on Airfield: {ack('airfield')}")
     st.markdown(f"Accessing Airfield: {ack('accessing the airfield')}")
     st.markdown(f"Working Landside: {ack('landside')}")
-    st.markdown(f"Working Terminal: {ack('terminal acknowledged')}")
+    st.markdown(f"Working Terminal: {ack('requirements around working in the Terminal')}")
 
     # ---------- WASTE MANAGEMENT ----------
     st.markdown("<div class='section'>Waste Management</div>", unsafe_allow_html=True)
