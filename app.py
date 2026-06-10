@@ -392,12 +392,12 @@ if data:
         "Roads and Signage","Fire Systems","Vertical Transport","Other"
     ]
 
-    for s in systems_list:
-        st.markdown(f"{check(s, systems)} {s}")
-
     # ✅ Not Applicable checkbox
     not_applicable = "☑" if any(x in systems.lower() for x in ["na", "n/a", "not applicable"]) else "☐"
     st.markdown(f"{not_applicable} Not Applicable")
+
+    for s in systems_list:
+        st.markdown(f"{check(s, systems)} {s}")
 
     if check("Other", systems) == "☑" and other_system:
         col1, col2 = st.columns([6,1])
