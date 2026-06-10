@@ -310,7 +310,7 @@ if data:
         "Terminal Loading Dock","Terminal Bag Room","Gate Lounges",
         "Landside","Apron","Aircraft Bay","Cargo Precinct",
         "Public Carpark","AOCC/AOMF","Terminal Roof",
-        "Ancillary Building","Site Wide","Other"
+        "Ancillary Building","Site-Wide","Other"
     ]
 
     c1,c2 = st.columns(2)
