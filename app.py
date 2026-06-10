@@ -243,18 +243,18 @@ if data:
     field("Emergency Contact Name","Site Emergency/After Hours Contact person name",122)
     field("Emergency Contact Phone","after hours contact person phone number",123)
 
-    # ---------- PLANS ----------
-    st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
-
-    field("Asset Info","asset information",300)
-    field("Communication Plan","communication plan",301)
-
-    # ---------- SERVICES ----------
+  # ---------- SERVICES ----------
     st.markdown("<div class='section'>Services</div>", unsafe_allow_html=True)
 
     field("Tools in Terminal","tools",320)
     field("Tapping Services","tapping",321)
     field("Tapping Details","details associated",322)
+
+    # ---------- PLANS ----------
+    st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
+
+    field("Asset Info","asset information",300)
+    field("Communication Plan","communication plan",301)
 
     # ---------- ACKNOWLEDGEMENTS ----------
     st.markdown("<div class='section'>Acknowledgements</div>", unsafe_allow_html=True)
