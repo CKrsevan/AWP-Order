@@ -140,6 +140,7 @@ if data:
     shutdown_other = find_shutdown_other()
     other_area = find_other("area")
     other_access = find_other("access")
+    combined_access = access + " " + other_access
     other_system = find_other("system")
     other_reason = find_other("reason")
 
@@ -365,7 +366,7 @@ if data:
 
     c1,c2 = st.columns(2)
     for i,a in enumerate(access_list):
-        (c1 if i%2==0 else c2).markdown(f"{check(a, access)} {a}")
+        (c1 if i%2==0 else c2).markdown(f"{check(a, combined_access)} {a}")
 
     if check("Other", access) == "☑" and other_access:
         col1, col2 = st.columns([6,1])
