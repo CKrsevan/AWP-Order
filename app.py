@@ -205,12 +205,6 @@ if data:
     ]):
         field(l,k,i)
 
-    # ---------- APPROVAL ----------
-    st.markdown("<div class='section'>Approval</div>", unsafe_allow_html=True)
-
-    field("ABC / ALC Approval","ABC",50)
-    field("BAN Number","BAN",51)
-    field("Reason Not Required","not applicable",52)
 
     # ---------- CONTACT ----------
     st.markdown("<div class='section'>Contact</div>", unsafe_allow_html=True)
@@ -220,6 +214,14 @@ if data:
     field("Phone","Phone",102)
 
     field("WSI Rep","Who is your WSI representative",103)
+
+    # ---------- APPROVAL ----------
+    st.markdown("<div class='section'>Approval</div>", unsafe_allow_html=True)
+
+    field("ABC / ALC Approval","ABC",50)
+    field("BAN Number","BAN",51)
+    field("Reason Not Required","not applicable",52)
+
 
     # ---------- SUPERVISION ----------
     st.markdown("<div class='section'>Supervision</div>", unsafe_allow_html=True)
