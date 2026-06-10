@@ -122,7 +122,7 @@ if data:
     hours = find_value("working hours")
     systems = find_value("systems will be affected")
     temp_services = find_value("Temporary Services")
-
+    access_conditions = find_value("special conditions")
     permits = find_value("What sub permits will be required throughout the duration of the works")
 
     shutdown = find_value("What type of Shutdown or Isolation is required")
@@ -290,6 +290,14 @@ if data:
     st.markdown(
         f"Temporary Services Required: {yesno(temp_services)}"
     )
+
+    field(
+        "Special Access Conditions (Personnel / Vehicles / Equipment)",
+        "special conditions",
+        340
+    )
+
+
 
     # ---------- SITE CONTROLS ----------
     st.markdown("<div class='section'>Site Controls</div>", unsafe_allow_html=True)
