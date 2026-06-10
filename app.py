@@ -118,6 +118,7 @@ if data:
     days = find_value("days")
     hours = find_value("working hours")
     systems = find_value("systems will be affected")
+    temp_services = find_value("Temporary Services")
 
     permits = find_value("What sub permits will be required throughout the duration of the works")
 
@@ -278,6 +279,13 @@ if data:
         "Management plan for equipment, materials or chemical storage on site",
         "management plan for equipment, materials or chemical storage",
         303
+    )
+
+    # ---------- TEMPORARY SERVICES ----------
+    st.markdown("<div class='section'>Temporary Services</div>", unsafe_allow_html=True)
+
+    st.markdown(
+        f"Temporary Services Required: {yesno(temp_services)}"
     )
 
     # ---------- SITE CONTROLS ----------
