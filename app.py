@@ -234,7 +234,17 @@ if data:
     st.markdown("<div class='section'>Work</div>", unsafe_allow_html=True)
 
     field("Type of Work","Type of Work",200)
-    field("Type of Work Other","Type of Work (Other)",201)
+
+    other_work = find_other("type of work")
+
+    col1, col2 = st.columns([6,1])
+    with col1:
+        st.markdown("<div class='label'>Type of Work Other</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='value'>{other_work}</div>", unsafe_allow_html=True)
+    with col2:
+        st_copy_to_clipboard(other_work, "Copy", "Done", key="type_of_work_other")
+
+
     field("Detailed Location","Detailed location",202)
     field("Detailed Scope","Detailed scope",203)
     field("Start Date","start date",204)
