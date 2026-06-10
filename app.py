@@ -222,17 +222,7 @@ if data:
     field("BAN Number","BAN",51)
     field("Reason Not Required","not applicable",52)
 
-
-    # ---------- SUPERVISION ----------
-    st.markdown("<div class='section'>Supervision</div>", unsafe_allow_html=True)
-
-    field("Supervisor Name","Supervisor name",120)
-    field("Supervisor Phone","Supervisor phone",121)
-
-    field("Emergency Contact Name","Site Emergency/After Hours Contact person name",122)
-    field("Emergency Contact Phone","after hours contact person phone number",123)
-
-    # ---------- WORK ----------
+  # ---------- WORK ----------
     st.markdown("<div class='section'>Work</div>", unsafe_allow_html=True)
 
     field("Type of Work","Type of Work",200)
@@ -243,6 +233,15 @@ if data:
     field("End Date","end date",205)
     field("Impacts","Impacts",206)
     field("Mitigation","Mitigation",207)
+
+    # ---------- SUPERVISION ----------
+    st.markdown("<div class='section'>Supervision</div>", unsafe_allow_html=True)
+
+    field("Supervisor Name","Supervisor name",120)
+    field("Supervisor Phone","Supervisor phone",121)
+
+    field("Emergency Contact Name","Site Emergency/After Hours Contact person name",122)
+    field("Emergency Contact Phone","after hours contact person phone number",123)
 
     # ---------- PLANS ----------
     st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
