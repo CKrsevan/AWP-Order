@@ -263,11 +263,22 @@ if data:
     st.markdown(f"Accessing Airfield: {ack('accessing the airfield')}")
     st.markdown(f"Working Landside: {ack('landside')}")
     st.markdown(f"Working Terminal: {ack('terminal acknowledged')}")
-
+    
     # ---------- WASTE MANAGEMENT ----------
     st.markdown("<div class='section'>Waste Management</div>", unsafe_allow_html=True)
 
     field("Waste Plan","waste management",302)
+
+    # ✅ NEW: Storage question (Yes/No format)
+    storage_val = find_value("stored on-site")
+    st.markdown(f"Equipment / Materials / Chemicals Stored On-Site: {yesno(storage_val)}")
+
+    # ✅ NEW: Storage management plan
+    field(
+        "Storage Management Plan",
+        "management plan for equipment, materials or chemical storage",
+        303
+    )
 
     # ---------- LOCATION ----------
     st.markdown("<div class='section'>Location</div>", unsafe_allow_html=True)
