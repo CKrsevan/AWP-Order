@@ -124,7 +124,7 @@ if data:
     temp_services = find_value("Temporary Services")
     access_conditions = find_value("special conditions")
     permits = find_value("What sub permits will be required throughout the duration of the works")
-
+    shutdown_other = find_other("shutdown")
     shutdown = find_value("What type of Shutdown or Isolation is required")
     shutdown_main = find_value("require any shutdown")
     shutdown_reason = find_value("reason for the shutdown")
