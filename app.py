@@ -275,7 +275,7 @@ if data:
 
     # ✅ NEW: Storage management plan
     field(
-        "Storage Management Plan",
+        "Management plan for equipment, materials or chemical storage on site",
         "management plan for equipment, materials or chemical storage",
         303
     )
