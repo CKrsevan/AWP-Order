@@ -234,6 +234,12 @@ if data:
     field("Impacts","Impacts",206)
     field("Mitigation","Mitigation",207)
 
+        # ---------- PLANS ----------
+    st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
+
+    field("Asset Info","asset information",300)
+    field("Communication Plan","communication plan",301)
+
     # ---------- SUPERVISION ----------
     st.markdown("<div class='section'>Supervision</div>", unsafe_allow_html=True)
 
@@ -257,13 +263,6 @@ if data:
     st.markdown(f"Accessing Airfield: {ack('accessing the airfield')}")
     st.markdown(f"Working Landside: {ack('landside')}")
     st.markdown(f"Working Terminal: {ack('terminal acknowledged')}")
-
-
-    # ---------- PLANS ----------
-    st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
-
-    field("Asset Info","asset information",300)
-    field("Communication Plan","communication plan",301)
 
     # ---------- WASTE MANAGEMENT ----------
     st.markdown("<div class='section'>Waste Management</div>", unsafe_allow_html=True)
