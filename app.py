@@ -90,19 +90,10 @@ if data:
 
     
     def check(val, src):
-        def clean(text):
-            text = text.lower()
-            text = text.replace("&amp;", "&")
-            text = re.sub(r'[^a-z0-9\s]', '', text)
-            return text.strip()
+        val_clean = re.sub(r'[^a-z0-9\s]', '', val.lower())
+        src_clean = re.sub(r'[^a-z0-9\s]', '', src.lower())
 
-        src_parts = [clean(p) for p in src.split(",") if p.strip()]
-        val_clean = clean(val)
-
-        return "☑" if any(
-            val_clean in p or p in val_clean
-            for p in src_parts
-        ) else "☐"
+        return "☑" if val_clean in src_clean else "☐"
 
     def yesno(val):
         val = val.lower()
