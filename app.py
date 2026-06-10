@@ -284,6 +284,19 @@ if data:
         303
     )
 
+    # ---------- SITE CONTROLS ----------
+    st.markdown("<div class='section'>Site Controls</div>", unsafe_allow_html=True)
+
+    # Hoarding / Barricading / Signage
+    hoarding_val = find_value("Hoarding, Barricading")
+    st.markdown(f"Hoarding / Barricading / Signage Required: {yesno(hoarding_val)}")
+
+    # Road Occupancy / Traffic Management
+    road_val = find_value("Road Occupancy")
+    st.markdown(f"Road Occupancy / Traffic Management Required: {yesno(road_val)}")
+
+
+
     # ---------- TEMPORARY SERVICES ----------
     st.markdown("<div class='section'>Temporary Services</div>", unsafe_allow_html=True)
 
@@ -298,17 +311,6 @@ if data:
     )
 
 
-
-    # ---------- SITE CONTROLS ----------
-    st.markdown("<div class='section'>Site Controls</div>", unsafe_allow_html=True)
-
-    # Hoarding / Barricading / Signage
-    hoarding_val = find_value("Hoarding, Barricading")
-    st.markdown(f"Hoarding / Barricading / Signage Required: {yesno(hoarding_val)}")
-
-    # Road Occupancy / Traffic Management
-    road_val = find_value("Road Occupancy")
-    st.markdown(f"Road Occupancy / Traffic Management Required: {yesno(road_val)}")
 
     # ---------- LOCATION ----------
     st.markdown("<div class='section'>Location</div>", unsafe_allow_html=True)
