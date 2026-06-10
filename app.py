@@ -91,7 +91,10 @@ if data:
         src_parts = [clean(p) for p in src.split(",") if p.strip()]
         val_clean = clean(val)
 
-        return "☑" if any(val_clean in p for p in src_parts) else "☐"
+        return "☑" if any(
+            val_clean in p or p in val_clean
+            for p in src_parts
+        ) else "☐"
 
     def yesno(val):
         val = val.lower()
