@@ -395,6 +395,9 @@ if data:
     for s in systems_list:
         st.markdown(f"{check(s, systems)} {s}")
 
+    # ✅ Not Applicable checkbox
+    not_applicable = "☑" if any(x in systems.lower() for x in ["na", "n/a", "not applicable"]) else "☐"
+    st.markdown(f"{not_applicable} Not Applicable")
 
     if check("Other", systems) == "☑" and other_system:
         col1, col2 = st.columns([6,1])
@@ -405,10 +408,6 @@ if data:
 
         with col2:
             st_copy_to_clipboard(other_system, "Copy", "Done", key="other_system_copy")
-
-    # ✅ Not Applicable checkbox
-    not_applicable = "☑" if any(x in systems.lower() for x in ["na", "n/a", "not applicable"]) else "☐"
-    st.markdown(f"{not_applicable} Not Applicable")
 
     # ---------- PERMITS ----------
     st.markdown("<div class='section'>Permits</div>", unsafe_allow_html=True)
