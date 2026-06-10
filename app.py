@@ -241,7 +241,7 @@ if data:
         # ---------- PLANS ----------
     st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
 
-    field("Asset Info","asset information",300)
+    field("Do you require and asset information","asset information",300)
     field("Communication Plan","communication plan",301)
 
     # ---------- SUPERVISION ----------
