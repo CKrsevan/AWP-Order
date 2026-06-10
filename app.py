@@ -263,11 +263,11 @@ if data:
     st.markdown(f"Accessing Airfield: {ack('accessing the airfield')}")
     st.markdown(f"Working Landside: {ack('landside')}")
     st.markdown(f"Working Terminal: {ack('terminal acknowledged')}")
-    
+
     # ---------- WASTE MANAGEMENT ----------
     st.markdown("<div class='section'>Waste Management</div>", unsafe_allow_html=True)
 
-    field("Waste Plan","waste management",302)
+    field("Waste Management Plan","waste management",302)
 
     # ✅ NEW: Storage question (Yes/No format)
     storage_val = find_value("stored on-site")
