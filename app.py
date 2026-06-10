@@ -253,7 +253,7 @@ if data:
   # ---------- SERVICES ----------
     st.markdown("<div class='section'>Services</div>", unsafe_allow_html=True)
 
-    field("Tools in Terminal","tools",320)
+    field("Tools in Terminal sterile areas","tools",320)
     field("Tapping Services","tapping",321)
     field("Tapping Details","details associated",322)
 
@@ -284,12 +284,20 @@ if data:
     # ---------- SITE CONTROLS ----------
     st.markdown("<div class='section'>Site Controls</div>", unsafe_allow_html=True)
 
-    # Hoarding / Barricading / Signage
+    # Hoarding / Barricading / Signage (Yes/No)
     hoarding_val = find_value("Hoarding, Barricading")
     st.markdown(f"Hoarding / Barricading / Signage Required: {yesno(hoarding_val)}")
 
+    # ✅ NEW: Hoarding acknowledgement
+    hoarding_ack = ack("requirements around Hoarding, Barricading and Signage")
+    st.markdown(f"Hoarding / Barricading / Signage Acknowledged: {hoarding_ack}")
+
+    # Road Occupancy / Traffic Management (Yes/No)
+    road_val = find_value("Road Occupancy or Traffic Management")
+    st.markdown(f"Road Occupancy / Traffic Management Required: {yesno(road_val)}")
+
     # Road Occupancy / Traffic Management
-    road_val = find_value("Road Occupancy")
+    road_val = find_value("Road Occupancy or Traffic Management")
     st.markdown(f"Road Occupancy / Traffic Management Required: {yesno(road_val)}")
 
 
