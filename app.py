@@ -405,7 +405,7 @@ if data:
     permits_list = [
         "Confined Space Sub Permit","Out of Hours Works","Crane Lift Sub Permit",
         "Gantry Access Sub Permit","Excavation and Penetration Sub Permit",
-        "Hot Work Sub Permit","Isolation Sub Permit","Material Import Permit",
+        "Hot Works Sub Permit","Isolation Sub Permit","Material Import Permit",
         "Operational Resource Closure/Shutdown Sub Permit","Road Occupancy",
         "Permit to Discharge Water","Vegetation Works",
         "Working at Height or Below Permit","Fire Isolation Permit"
