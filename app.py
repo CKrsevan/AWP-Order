@@ -430,6 +430,13 @@ if data:
         "Working at Height or Below Permit","Fire Isolation Permit"
     ]
 
+
+    # ✅ NEW: Not Applicable checkbox
+    permits_na = "☑" if any(x in permits.lower() for x in ["na", "n/a", "not applicable"]) else "☐"
+    st.markdown(f"{permits_na} Not Applicable")
+
+
+
     for p in permits_list:
         st.markdown(f"{check(p, permits)} {p}")
 
