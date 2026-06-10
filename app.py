@@ -210,7 +210,6 @@ if data:
         ("Description","Work/Activity Description"),
         ("Approval Conditions","Approval Conditions"),
         ("Company Name","Account"),
-        ("Company Description","Company Description"),
     ]):
         field(l,k,i)
 
