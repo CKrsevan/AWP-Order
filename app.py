@@ -384,7 +384,7 @@ if data:
         st.markdown(f"{check(h, hours)} {h}")
 
     # ---------- SYSTEMS ----------
-    st.markdown("<div class='section'>Systems</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section'>Systems Impacted</div>", unsafe_allow_html=True)
 
     systems_list = [
         "Electrical LV","Electrical HV","HVAC",
