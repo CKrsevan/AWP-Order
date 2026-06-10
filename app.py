@@ -431,8 +431,8 @@ if data:
     ]
 
 
-    # ✅ NEW: Not Applicable checkbox
-    permits_na = "☑" if any(x in permits.lower() for x in ["na", "n/a", "not applicable"]) else "☐"
+    # ✅ Not Applicable based on main shutdown/permits question
+    permits_na = "☑" if "no" in shutdown_main.lower() else "☐"
     st.markdown(f"{permits_na} Not Applicable")
 
 
