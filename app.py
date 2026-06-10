@@ -235,8 +235,8 @@ if data:
     field("Detailed Scope","Detailed scope",203)
     field("Start Date","start date",204)
     field("End Date","end date",205)
-    field("Impacts","Impacts",206)
-    field("Mitigation","Mitigation",207)
+    field("Impacts on Airport Ops","Impacts",206)
+    field("Mitigation Measures for Op impacts","Mitigation",207)
 
         # ---------- PLANS ----------
     st.markdown("<div class='section'>Plans / Management</div>", unsafe_allow_html=True)
