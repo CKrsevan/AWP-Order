@@ -80,6 +80,14 @@ if data:
                 return v
         return ""
 
+
+    def find_shutdown_other():
+        for k, v in data.items():
+            kl = k.lower()
+            if "other" in kl and ("shutdown" in kl or "isolation" in kl):
+                return v
+        return ""
+
     
     def check(val, src):
         def clean(text):
@@ -129,7 +137,7 @@ if data:
     shutdown_main = find_value("require any shutdown")
     shutdown_reason = find_value("reason for the shutdown")
     combined_shutdown = shutdown + " " + permits + " " + shutdown_main + " " + shutdown_other
-    
+    shutdown_other = find_shutdown_other()
     other_area = find_other("area")
     other_access = find_other("access")
     other_system = find_other("system")
@@ -428,15 +436,15 @@ if data:
         st.markdown(f"{check(s, combined_shutdown)} {s}")
 
 
-    if check("Other", shutdown) == "☑" and other_reason:
+    if check("Other", shutdown) == "☑" and shutdown_other:
         col1, col2 = st.columns([6,1])
 
         with col1:
-            st.markdown("<div class='label'>Other Reason</div>", unsafe_allow_html=True)
-            st.markdown(f"<div class='value'>{other_reason}</div>", unsafe_allow_html=True)
+            st.markdown("<div class='label'>Other Shutdown Type</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='value'>{shutdown_other}</div>", unsafe_allow_html=True)
 
         with col2:
-            st_copy_to_clipboard(other_reason, "Copy", "Done", key="other_reason_copy")
+            st_copy_to_clipboard(shutdown_other, "Copy", "Done", key="other_shutdown_copy")
 
     # ---------- REASON FOR SHUTDOWN ----------
     st.markdown("<div class='section'>Reason For Shutdown</div>", unsafe_allow_html=True)
