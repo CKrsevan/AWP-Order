@@ -227,7 +227,7 @@ if data:
     st.markdown("<div class='section'>Approval</div>", unsafe_allow_html=True)
 
     field("ABC / ALC Approval","ABC",50)
-    field("BAN Number","BAN",51)
+    field("ABC BAN Number / ALC Permit Number","BAN",51)
     field("Reason Not Required","not applicable",52)
 
   # ---------- WORK ----------
