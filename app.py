@@ -296,10 +296,6 @@ if data:
     road_val = find_value("Road Occupancy or Traffic Management")
     st.markdown(f"Road Occupancy / Traffic Management Required: {yesno(road_val)}")
 
-    # Road Occupancy / Traffic Management
-    road_val = find_value("Road Occupancy or Traffic Management")
-    st.markdown(f"Road Occupancy / Traffic Management Required: {yesno(road_val)}")
-
 
 
     # ---------- TEMPORARY SERVICES ----------
