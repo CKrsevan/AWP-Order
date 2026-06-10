@@ -210,7 +210,7 @@ if data:
     # ---------- CONTACT ----------
     st.markdown("<div class='section'>Contact</div>", unsafe_allow_html=True)
 
-    field("Applicant","Requested by",100)
+    field("Person making the application","Requested by",100)
     field("Email","Email address",101)
     field("Phone","Phone",102)
 
