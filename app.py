@@ -400,12 +400,19 @@ if data:
         "Maintenance",
         "Repair",
         "Installation",
-        "Testing"
+        "Testing",
+        "Other"
     ]
 
-    c1, c2 = st.columns(2)
-    for i, r in enumerate(reason_list):
-        (c1 if i % 2 == 0 else c2).markdown(f"{check(r, shutdown_reason)} {r}")
+    if check("Other", shutdown_reason) == "☑" and other_reason:
+        col1, col2 = st.columns([6,1])
+
+        with col1:
+            st.markdown("<div class='label'>Other Reason</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='value'>{other_reason}</div>", unsafe_allow_html=True)
+
+        with col2:
+            st_copy_to_clipboard(other_reason, "Copy", "Done", key="other_reason_reason_copy")
 
     # ---------- SHUTDOWN DETAILS ----------
     st.markdown("<div class='section'>Shutdown Details</div>", unsafe_allow_html=True)
