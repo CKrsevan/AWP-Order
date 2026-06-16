@@ -413,14 +413,25 @@ if data:
     # ---------- PERMITS ----------
     st.markdown("<div class='section'>Permits</div>", unsafe_allow_html=True)
 
+
     permits_list = [
-        "Confined Space Sub Permit","Out of Hours Works","Crane Lift Sub Permit",
-        "Gantry Access Sub Permit","Excavation and Penetration Sub Permit",
-        "Hot Works Sub Permit","Isolation Sub Permit","Material Import Permit",
-        "Operational Resource Closure/Shutdown Sub Permit","Road Occupancy",
-        "Permit to Discharge Water","Vegetation Works",
-        "Working at Height or Below Permit","Fire Isolation Permit","Permit to Enter Protected Areas or No-Go Areas"
+        "Confined Space Sub Permit",
+        "Out of Hours Works",
+        "Crane Lift Sub Permit",
+        "Gantry Access Sub Permit",
+        "Excavation and Penetration Sub Permit",
+        "Hot Works Sub Permit",
+        "Isolation Sub Permit",
+        "Material Import Permit",
+        "Operational Resource Closure/Shutdown Sub Permit",
+        "Road Occupancy",
+        "Permit to Discharge Water",
+        "Vegetation Works",
+        "Working at Height or Below Permit",
+        "Fire Isolation Permit",
+        "Permit to Enter Protected Areas or No-Go Areas"
     ]
+
 
 
     # ✅ Not Applicable based on main shutdown/permits question
