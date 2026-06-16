@@ -419,7 +419,7 @@ if data:
         "Hot Works Sub Permit","Isolation Sub Permit","Material Import Permit",
         "Operational Resource Closure/Shutdown Sub Permit","Road Occupancy",
         "Permit to Discharge Water","Vegetation Works",
-        "Working at Height or Below Permit","Fire Isolation Permit"
+        "Working at Height or Below Permit","Fire Isolation Permit","Permit to Enter Protected Areas or No-Go Areas"
     ]
 
 
