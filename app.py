@@ -60,53 +60,37 @@ def create_excel_file(export_rows):
     ws = wb.active
     ws.title = "AWP Formatted Data"
 
-    headers = ["Field", "Value"]
-    ws.append(headers)
-
     header_fill = PatternFill("solid", fgColor="1F77B4")
     header_font = Font(color="FFFFFF", bold=True)
-    section_fill = PatternFill("solid", fgColor="D9EAF7")
-    section_font = Font(color="1F77B4", bold=True)
     thin_gray = Side(style="thin", color="D9D9D9")
 
-    # Header row styling
-    for cell in ws[1]:
-        cell.fill = header_fill
-        cell.font = header_font
-        cell.alignment = Alignment(horizontal="center", vertical="center")
-        cell.border = Border(bottom=thin_gray)
-
-    current_row = 2
-
+    # Transposed layout:
+    #   Row 1 = field names (headers, across columns)
+    #   Row 2 = corresponding values (beneath each header)
+    # Section heading rows have no value, so they are skipped.
+    col = 1
     for row in export_rows:
-        section = row.get("Section", "")
         field = row.get("Field", "")
         value = row.get("Value", "")
 
         if field == "" and value == "":
-            # Section heading row -> show section name in the first column
-            ws.append([section, ""])
-            for cell in ws[current_row]:
-                cell.fill = section_fill
-                cell.font = section_font
-                cell.alignment = Alignment(horizontal="left", vertical="center")
-                cell.border = Border(bottom=thin_gray)
-        else:
-            ws.append([field, value])
-            ws.cell(current_row, 1).font = Font(bold=True)
-            ws.cell(current_row, 2).alignment = Alignment(wrap_text=True, vertical="top")
+            continue
 
-            for cell in ws[current_row]:
-                cell.border = Border(bottom=thin_gray)
+        header_cell = ws.cell(row=1, column=col)
+        header_cell.value = field
+        header_cell.fill = header_fill
+        header_cell.font = header_font
+        header_cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        header_cell.border = Border(bottom=thin_gray)
 
-        current_row += 1
+        value_cell = ws.cell(row=2, column=col)
+        value_cell.value = value
+        value_cell.alignment = Alignment(wrap_text=True, vertical="top")
+        value_cell.border = Border(bottom=thin_gray)
 
-    ws.column_dimensions["A"].width = 48
-    ws.column_dimensions["B"].width = 90
+        ws.column_dimensions[header_cell.column_letter].width = 30
 
-    for row in ws.iter_rows():
-        for cell in row:
-            cell.alignment = Alignment(wrap_text=True, vertical="top")
+        col += 1
 
     ws.freeze_panes = "A2"
 
