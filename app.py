@@ -124,6 +124,9 @@ if data:
 
     export_rows = []
 
+    # Placeholder for the download button (rendered here, filled at the end)
+    download_placeholder = st.empty()
+
     def add_section(section_name):
         export_rows.append({
             "Section": section_name,
@@ -620,11 +623,10 @@ if data:
     field("Shutdown End", "end date of the shutdown", 501, section)
     field("Shutdown Duration", "Total duration of the Shutdown/Isolations", 502, section)
 
-    # ---------- DOWNLOAD EXCEL ----------
+    # ---------- DOWNLOAD EXCEL (rendered into the top placeholder) ----------
     excel_file = create_excel_file(export_rows)
 
-    st.markdown("---")
-    st.download_button(
+    download_placeholder.download_button(
         label="Download Reformatted Data as Excel",
         data=excel_file.getvalue(),
         file_name="AWP_Reformatted_Data.xlsx",
