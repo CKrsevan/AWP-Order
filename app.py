@@ -60,7 +60,7 @@ def create_excel_file(export_rows):
     ws = wb.active
     ws.title = "AWP Formatted Data"
 
-    headers = ["Section", "Field", "Value"]
+    headers = ["Field", "Value"]
     ws.append(headers)
 
     header_fill = PatternFill("solid", fgColor="1F77B4")
@@ -83,26 +83,26 @@ def create_excel_file(export_rows):
         field = row.get("Field", "")
         value = row.get("Value", "")
 
-        ws.append([section, field, value])
-
         if field == "" and value == "":
+            # Section heading row -> show section name in the first column
+            ws.append([section, ""])
             for cell in ws[current_row]:
                 cell.fill = section_fill
                 cell.font = section_font
                 cell.alignment = Alignment(horizontal="left", vertical="center")
                 cell.border = Border(bottom=thin_gray)
         else:
-            ws.cell(current_row, 2).font = Font(bold=True)
-            ws.cell(current_row, 3).alignment = Alignment(wrap_text=True, vertical="top")
+            ws.append([field, value])
+            ws.cell(current_row, 1).font = Font(bold=True)
+            ws.cell(current_row, 2).alignment = Alignment(wrap_text=True, vertical="top")
 
             for cell in ws[current_row]:
                 cell.border = Border(bottom=thin_gray)
 
         current_row += 1
 
-    ws.column_dimensions["A"].width = 28
-    ws.column_dimensions["B"].width = 48
-    ws.column_dimensions["C"].width = 90
+    ws.column_dimensions["A"].width = 48
+    ws.column_dimensions["B"].width = 90
 
     for row in ws.iter_rows():
         for cell in row:
