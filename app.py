@@ -64,6 +64,15 @@ def create_excel_file(export_rows):
     header_font = Font(color="FFFFFF", bold=True)
     thin_gray = Side(style="thin", color="D9D9D9")
 
+    def tick_to_bool(v):
+        # Convert checkbox values only: tick -> "true", empty box -> "false"
+        stripped = v.strip()
+        if stripped == "\u2611":
+            return "true"
+        if stripped == "\u2610":
+            return "false"
+        return v
+
     # Transposed layout:
     #   Row 1 = field names (headers, across columns)
     #   Row 2 = corresponding values (beneath each header)
@@ -84,7 +93,7 @@ def create_excel_file(export_rows):
         header_cell.border = Border(bottom=thin_gray)
 
         value_cell = ws.cell(row=2, column=col)
-        value_cell.value = value
+        value_cell.value = tick_to_bool(value)
         value_cell.alignment = Alignment(wrap_text=True, vertical="top")
         value_cell.border = Border(bottom=thin_gray)
 
