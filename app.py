@@ -314,6 +314,15 @@ if st.session_state.get("clear_trigger"):
     st.session_state["raw_text"] = ""
     st.session_state["clear_trigger"] = False
 
+
+awp_type = st.selectbox(
+    "AWP Type",
+    [
+        "New AWP",
+        "Existing AWP"
+    ],
+    key="awp_type"
+)
 awp_number = st.text_input(
     "Paste AWP Number",
     key="awp_number"
@@ -450,8 +459,16 @@ def create_excel_file(export_rows):
         if code:
             code_values[code] = value
 
-    # Populate AWP Number column
+    # Populate AWP Number column/type...
     code_values["AWP_CODE"] = st.session_state.get("awp_number", "").strip()
+    awp_type = st.session_state.get("awp_type", "")
+
+
+    if awp_type == "New AWP":
+        code_values["AWP_TYPE"] = "NEW"
+
+    elif awp_type == "Existing AWP":
+        code_values["AWP_TYPE"] = "EXISTING"
 
     wb = Workbook()
     ws = wb.active
