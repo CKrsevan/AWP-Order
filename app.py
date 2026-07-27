@@ -4,6 +4,7 @@ import re
 from io import BytesIO
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
+from datetime import datetime
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
@@ -351,38 +352,75 @@ if process_clicked:
     st.session_state["data"] = data
 
 
-# ---------- VALUE CONVERSION ----------
 def to_output(raw_val, ftype):
-    """Convert a parser value to the format the import template expects.
+    """
+    Convert a parser value to the format the import template expects.
 
-    CHKBOX columns  -> "true" / "false" / ""
-    everything else -> plain text (Yes/No extracted from tick strings)
+    CHKBOX columns -> TRUE / FALSE / ""
+    DATE columns   -> dd/mm/yyyy
+    everything else -> plain text
     """
     if raw_val is None:
         return ""
-    s = str(raw_val)
 
+    s = str(raw_val).strip()
+
+    # ---------------------------
+    # CHECKBOX FIELDS
+    # ---------------------------
     if ftype == "UDSField#CHKBOX":
         if "\u2611" in s:
-            return "true"
+            return "TRUE"
         if "\u2610" in s:
-            return "false"
-        low = s.strip().lower()
+            return "FALSE"
+
+        low = s.lower()
+
         if low in ("yes", "true"):
-            return "true"
+            return "TRUE"
+
         if low in ("no", "false"):
-            return "false"
+            return "FALSE"
+
         return ""
 
-    # CHAR / DATE / TIME / DATI
+    # ---------------------------
+    # DATE FIELDS
+    # ---------------------------
+    if ftype == "UDSField#DATE":
+        if not s:
+            return ""
+
+        date_formats = [
+            "%d/%m/%Y",
+            "%d-%m-%Y",
+            "%Y-%m-%d",
+            "%Y/%m/%d",
+            "%d/%m/%y",
+            "%d-%m-%y"
+        ]
+
+        for fmt in date_formats:
+            try:
+                return datetime.strptime(s, fmt).strftime("%d/%m/%Y")
+            except ValueError:
+                pass
+
+        return s
+
+    # ---------------------------
+    # CHAR / TIME / DATI
+    # ---------------------------
     if "\u2611" in s or "\u2610" in s:
-        # Yes/No tick strings -> keep the selected option only
         if "\u2611 Yes" in s:
             return "Yes"
+
         if "\u2611 No" in s:
             return "No"
+
         return ""
-    return s.strip()
+
+    return s
 
 
 # ---------- EXCEL EXPORT FUNCTION ----------
