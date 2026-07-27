@@ -626,12 +626,7 @@ if data:
     field("ABC / ALC Approval", "ABC", 50, section)
     field("ABC BAN Number / ALC Permit Number", "BAN", 51, section)
     field("Reason Not Required", "not applicable", 52, section)
-    field(
-        "Reason Not Required",
-        "Reason ABC and ALC Approval Not Required",
-        52,
-        section
-        )
+
     # ---------- WORK ----------
     section = "Work"
     add_section(section)
