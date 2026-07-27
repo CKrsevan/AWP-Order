@@ -5,11 +5,308 @@ from io import BytesIO
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 
-
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
 st.image("logo.png", width=150)
 st.title("AWP Formatter")
+
+
+# =====================================================================
+#  IMPORT TEMPLATE DEFINITION  (UU1AWP_10 Import Template.xlsx)
+#  ---------------------------------------------------------------
+#  The exported file must MATCH this template exactly:
+#    Row 1  -> service header
+#    Row 2  -> control row
+#    Row 3  -> UDS field type    (one per column)
+#    Row 4  -> internal field code (one per column)
+#    Row 5  -> display label      (one per column)
+#    Row 6  -> the data (a single AWP record)
+#  Every one of the 149 template columns is always written, in the
+#  template order. Columns the parser does not fill are left blank.
+# =====================================================================
+
+META_ROW1 = 'MP6441_ProcessUserDefinedScreenService_001#ADD'
+
+META_ROW2 = [
+    'AU1AWP',
+    'CONTROL_ORG: ',
+    'BUILD_ID: 12.3.1.1#PQJHPJSGMAQSDLSW_PRD',
+    'WS_MAPPING:MP6441_ProcessUserDefinedScreenService_001=ADD;'
+    'MP6441_ProcessUserDefinedScreenService_001=SYNC;'
+    'MP6441_ProcessUserDefinedScreenService_001=DELETE;'
+    'MP6441_ProcessUserDefinedScreenService_001=GET;',
+]
+
+# (field_type, internal_code, display_label) in exact template column order
+TEMPLATE_COLUMNS = [
+    ('UDSField#CHAR', 'AWP_CODE', 'AWP Number*'),
+    ('UDSField#CHAR', 'AWP_STATUS', 'AWP Request Status*'),
+    ('UDSField#CHAR', 'AWP_TYPE', 'AWP Type*'),
+    ('UDSField#CHAR', 'DESCRIPTION', 'Description*'),
+    ('UDSField#CHAR', 'AWP_ABCALCNO', 'ABC Ban Number and ALC Permit Number'),
+    ('UDSField#CHKBOX', 'LOC_AOCC', 'AOCC/AOMF'),
+    ('UDSField#CHKBOX', 'AWP_AIRFIELDACCESSACK', 'Accessing the Airfield Acknowledged\xa0'),
+    ('UDSField#CHKBOX', 'WORK_AFTERNOON', 'Afternoon (1200-1859)'),
+    ('UDSField#CHKBOX', 'LOC_BAY', 'Aircraft Bay'),
+    ('UDSField#CHKBOX', 'ACC_AIRSIDEGATE', 'Airside Vehicle Gate'),
+    ('UDSField#CHKBOX', 'LOC_ANCILLARY', 'Ancillary Building'),
+    ('UDSField#CHAR', 'REQ_EMAIL', 'Applicants email'),
+    ('UDSField#CHAR', 'REQ_PHONE', 'Applicants phone number'),
+    ('UDSField#CHAR', 'AWP_APPROVALCOND', 'Approval Conditions or Requirements'),
+    ('UDSField#CHKBOX', 'LOC_APRON', 'Apron'),
+    ('UDSField#CHAR', 'AWP_ASSIGNEDTO', 'Assigned To for Review'),
+    ('UDSField#CHAR', 'TOUR_WSIBOOKING', 'Authorised Tour booking WSI staff member'),
+    ('UDSField#CHAR', 'TOUR_PICKUP', 'Bus Pick Up and Drop Off Location'),
+    ('UDSField#CHKBOX', 'LOC_CARGO', 'Cargo Precinct'),
+    ('UDSField#CHAR', 'REQ_SUPPLIERDESC', 'Company Description'),
+    ('UDSField#CHAR', 'REQ_SUPPLIER', 'Company Name'),
+    ('UDSField#CHAR', 'AWP_ASSET', 'Component ID / Location'),
+    ('UDSField#CHKBOX', 'PER_CONFINED', 'Confined Space Sub Permit'),
+    ('UDSField#CHKBOX', 'PER_CONTROLLEDACT', 'Controlled Activity Application - Cranes etc'),
+    ('UDSField#CHKBOX', 'PER_CRANE', 'Crane Lift Sub Permit'),
+    ('UDSField#DATE', 'AWP_CURRENTENDDATE', 'Current Exp date'),
+    ('UDSField#CHKBOX', 'SD_DATA', 'Data'),
+    ('UDSField#CHAR', 'SYS_OTHEDESC', 'Description (Other)'),
+    ('UDSField#CHAR', 'AWP_LOCATIONDETAIL', 'Detailed Location of Works'),
+    ('UDSField#CHAR', 'AWP_DETAILSCOPE', 'Detailed Scope of Works'),
+    ('UDSField#CHAR', 'AWP_TAPSERVDETAIL', 'Details associated with tapping into the existing service.'),
+    ('UDSField#CHAR', 'AWP_EQUIPDETAIL', 'Details for Required Equipment'),
+    ('UDSField#CHAR', 'AWP_ABCALC', 'Do you have ABC and ALC approval?'),
+    ('UDSField#CHAR', 'AWP_EQUIPREQU', 'Do you require WSI owned and managed equipment?'),
+    ('UDSField#CHAR', 'AWP_ASSETINFO', 'Do you require any asset information?'),
+    ('UDSField#CHKBOX', 'SD_ELEC', 'Electrical'),
+    ('UDSField#CHKBOX', 'SYS_ELECHV', 'Electrical HV'),
+    ('UDSField#CHKBOX', 'SYS_ELECLV', 'Electrical LV'),
+    ('UDSField#CHKBOX', 'PER_EXCAVATION', 'Excavation & penetration Sub -Permit'),
+    ('UDSField#CHAR', 'TOUR_EXTGUESSCAT', 'External Guest industry Category'),
+    ('UDSField#CHKBOX', 'PER_FIRESYSTEM', 'Fire Isolation Permit (including smoke)'),
+    ('UDSField#CHKBOX', 'SYS_FIRE', 'Fire Systems'),
+    ('UDSField#CHKBOX', 'SD_FIRE', 'Fire detection system'),
+    ('UDSField#CHKBOX', 'WORK_FRIDAY', 'Friday'),
+    ('UDSField#CHKBOX', 'PER_GANTRY', 'Gantry Access Sub Permit'),
+    ('UDSField#CHKBOX', 'LOC_GATELOUNGE', 'Gate Lounges'),
+    ('UDSField#CHKBOX', 'SD_HVAC', 'HVAC'),
+    ('UDSField#CHKBOX', 'SYS_HVAC', 'HVAC'),
+    ('UDSField#CHAR', 'ACC_AVCH', 'Have you read the AVCH'),
+    ('UDSField#CHKBOX', 'SD_HIGHVOLTAGE', 'High Voltage'),
+    ('UDSField#CHKBOX', 'AWP_HOARDINGACK', 'Hoarding, Barricading\xa0 or Signage Acknowledged'),
+    ('UDSField#CHAR', 'AWP_HOARDING', 'Hoarding, Barricading\xa0 or Signage Required'),
+    ('UDSField#CHKBOX', 'PER_HOTWORK', 'Hot Work Sub Permit'),
+    ('UDSField#CHAR', 'TOUR_ATTENDING', 'How many People will be on the Tour?'),
+    ('UDSField#CHKBOX', 'SYS_HYDRAUL', 'Hydraulics'),
+    ('UDSField#CHAR', 'AWP_OPSIMPACT', 'Impacts on Airport Ops'),
+    ('UDSField#CHAR', 'AWP_OPSIMPACTS', 'Impacts on Airport Ops'),
+    ('UDSField#CHKBOX', 'SDR_INSTALL', 'Installation'),
+    ('UDSField#CHAR', 'TOUR_BUSREQU', 'Is a Bus Required?'),
+    ('UDSField#CHKBOX', 'PER_ISOLATION', 'Isolation Sub Permit (combined, gas, electrical, stored, compressed air, water/s'),
+    ('UDSField#CHKBOX', 'LOC_LANDSIDE', 'Landside'),
+    ('UDSField#CHKBOX', 'AWP_LIGHTINGACK', 'Lighting Acknowledged'),
+    ('UDSField#CHKBOX', 'ACC_LOADING', 'Loading Dock'),
+    ('UDSField#CHKBOX', 'SDR_MAINT', 'Maintenance'),
+    ('UDSField#CHAR', 'AWP_MATSTOREDDETAIL', 'Management plan for equipment, materials or chemical storage on site.'),
+    ('UDSField#CHKBOX', 'PER_MATERIAL', 'Material Import Permit'),
+    ('UDSField#CHAR', 'AWP_OPSMITIGATION', 'Mitigation Measures for Op impacts'),
+    ('UDSField#CHKBOX', 'WORK_MONDAY', 'Monday'),
+    ('UDSField#CHKBOX', 'WORK_MORNING', 'Morning (0500-1159)'),
+    ('UDSField#CHKBOX', 'WORK_NIGHT', 'Night (1900-0459)'),
+    ('UDSField#CHKBOX', 'PER_NA', 'Not Applicable'),
+    ('UDSField#CHKBOX', 'SYS_NA', 'Not Applicable'),
+    ('UDSField#CHKBOX', 'PER_OLS', 'OLS'),
+    ('UDSField#CHKBOX', 'PER_OPSCLOSURE', 'Operational resource closure/shutdown sub-permit'),
+    ('UDSField#CHAR', 'ACC_OTHER', 'Other Access Point'),
+    ('UDSField#CHAR', 'LOC_OTHER', 'Other Location'),
+    ('UDSField#CHAR', 'SDR_OTHER', 'Other Reason'),
+    ('UDSField#CHAR', 'SD_OTHER', 'Other Shutdown/Isolation'),
+    ('UDSField#CHKBOX', 'PER_CONSTRUCTOOH', 'Out of Hours Works'),
+    ('UDSField#CHKBOX', 'PER_DISCHARGE', 'Permit to Discharge Water'),
+    ('UDSField#CHKBOX', 'PER_ENTERAREA', 'Permit to Enter Protected Areas or No-Go Areas'),
+    ('UDSField#CHAR', 'REQ_NAME', 'Person making the application'),
+    ('UDSField#TIME', 'TOUR_COMMENCE', 'Planned Tour Commencement Time'),
+    ('UDSField#DATE', 'AWP_ENDDATE', 'Proposed End Date'),
+    ('UDSField#DATE', 'SD_ENDDATE', 'Proposed End date of the shutdown/Isolations'),
+    ('UDSField#DATE', 'AWP_STARTDATE', 'Proposed Start Date'),
+    ('UDSField#DATE', 'SD_STARTDATE', 'Proposed Start date of the shutdown/Isolations'),
+    ('UDSField#TIME', 'TOUR_END', 'Proposed Tour End Time'),
+    ('UDSField#DATE', 'AWP_PROPOSEDENDDATE', 'Proposed new Exp date'),
+    ('UDSField#CHAR', 'AWP_TEMPSERVICEDETAIL', 'Provide Details of Temporary Services Required'),
+    ('UDSField#CHAR', 'AWP_COMMSPLAN', 'Provide details of your communication plan.\xa0'),
+    ('UDSField#CHKBOX', 'LOC_CARPARK', 'Public Carpark'),
+    ('UDSField#CHAR', 'AWP_ABCALCREASON', 'Reason ABC and ALC Approval Not Required'),
+    ('UDSField#CHAR', 'AWP_EXTENDREASON', 'Reason for Extension'),
+    ('UDSField#CHKBOX', 'SDR_REPAIR', 'Repair'),
+    ('UDSField#CHKBOX', 'PER_ROADOCCUPY', 'Road Occupancy'),
+    ('UDSField#CHKBOX', 'AWP_ROADOCCUPYPLANACK', 'Road Occupancy and Traffice Management Plans Acknowledged'),
+    ('UDSField#CHAR', 'AWP_ROADOCCUPYPLAN', 'Road Occupancy or Traffic Management Plans Required'),
+    ('UDSField#CHKBOX', 'SYS_ROADSIGN', 'Roads and Signage'),
+    ('UDSField#CHKBOX', 'PER_ROOFACCESS', 'Roof Access'),
+    ('UDSField#CHKBOX', 'WORK_SATURDAY', 'Saturday'),
+    ('UDSField#CHKBOX', 'SYS_SECURITY', 'Security'),
+    ('UDSField#CHAR', 'AWP_EMERGNAME', 'Site Emergency/After Hours Contact Name'),
+    ('UDSField#CHAR', 'AWP_EMERGPHONE', 'Site Emergency/After Hours Contact Number'),
+    ('UDSField#CHKBOX', 'LOC_SITEWIDE', 'Site Wide'),
+    ('UDSField#CHAR', 'ACC_SPCREQU', 'Special conditions or requirements associated with site Access'),
+    ('UDSField#CHKBOX', 'AWP_SUBPERMITACK', 'Sub Permit Documentation Read and Understood'),
+    ('UDSField#CHKBOX', 'WORK_SUNDAY', 'Sunday'),
+    ('UDSField#CHKBOX', 'SYS_TECH', 'Technology & Network'),
+    ('UDSField#CHKBOX', 'LOC_TERMARRIVAL', 'Terminal Arrivals'),
+    ('UDSField#CHKBOX', 'LOC_TERMBAGROOM', 'Terminal Bag Room'),
+    ('UDSField#CHKBOX', 'LOC_TERMBASEMENT', 'Terminal Basement'),
+    ('UDSField#CHKBOX', 'LOC_TERMDEPART', 'Terminal Departures'),
+    ('UDSField#CHKBOX', 'LOC_TERMLOADDOCK', 'Terminal Loading Dock'),
+    ('UDSField#CHKBOX', 'ACC_TERMMAIN', 'Terminal Main Entry'),
+    ('UDSField#CHKBOX', 'LOC_TERMROOF', 'Terminal Roof'),
+    ('UDSField#CHKBOX', 'ACC_TERMSTAFF', 'Terminal Staff Entry'),
+    ('UDSField#CHKBOX', 'SDR_TESTING', 'Testing'),
+    ('UDSField#CHKBOX', 'WORK_THURSDAY', 'Thursday'),
+    ('UDSField#CHAR', 'SD_DURATION', 'Total duration of the Shutdown/Isolations'),
+    ('UDSField#CHKBOX', 'TOUR_ATTENDANCEFORM', 'Tour Attendance Form (Completed and Sent Document)'),
+    ('UDSField#CHKBOX', 'WORK_TUESDAY', 'Tuesday'),
+    ('UDSField#CHAR', 'AWP_WORKTYPE', 'Type of Work'),
+    ('UDSField#CHAR', 'AWP_WORKTYPEOTHER', 'Type of Work (Other)'),
+    ('UDSField#CHKBOX', 'PER_VEGETATION', 'Vegetation Works'),
+    ('UDSField#CHKBOX', 'SYS_VTRANS', 'Vertical Transport'),
+    ('UDSField#CHAR', 'TOUR_DEPARTMENT', 'WSI Division & Department Responsible for the Tour'),
+    ('UDSField#CHAR', 'AWP_WSIREP', 'WSI Representative'),
+    ('UDSField#CHAR', 'AWP_WASTEPLAN', 'Waste Management Plan Details'),
+    ('UDSField#CHKBOX', 'SD_WATER', 'Water (potable/recycled/sewer etc)'),
+    ('UDSField#CHKBOX', 'WORK_WEDNESDAY', 'Wednesday'),
+    ('UDSField#CHAR', 'TOUR_BUSSIZE', 'What Size Bus is Required'),
+    ('UDSField#CHAR', 'AWP_MATSTORED', 'Will Equipment, Materials or chemicals be stored onsite?'),
+    ('UDSField#CHAR', 'AWP_TEMPSERVICE', 'Will Temporary Services be Required'),
+    ('UDSField#CHAR', 'AWP_TAPSERV', 'Will the work include tapping into any existing services?\xa0'),
+    ('UDSField#CHAR', 'SD_SHUTISOLATE', 'Will the work require any shutdowns and/or Isolations?'),
+    ('UDSField#CHAR', 'AWP_LIGHTING', 'Will the work require lighting?'),
+    ('UDSField#CHAR', 'AWP_TOOLS', 'Will tools be carried in and out of the Airport Terminal sterile areas?'),
+    ('UDSField#CHAR', 'AWP_SUPERPHONE', 'Work hours site Supervisor Number'),
+    ('UDSField#CHAR', 'AWP_SUPERNAME', 'Work hours site Supervisor name'),
+    ('UDSField#CHKBOX', 'AWP_LANDSIDEACK', 'Working and Accessing Landside Areas Acknowledged\xa0'),
+    ('UDSField#CHKBOX', 'PER_HEIGHT', 'Working at Height or Below Permit (including roof access permit)'),
+    ('UDSField#CHKBOX', 'AWP_TERMINALWORKACK', 'Working in the Terminal Acknowledged\xa0'),
+    ('UDSField#CHKBOX', 'AWP_AIRFIELDWORKACK', 'Working on the Airfield Acknowledged\xa0'),
+    ('UDSField#DATI', 'AWP_CREATED', 'AWP Date Created'),
+    ('UDSField#CHAR', 'AWP_ASSETDESC', 'Asset Description'),
+    ('UDSField#CHAR', 'AWP_ASSETID', 'Asset ID'),
+    ('UDSField#CHAR', 'AWP_WSIREPNAME', 'WSI Representative Name'),
+    ('Comment#EN#$AWP#AWP_CODE', '', 'New Comment'),
+]
+
+# Maps each parser output (Section, Field) -> template internal code.
+# Anything not listed here simply stays blank in the export.
+FIELD_TO_CODE = {
+    ("General", "Description"): "DESCRIPTION",
+    ("General", "Approval Conditions"): "AWP_APPROVALCOND",
+    ("General", "Company Name"): "REQ_SUPPLIER",
+    ("Contact", "Person making the application"): "REQ_NAME",
+    ("Contact", "Applicants Email"): "REQ_EMAIL",
+    ("Contact", "Applicants Phone"): "REQ_PHONE",
+    ("Contact", "WSI Rep"): "AWP_WSIREP",
+    ("Approval", "ABC / ALC Approval"): "AWP_ABCALC",
+    ("Approval", "ABC BAN Number / ALC Permit Number"): "AWP_ABCALCNO",
+    ("Approval", "Reason Not Required"): "AWP_ABCALCREASON",
+    ("Work", "Type of Work"): "AWP_WORKTYPE",
+    ("Work", "Type of Work Other"): "AWP_WORKTYPEOTHER",
+    ("Work", "Detailed Location of Works"): "AWP_LOCATIONDETAIL",
+    ("Work", "Detailed Scope of Works"): "AWP_DETAILSCOPE",
+    ("Work", "Start Date"): "AWP_STARTDATE",
+    ("Work", "End Date"): "AWP_ENDDATE",
+    ("Work", "Impacts on Airport Ops"): "AWP_OPSIMPACT",
+    ("Work", "Mitigation Measures for Op impacts"): "AWP_OPSMITIGATION",
+    ("Plans / Management", "Do you require and asset information?"): "AWP_ASSETINFO",
+    ("Plans / Management", "Communication Plan"): "AWP_COMMSPLAN",
+    ("Supervision", "Supervisor Name"): "AWP_SUPERNAME",
+    ("Supervision", "Supervisor Phone"): "AWP_SUPERPHONE",
+    ("Supervision", "Emergency Contact Name"): "AWP_EMERGNAME",
+    ("Supervision", "Emergency Contact Phone"): "AWP_EMERGPHONE",
+    ("Services", "Tools in Terminal sterile areas"): "AWP_TOOLS",
+    ("Services", "Tapping Services"): "AWP_TAPSERV",
+    ("Services", "Tapping Details"): "AWP_TAPSERVDETAIL",
+    ("Acknowledgements", "Working on Airfield"): "AWP_AIRFIELDWORKACK",
+    ("Acknowledgements", "Accessing Airfield"): "AWP_AIRFIELDACCESSACK",
+    ("Acknowledgements", "Working Landside"): "AWP_LANDSIDEACK",
+    ("Acknowledgements", "Working Terminal"): "AWP_TERMINALWORKACK",
+    ("Waste Management", "Waste Management Plan"): "AWP_WASTEPLAN",
+    ("Waste Management", "Equipment / Materials / Chemicals Stored On-Site"): "AWP_MATSTORED",
+    ("Waste Management", "Management plan for equipment, materials or chemical storage on site"): "AWP_MATSTOREDDETAIL",
+    ("Site Controls", "Hoarding / Barricading / Signage Required"): "AWP_HOARDING",
+    ("Site Controls", "Hoarding / Barricading / Signage Acknowledged"): "AWP_HOARDINGACK",
+    ("Site Controls", "Road Occupancy / Traffic Management Required"): "AWP_ROADOCCUPYPLAN",
+    ("Temporary Services", "Temporary Services Required"): "AWP_TEMPSERVICE",
+    ("Temporary Services", "Special Access Conditions (Personnel / Vehicles / Equipment)"): "ACC_SPCREQU",
+    ("Location", "Terminal Departures"): "LOC_TERMDEPART",
+    ("Location", "Terminal Arrivals"): "LOC_TERMARRIVAL",
+    ("Location", "Terminal Basement"): "LOC_TERMBASEMENT",
+    ("Location", "Terminal Loading Dock"): "LOC_TERMLOADDOCK",
+    ("Location", "Terminal Bag Room"): "LOC_TERMBAGROOM",
+    ("Location", "Gate Lounges"): "LOC_GATELOUNGE",
+    ("Location", "Landside"): "LOC_LANDSIDE",
+    ("Location", "Apron"): "LOC_APRON",
+    ("Location", "Aircraft Bay"): "LOC_BAY",
+    ("Location", "Cargo Precinct"): "LOC_CARGO",
+    ("Location", "Public Carpark"): "LOC_CARPARK",
+    ("Location", "AOCC/AOMF"): "LOC_AOCC",
+    ("Location", "Terminal Roof"): "LOC_TERMROOF",
+    ("Location", "Ancillary Building"): "LOC_ANCILLARY",
+    ("Location", "Site-Wide"): "LOC_SITEWIDE",
+    ("Location", "Other Area"): "LOC_OTHER",
+    ("Access", "Airside Vehicle Gate"): "ACC_AIRSIDEGATE",
+    ("Access", "Terminal Main Entry"): "ACC_TERMMAIN",
+    ("Access", "Terminal Staff Entry"): "ACC_TERMSTAFF",
+    ("Access", "Loading Dock"): "ACC_LOADING",
+    ("Access", "Other Access"): "ACC_OTHER",
+    ("Days", "Monday"): "WORK_MONDAY",
+    ("Days", "Tuesday"): "WORK_TUESDAY",
+    ("Days", "Wednesday"): "WORK_WEDNESDAY",
+    ("Days", "Thursday"): "WORK_THURSDAY",
+    ("Days", "Friday"): "WORK_FRIDAY",
+    ("Days", "Saturday"): "WORK_SATURDAY",
+    ("Days", "Sunday"): "WORK_SUNDAY",
+    ("Hours", "Morning"): "WORK_MORNING",
+    ("Hours", "Afternoon"): "WORK_AFTERNOON",
+    ("Hours", "Night"): "WORK_NIGHT",
+    ("Systems Impacted", "Not Applicable"): "SYS_NA",
+    ("Systems Impacted", "Electrical LV"): "SYS_ELECLV",
+    ("Systems Impacted", "Electrical HV"): "SYS_ELECHV",
+    ("Systems Impacted", "HVAC"): "SYS_HVAC",
+    ("Systems Impacted", "Technology & Network"): "SYS_TECH",
+    ("Systems Impacted", "Security"): "SYS_SECURITY",
+    ("Systems Impacted", "Hydraulics"): "SYS_HYDRAUL",
+    ("Systems Impacted", "Roads and Signage"): "SYS_ROADSIGN",
+    ("Systems Impacted", "Fire Systems"): "SYS_FIRE",
+    ("Systems Impacted", "Vertical Transport"): "SYS_VTRANS",
+    ("Systems Impacted", "Other System"): "SYS_OTHEDESC",
+    ("Permits", "Not Applicable"): "PER_NA",
+    ("Permits", "Confined Space Sub Permit"): "PER_CONFINED",
+    ("Permits", "Out of Hours Works"): "PER_CONSTRUCTOOH",
+    ("Permits", "Crane Lift Sub Permit"): "PER_CRANE",
+    ("Permits", "Gantry Access Sub Permit"): "PER_GANTRY",
+    ("Permits", "Excavation and Penetration Sub Permit"): "PER_EXCAVATION",
+    ("Permits", "Hot Works Sub Permit"): "PER_HOTWORK",
+    ("Permits", "Isolation Sub Permit"): "PER_ISOLATION",
+    ("Permits", "Material Import Permit"): "PER_MATERIAL",
+    ("Permits", "Operational Resource Closure/Shutdown Sub Permit"): "PER_OPSCLOSURE",
+    ("Permits", "Road Occupancy"): "PER_ROADOCCUPY",
+    ("Permits", "Permit to Discharge Water"): "PER_DISCHARGE",
+    ("Permits", "Vegetation Works"): "PER_VEGETATION",
+    ("Permits", "Working at Height or Below Permit"): "PER_HEIGHT",
+    ("Permits", "Fire Isolation Permit"): "PER_FIRESYSTEM",
+    ("Permits", "Permit to Enter Protected Areas or No-Go Areas"): "PER_ENTERAREA",
+    ("Shutdown Required", "Shutdown Required"): "SD_SHUTISOLATE",
+    ("Shutdown Types", "Electrical"): "SD_ELEC",
+    ("Shutdown Types", "Data"): "SD_DATA",
+    ("Shutdown Types", "HVAC"): "SD_HVAC",
+    ("Shutdown Types", "Water"): "SD_WATER",
+    ("Shutdown Types", "Fire detection system"): "SD_FIRE",
+    ("Shutdown Types", "High Voltage"): "SD_HIGHVOLTAGE",
+    ("Shutdown Types", "Other Shutdown Type"): "SD_OTHER",
+    ("Reason For Shutdown", "Maintenance"): "SDR_MAINT",
+    ("Reason For Shutdown", "Repair"): "SDR_REPAIR",
+    ("Reason For Shutdown", "Installation"): "SDR_INSTALL",
+    ("Reason For Shutdown", "Testing"): "SDR_TESTING",
+    ("Reason For Shutdown", "Other Reason"): "SDR_OTHER",
+    ("Shutdown Details", "Shutdown Start"): "SD_STARTDATE",
+    ("Shutdown Details", "Shutdown End"): "SD_ENDDATE",
+    ("Shutdown Details", "Shutdown Duration"): "SD_DURATION",
+}
 
 
 if st.session_state.get("clear_trigger"):
@@ -54,59 +351,104 @@ if process_clicked:
     st.session_state["data"] = data
 
 
+# ---------- VALUE CONVERSION ----------
+def to_output(raw_val, ftype):
+    """Convert a parser value to the format the import template expects.
+
+    CHKBOX columns  -> "true" / "false" / ""
+    everything else -> plain text (Yes/No extracted from tick strings)
+    """
+    if raw_val is None:
+        return ""
+    s = str(raw_val)
+
+    if ftype == "UDSField#CHKBOX":
+        if "\u2611" in s:
+            return "true"
+        if "\u2610" in s:
+            return "false"
+        low = s.strip().lower()
+        if low in ("yes", "true"):
+            return "true"
+        if low in ("no", "false"):
+            return "false"
+        return ""
+
+    # CHAR / DATE / TIME / DATI
+    if "\u2611" in s or "\u2610" in s:
+        # Yes/No tick strings -> keep the selected option only
+        if "\u2611 Yes" in s:
+            return "Yes"
+        if "\u2611 No" in s:
+            return "No"
+        return ""
+    return s.strip()
+
+
 # ---------- EXCEL EXPORT FUNCTION ----------
 def create_excel_file(export_rows):
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "AWP Formatted Data"
+    """Build an export that MATCHES the UU1AWP_10 import template.
 
-    header_fill = PatternFill("solid", fgColor="1F77B4")
-    header_font = Font(color="FFFFFF", bold=True)
-    thin_gray = Side(style="thin", color="D9D9D9")
-
-    def tick_to_bool(v):
-        # Convert checkbox values only: tick -> "true", empty box -> "false"
-        stripped = v.strip()
-        if stripped == "\u2611":
-            return "true"
-        if stripped == "\u2610":
-            return "false"
-        return v
-
-    # Transposed layout:
-    #   Row 1 = field names (headers, across columns)
-    #   Row 2 = corresponding values (beneath each header)
-    # Section heading rows have no value, so they are skipped.
-    col = 1
+    All 149 template columns are written in template order:
+      row 1 -> service header
+      row 2 -> control row
+      row 3 -> UDS field type
+      row 4 -> internal field code
+      row 5 -> display label
+      row 6 -> data (blank where the parser has no value)
+    """
+    # Collect parser values keyed by template code (last write wins).
+    code_values = {}
     for row in export_rows:
+        section = row.get("Section", "")
         field = row.get("Field", "")
         value = row.get("Value", "")
-
         if field == "" and value == "":
-            continue
+            continue  # skip section-heading rows
+        code = FIELD_TO_CODE.get((section, field))
+        if code:
+            code_values[code] = value
 
-        header_cell = ws.cell(row=1, column=col)
-        header_cell.value = field
-        header_cell.fill = header_fill
-        header_cell.font = header_font
-        header_cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-        header_cell.border = Border(bottom=thin_gray)
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "UU1AWP_10"
 
-        value_cell = ws.cell(row=2, column=col)
-        value_cell.value = tick_to_bool(value)
+    # --- Row 1: service header ---
+    ws.cell(row=1, column=1).value = META_ROW1
+
+    # --- Row 2: control row ---
+    for c, val in enumerate(META_ROW2, start=1):
+        ws.cell(row=2, column=c).value = val
+
+    # --- Rows 3-5 (type / code / label) and Row 6 (data) ---
+    header_fill = PatternFill("solid", fgColor="1F77B4")
+    header_font = Font(color="FFFFFF", bold=True)
+
+    for c, (ftype, code, label) in enumerate(TEMPLATE_COLUMNS, start=1):
+        ws.cell(row=3, column=c).value = ftype
+        ws.cell(row=4, column=c).value = code
+
+        label_cell = ws.cell(row=5, column=c)
+        label_cell.value = label
+        label_cell.fill = header_fill
+        label_cell.font = header_font
+        label_cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+
+        # Data row: blank if the parser produced nothing for this column.
+        value_cell = ws.cell(row=6, column=c)
+        if code and code in code_values:
+            value_cell.value = to_output(code_values[code], ftype)
+        else:
+            value_cell.value = ""
         value_cell.alignment = Alignment(wrap_text=True, vertical="top")
-        value_cell.border = Border(bottom=thin_gray)
 
-        ws.column_dimensions[header_cell.column_letter].width = 30
+        ws.column_dimensions[label_cell.column_letter].width = 28
 
-        col += 1
-
-    ws.freeze_panes = "A2"
+    ws.freeze_panes = "A6"
 
     output = BytesIO()
     wb.save(output)
     output.seek(0)
-
     return output
 
 
