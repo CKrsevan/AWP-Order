@@ -922,32 +922,33 @@ if data:
     add_section(section)
     st.markdown("<div class='section'>Permits</div>", unsafe_allow_html=True)
 
+    # (display label used for export mapping, distinctive keyword to match on)
     permits_list = [
-        "Confined Space Sub Permit",
-        "Out of Hours Works",
-        "Crane Lift Sub Permit",
-        "Gantry Access Sub Permit",
-        "Excavation and Penetration Sub Permit",
-        "Hot Works Sub Permit",
-        "Isolation Sub Permit",
-        "Material Import Permit",
-        "Operational Resource Closure/Shutdown Sub Permit",
-        "Road Occupancy",
-        "Permit to Discharge Water",
-        "Vegetation Works",
-        "Working at Height or Below Permit",
-        "Fire Isolation Permit",
-        "Permit to Enter Protected Areas or No-Go Areas"
+        ("Confined Space Sub Permit", "confined"),
+        ("Out of Hours Works", "out of hours"),
+        ("Crane Lift Sub Permit", "crane"),
+        ("Gantry Access Sub Permit", "gantry"),
+        ("Excavation and Penetration Sub Permit", "excavation"),
+        ("Hot Works Sub Permit", "hot work"),
+        ("Isolation Sub Permit", "isolation sub"),
+        ("Material Import Permit", "material import"),
+        ("Operational Resource Closure/Shutdown Sub Permit", "operational resource"),
+        ("Road Occupancy", "road occupancy"),
+        ("Permit to Discharge Water", "discharge water"),
+        ("Vegetation Works", "vegetation"),
+        ("Working at Height or Below Permit", "height"),
+        ("Fire Isolation Permit", "fire isolation"),
+        ("Permit to Enter Protected Areas or No-Go Areas", "protected areas"),
     ]
 
-    permits_na = "\u2611" if "no" in shutdown_main.lower() else "\u2610"
+    permits_na = "\u2611" if not permits.strip() else "\u2610"
     st.markdown(f"{permits_na} Not Applicable")
     add_export(section, "Not Applicable", permits_na)
 
-    for p in permits_list:
-        result = f"{check(p, permits)} {p}"
+    for label, keyword in permits_list:
+        result = f"{check(keyword, permits)} {label}"
         st.markdown(result)
-        add_export(section, p, check(p, permits))
+        add_export(section, label, check(keyword, permits))
 
     # ---------- SHUTDOWN ----------
     section = "Shutdown Required"
