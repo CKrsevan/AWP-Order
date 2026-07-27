@@ -450,6 +450,9 @@ def create_excel_file(export_rows):
         if code:
             code_values[code] = value
 
+    # Populate AWP Number column
+    code_values["AWP_CODE"] = st.session_state.get("awp_number", "").strip()
+
     wb = Workbook()
     ws = wb.active
     ws.title = "UU1AWP_10"
