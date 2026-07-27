@@ -315,11 +315,11 @@ if st.session_state.get("clear_trigger"):
     st.session_state["clear_trigger"] = False
 
 awp_number = st.text_input(
-    "AWP Number",
+    "Paste AWP Number",
     key="awp_number"
 )
 raw = st.text_area(
-    "Paste raw AWP text here",
+    "Paste raw AWP data",
     height=250,
     key="raw_text"
 )
