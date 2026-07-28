@@ -374,9 +374,9 @@ def to_output(raw_val, ftype):
     """
     Convert a parser value to the format the import template expects.
 
-    CHKBOX columns -> TRUE / FALSE / ""
-    DATE columns   -> dd/mm/yyyy
-    everything else -> plain text
+    CHKBOX columns  -> TRUE / FALSE / ""
+    DATE columns    -> dd/mm/yyyy
+    everything else -> plain text (standalone yes/no forced to YES/NO)
     """
     if raw_val is None:
         return ""
@@ -437,6 +437,12 @@ def to_output(raw_val, ftype):
             return "NO"
 
         return ""
+
+    # Force any standalone yes/no answer to caps
+    if s.lower() == "yes":
+        return "YES"
+    if s.lower() == "no":
+        return "NO"
 
     return s
 
