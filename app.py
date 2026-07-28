@@ -431,10 +431,10 @@ def to_output(raw_val, ftype):
     # ---------------------------
     if "\u2611" in s or "\u2610" in s:
         if "\u2611 Yes" in s:
-            return "Yes"
+            return "YES"
 
         if "\u2611 No" in s:
-            return "No"
+            return "NO"
 
         return ""
 
