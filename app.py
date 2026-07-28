@@ -323,7 +323,7 @@ with number_col:
         key="awp_number"
     )
 
-    with type_col:
+with type_col:
     awp_type = st.selectbox(
         "AWP Type",
         [
