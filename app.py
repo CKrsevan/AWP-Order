@@ -317,7 +317,13 @@ if st.session_state.get("clear_trigger"):
 
 type_col, number_col = st.columns([1, 1])
 
-with type_col:
+with number_col:
+    awp_number = st.text_input(
+        "Paste AWP Number",
+        key="awp_number"
+    )
+
+    with type_col:
     awp_type = st.selectbox(
         "AWP Type",
         [
@@ -325,12 +331,6 @@ with type_col:
             "Existing AWP"
         ],
         key="awp_type"
-    )
-
-with number_col:
-    awp_number = st.text_input(
-        "Paste AWP Number",
-        key="awp_number"
     )
 
 raw = st.text_area(
