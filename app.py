@@ -315,18 +315,24 @@ if st.session_state.get("clear_trigger"):
     st.session_state["clear_trigger"] = False
 
 
-awp_type = st.selectbox(
-    "AWP Type",
-    [
-        "New AWP",
-        "Existing AWP"
-    ],
-    key="awp_type"
-)
-awp_number = st.text_input(
-    "Paste AWP Number",
-    key="awp_number"
-)
+type_col, number_col = st.columns([1, 1])
+
+with type_col:
+    awp_type = st.selectbox(
+        "AWP Type",
+        [
+            "New AWP",
+            "Existing AWP"
+        ],
+        key="awp_type"
+    )
+
+with number_col:
+    awp_number = st.text_input(
+        "Paste AWP Number",
+        key="awp_number"
+    )
+
 raw = st.text_area(
     "Paste raw AWP data",
     height=250,
