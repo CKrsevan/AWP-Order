@@ -8,7 +8,9 @@ from datetime import datetime
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
-# Pull the main content up (reduce Streamlit's default top padding)
+st.image("logo.png", width=150)
+
+# Pull the main content up
 st.markdown(
     """
     <style>
