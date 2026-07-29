@@ -333,6 +333,13 @@ with type_col:
         key="awp_type"
     )
 
+approval_conditions = st.text_area(
+    "Approval Conditions or Requirements",
+    height=120,
+    placeholder="Type the approval conditions or requirements here...",
+    key="approval_conditions"
+)
+
 raw = st.text_area(
     "Paste raw AWP data",
     height=250,
@@ -470,6 +477,12 @@ def create_excel_file(export_rows):
         code = FIELD_TO_CODE.get((section, field))
         if code:
             code_values[code] = value
+
+
+    approval_cond = st.session_state.get("approval_conditions", "").strip()
+    if approval_cond:
+        code_values["AWP_APPROVALCOND"] = approval_cond
+
 
     # Populate AWP Number column/type...
     code_values["AWP_CODE"] = st.session_state.get("awp_number", "").strip()
