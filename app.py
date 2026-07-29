@@ -6,7 +6,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 from datetime import datetime
 
-st.set_page_config(layout="wide", page_title="AWP Parser")
+st.set_page_config(layout="wide", page_title="AWP Format/Excel")
 
 st.image("logo.png", width=150)
 
