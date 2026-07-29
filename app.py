@@ -343,7 +343,7 @@ with type_col:
         "AWP Type",
         [
             "New AWP",
-            "Existing AWP"
+            "Extend Existing AWP"
         ],
         key="awp_type"
     )
@@ -505,10 +505,10 @@ def create_excel_file(export_rows):
 
 
     if awp_type == "New AWP":
-        code_values["AWP_TYPE"] = "NEW"
+        code_values["AWP_TYPE"] = "New AWP"
 
-    elif awp_type == "Existing AWP":
-        code_values["AWP_TYPE"] = "EXISTING"
+    elif awp_type == "Extend Existing AWP":
+        code_values["AWP_TYPE"] = "Extend Existing AWP"
 
     wb = Workbook()
     ws = wb.active
