@@ -14,7 +14,7 @@ st.image("logo.png", width=150)
 st.markdown(
     """
     <style>
-    .block-container { padding-top: 1.5rem; }
+    .block-container { padding-top: 3rem; }
     </style>
     """,
     unsafe_allow_html=True
