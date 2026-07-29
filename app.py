@@ -8,8 +8,21 @@ from datetime import datetime
 
 st.set_page_config(layout="wide", page_title="AWP Parser")
 
-st.image("logo.png", width=150)
-st.title("AWP Formatter")
+# Pull the main content up (reduce Streamlit's default top padding)
+st.markdown(
+    """
+    <style>
+    .block-container { padding-top: 1.5rem; }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Centered main heading
+st.markdown(
+    "<h1 style='text-align:center; margin-top:0;'>AWP Formatter</h1>",
+    unsafe_allow_html=True
+)
 
 
 # =====================================================================
