@@ -327,6 +327,9 @@ FIELD_TO_CODE = {
 
 if st.session_state.get("clear_trigger"):
     st.session_state["raw_text"] = ""
+    st.session_state["awp_number"] = ""
+    st.session_state["awp_type"] = ""
+    st.session_state["approval_conditions"] = ""
     st.session_state["clear_trigger"] = False
 
 
