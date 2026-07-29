@@ -395,7 +395,7 @@ if process_clicked:
     st.session_state["data"] = data
 
 
-def to_output(raw_val, ftype):
+def to_output(raw_val, ftype, code=None):
     """
     Convert a parser value to the format the import template expects.
 
@@ -426,7 +426,6 @@ def to_output(raw_val, ftype):
             return "FALSE"
 
         return ""
-
     # ---------------------------
     # DATE FIELDS
     # ---------------------------
@@ -443,13 +442,23 @@ def to_output(raw_val, ftype):
             "%d-%m-%y"
         ]
 
+        parsed = None
         for fmt in date_formats:
             try:
-                return datetime.strptime(s, fmt).strftime("%d/%m/%Y")
+                parsed = datetime.strptime(s, fmt)
+                break
             except ValueError:
                 pass
 
-        return s
+        if parsed is None:
+            return s
+
+        # These two dates must be output as US datetime with a midnight
+        # timestamp, e.g. 7/27/2026  12:00:00 AM
+        if code in ("AWP_STARTDATE", "SD_STARTDATE"):
+            return f"{parsed.month}/{parsed.day}/{parsed.year}  {parsed.strftime('%I:%M:%S %p')}"
+
+        return parsed.strftime("%d/%m/%Y")
 
     # ---------------------------
     # CHAR / TIME / DATI
@@ -541,7 +550,7 @@ def create_excel_file(export_rows):
         # Data row: blank if the parser produced nothing for this column.
         value_cell = ws.cell(row=6, column=c)
         if code and code in code_values:
-            value_cell.value = to_output(code_values[code], ftype)
+            value_cell.value = to_output(code_values[code], ftype, code)
         else:
             value_cell.value = ""
         value_cell.alignment = Alignment(wrap_text=True, vertical="top")
