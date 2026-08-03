@@ -453,9 +453,9 @@ def to_output(raw_val, ftype, code=None):
         if parsed is None:
             return s
 
-        # These two dates must be output as US datetime with a midnight
-        # timestamp, e.g. 7/27/2026  12:00:00 AM
-        if code in ("AWP_STARTDATE", "SD_STARTDATE"):
+        # These dates must be output as US datetime with a midnight
+        # timestamp, e.g. 8/21/2026  12:00:00 AM
+        if code in ("AWP_STARTDATE", "SD_STARTDATE", "AWP_ENDDATE", "SD_ENDDATE"):
             return f"{parsed.month}/{parsed.day}/{parsed.year}  {parsed.strftime('%I:%M:%S %p')}"
 
         return parsed.strftime("%d/%m/%Y")
