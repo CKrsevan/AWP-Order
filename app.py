@@ -463,13 +463,24 @@ def to_output(raw_val, ftype, code=None):
     # ---------------------------
     # CHAR / TIME / DATI
     # ---------------------------
+
+    # ABC/ALC approval: always resolve to YES / NO / N/A,
+    # regardless of any checkbox glyphs in the pasted value
+    if code == "AWP_ABCALC":
+        low = s.lower()
+        if "not applicable" in low or "n/a" in low or low == "na":
+            return "N/A"
+        if "\u2611 Yes" in s or low == "yes":
+            return "YES"
+        if "\u2611 No" in s or low == "no":
+            return "NO"
+        # if nothing matched, fall through to generic handling below
+
     if "\u2611" in s or "\u2610" in s:
         if "\u2611 Yes" in s:
             return "YES"
-
         if "\u2611 No" in s:
             return "NO"
-
         return ""
 
     # Force any standalone yes/no answer to caps
@@ -477,8 +488,7 @@ def to_output(raw_val, ftype, code=None):
         return "YES"
     if s.lower() == "no":
         return "NO"
-    if code == "AWP_ABCALC" and s.lower() in ("not applicable","Not Applicable", "n/a", "na"):
-        return "N/A"
+
     return s
 
 
