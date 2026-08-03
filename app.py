@@ -489,6 +489,10 @@ def to_output(raw_val, ftype, code=None):
     if s.lower() == "no":
         return "NO"
 
+    # Shutdown duration: cut off after 30 characters
+    if code == "SD_DURATION":
+        return s[:30]
+
     return s
 
 
