@@ -513,6 +513,7 @@ def create_excel_file(export_rows):
 
     # Populate AWP Number column/type...
     code_values["AWP_CODE"] = st.session_state.get("awp_number", "").strip()
+    code_values["AWP_STATUS"] = "Approved"
     awp_type = st.session_state.get("awp_type", "")
 
 
