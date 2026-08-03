@@ -477,7 +477,8 @@ def to_output(raw_val, ftype, code=None):
         return "YES"
     if s.lower() == "no":
         return "NO"
-
+    if code == "AWP_ABCALC" and s.lower() in ("not applicable","Not Applicable", "n/a", "na"):
+        return "N/A"
     return s
 
 
