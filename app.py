@@ -517,6 +517,19 @@ def create_excel_file(export_rows):
             code_values[code] = value
 
 
+    # ABC Ban / ALC Permit Number column depends on the ABC/ALC approval answer:
+    #   YES        -> keep the parsed BAN/permit number
+    #   NO / N/A   -> show that answer in this column instead
+    abc_answer = to_output(code_values.get("AWP_ABCALC", ""), "UDSField#CHAR", "AWP_ABCALC")
+    if abc_answer in ("NO", "N/A"):
+        code_values["AWP_ABCALCNO"] = abc_answer
+
+    approval_cond = st.session_state.get("approval_conditions", "").strip()
+    if approval_cond:
+        code_values["AWP_APPROVALCOND"] = approval_cond
+
+
+
     approval_cond = st.session_state.get("approval_conditions", "").strip()
     if approval_cond:
         code_values["AWP_APPROVALCOND"] = approval_cond
