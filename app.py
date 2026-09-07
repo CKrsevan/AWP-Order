@@ -1258,22 +1258,18 @@ Your review and response would be appreciated at your earliest convenience.
     </style>
     """, unsafe_allow_html=True)
 
-    cols = st.columns(5)
+    with cols[i % 5]:
 
-    for i, (permit_name, email_text) in enumerate(emails.items()):
+        with st.container(border=True):
 
-        with cols[i % 5]:
+            st.markdown(
+                f"<div style='text-align:center;font-size:18px;font-weight:bold;padding:8px'>{permit_name}</div>",
+                unsafe_allow_html=True
+            )
 
-            with st.container(border=True):
-
-                st.markdown(
-                    f"<div style='text-align:center;font-size:18px;font-weight:bold;padding:8px'>{permit_name}</div>",
-                    unsafe_allow_html=True
-                )
-
-                st_copy_to_clipboard(
-                    email_text.strip(),
-                    "📋 Copy",
-                    "✅",
-                    key=f"copy_{permit_name}"
-                )
+            st_copy_to_clipboard(
+                email_text.strip(),
+                "📋 COPY EMAIL",
+                "✅ COPIED",
+                key=f"copy_{permit_name}"
+            )
