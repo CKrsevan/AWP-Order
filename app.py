@@ -1248,16 +1248,6 @@ Your review and response would be appreciated at your earliest convenience.
 """
     }
 
-    st.markdown("""
-    <style>
-    button[kind="secondary"] {
-        min-height: 75px !important;
-        font-size: 20px !important;
-        font-weight: 600 !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
     with cols[i % 5]:
 
         with st.container(border=True):
