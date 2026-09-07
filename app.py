@@ -1249,8 +1249,8 @@ with tab2:
     """
     }
 
-    cols = st.columns(3)
-
+    cols = st.columns(4, gap="small")
+    
     for i, (permit_name, email_text) in enumerate(emails.items()):
 
         with cols[i % 3]:
