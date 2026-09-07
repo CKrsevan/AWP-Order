@@ -27,6 +27,7 @@ st.markdown(
 )
 
 
+
 # =====================================================================
 #  IMPORT TEMPLATE DEFINITION  (UU1AWP_10 Import Template.xlsx)
 #  ---------------------------------------------------------------
@@ -323,6 +324,11 @@ FIELD_TO_CODE = {
     ("Shutdown Details", "Shutdown End"): "SD_ENDDATE",
     ("Shutdown Details", "Shutdown Duration"): "SD_DURATION",
 }
+
+
+tab1, tab2 = st.tabs(["AWP Formatter", "Sub-Permit Emails"])
+
+with tab1:
 
 
 if st.session_state.get("clear_trigger"):
@@ -1113,3 +1119,9 @@ if data:
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         use_container_width=True
     )
+
+
+with tab2:
+
+    st.header("Sub-Permit Email Templates")
+
