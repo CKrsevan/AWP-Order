@@ -1249,15 +1249,14 @@ with tab2:
     """
     }
 
-    for permit_name, email_text in emails.items():
+    cols = st.columns(3)
 
-        with st.container(border=True):
+    for i, (permit_name, email_text) in enumerate(emails.items()):
 
-            st.markdown(f"#### {permit_name}")
-
+        with cols[i % 3]:
             st_copy_to_clipboard(
                 email_text.strip(),
-                "📋 Copy Email",
+                permit_name,
                 "✅ Copied",
                 key=f"copy_{permit_name}"
             )
