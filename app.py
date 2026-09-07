@@ -1249,14 +1249,14 @@ with tab2:
     """
     }
 
-   for permit_name, email_text in emails.items():
+    for permit_name, email_text in emails.items():
 
         with st.container(border=True):
 
             st.markdown(f"#### {permit_name}")
 
             st_copy_to_clipboard(
-                email_text,
+                email_text.strip(),
                 "📋 Copy Email",
                 "✅ Copied",
                 key=f"copy_{permit_name}"
