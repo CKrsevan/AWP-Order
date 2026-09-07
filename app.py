@@ -1258,7 +1258,7 @@ Your review and response would be appreciated at your earliest convenience.
     </style>
     """, unsafe_allow_html=True)
 
-    cols = st.columns(5, gap="small")
+    cols = st.columns(5)
 
     for i, (permit_name, email_text) in enumerate(emails.items()):
 
