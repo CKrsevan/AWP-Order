@@ -1140,23 +1140,15 @@ Thanks,
 
     for permit_name, email_text in emails.items():
 
-        with st.container(border=True):
+    with st.container(border=True):
 
-            st.subheader(f"🔥 {permit_name}")
+        st.subheader(f"🔥 {permit_name}")
 
-            st_copy_to_clipboard(
-                email_text,
-                "📋 Copy Email",
-                "✅ Copied",
-                key=f"copy_{permit_name}"
-            )
+        st_copy_to_clipboard(
+            email_text,
+            "📋 Copy Email",
+            "✅ Copied",
+            key=f"copy_{permit_name}"
+        )
 
-            st.text_area(
-                "Email Preview",
-                value=email_text.strip(),
-                height=150,
-                disabled=True,
-                key=f"text_{permit_name}"
-            )
-
-            st.markdown("")
+        st.markdown("")
