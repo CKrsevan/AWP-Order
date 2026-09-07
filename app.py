@@ -1147,7 +1147,6 @@ for permit_name, email_text in emails.items():
         "✅ Copied",
         key=f"copy_{permit_name}"
     )
-     
     st.text_area(
         "",
         value=email_text,
