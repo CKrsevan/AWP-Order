@@ -1123,34 +1123,40 @@ with tab1:
 
 with tab2:
 
-    st.header("Sub-Permit Email Templates")
+    st.header("📧 Sub-Permit Email Templates")
+    st.caption("Click the button to copy the email to your clipboard.")
 
-    emails= {
+    emails = {
         "Hot Work": """
-
 Hi Team,
 
 Please see the attached Hot Work Sub-Permit.
 
 Please advise if this can be issued.
 
-""",
+Thanks,
+"""
     }
 
-for permit_name, email_text in emails.items():
+    for permit_name, email_text in emails.items():
 
-    st.subheader(permit_name)
+        with st.container(border=True):
 
-    st_copy_to_clipboard(
-        email_text,
-        "📋 Copy Email",
-        "✅ Copied",
-        key=f"copy_{permit_name}"
-    )
-    st.text_area(
-        "",
-        value=email_text,
-        height=200,
-        disabled=True,
-        key=f"text_{permit_name}"
-    )
+            st.subheader(f"🔥 {permit_name}")
+
+            st_copy_to_clipboard(
+                email_text,
+                "📋 Copy Email",
+                "✅ Copied",
+                key=f"copy_{permit_name}"
+            )
+
+            st.text_area(
+                "Email Preview",
+                value=email_text.strip(),
+                height=150,
+                disabled=True,
+                key=f"text_{permit_name}"
+            )
+
+            st.markdown("")
