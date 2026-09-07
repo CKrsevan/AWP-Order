@@ -1127,28 +1127,137 @@ with tab2:
     st.caption("Click the button to copy the email to your clipboard.")
 
     emails = {
-        "Hot Work": """
-Hi Team,
 
-Please see the attached Hot Work Sub-Permit.
+        "Dry Fire Isolation Permit": """
+    Subject: SME Review Required – Dry Fire Isolation Permit
 
-Please advise if this can be issued.
+    Hi Team,
 
-Thanks,
-"""
+    Please review the attached Dry Fire Isolation Permit application.
+
+    Could you please assess the proposed isolation scope, impacts to fire protection systems, mitigation measures, and any operational constraints. Please advise whether you support approval or if any conditions are required.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "Wet Fire Isolation Permit": """
+    Subject: SME Review Required – Wet Fire Isolation Permit
+
+    Hi Team,
+
+    Please review the attached Wet Fire Isolation Permit application.
+
+    Could you please assess the proposed works, affected wet fire services, impairment controls, reinstatement arrangements, and any operational impacts. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "Crane Lift Permit": """
+    Subject: SME Review Required – Crane Lift Permit
+
+    Hi Team,
+
+    Please review the attached Crane Lift Permit application.
+
+    Could you please assess the proposed lifting activities, crane locations, lift methodology, exclusion zones, airside/landside impacts, and any operational or safety considerations. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "Out of Hours Permit": """
+    Subject: SME Review Required – Out of Hours Works Permit
+
+    Hi Team,
+
+    Please review the attached Out of Hours Permit application.
+
+    Could you please assess the proposed activities, timing of works, potential operational impacts, noise considerations, resource availability, and any associated risks. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "Excavation & Penetration Permit": """
+    Subject: SME Review Required – Excavation & Penetration Permit
+
+    Hi Team,
+
+    Please review the attached Excavation & Penetration Permit application.
+
+    Could you please assess the proposed excavation/penetration activities, asset protection measures, service locating arrangements, and any potential impacts to existing infrastructure. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "Hot Work Permit": """
+    Subject: SME Review Required – Hot Work Permit
+
+    Hi Team,
+
+    Please review the attached Hot Work Permit application.
+
+    Could you please assess the proposed hot work activities, fire prevention controls, monitoring arrangements, surrounding risks, and any operational impacts. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "HV/LV Switch Room Entry Permit": """
+    Subject: SME Review Required – HV/LV Switch Room Entry Permit
+
+    Hi Team,
+
+    Please review the attached HV/LV Switch Room Entry Permit application.
+
+    Could you please assess the proposed access requirements, work activities, electrical safety controls, competency requirements, and any impacts to electrical infrastructure. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "Isolation Permit": """
+    Subject: SME Review Required – Isolation Permit
+
+    Hi Team,
+
+    Please review the attached Isolation Permit application.
+
+    Could you please assess the proposed isolation scope, affected systems, lockout/tagout arrangements, operational impacts, and reinstatement methodology. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "Material Import Permit": """
+    Subject: SME Review Required – Material Import Permit
+
+    Hi Team,
+
+    Please review the attached Material Import Permit application.
+
+    Could you please assess the proposed materials, compliance requirements, environmental considerations, biosecurity risks (where applicable), and any operational impacts. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """,
+
+        "Road Occupancy Licence": """
+    Subject: SME Review Required – Road Occupancy Licence
+
+    Hi Team,
+
+    Please review the attached Road Occupancy Licence application.
+
+    Could you please assess the proposed road occupancy, traffic management arrangements, access impacts, stakeholder notifications, and any safety or operational considerations. Please advise if you support approval and provide any required conditions.
+
+    Your review and response would be appreciated at your earliest convenience.
+    """
     }
 
-    for permit_name, email_text in emails.items():
+   for permit_name, email_text in emails.items():
 
-        with st.container(border=True):
+    with st.container(border=True):
 
-            st.subheader(f"🔥 {permit_name}")
+        st.markdown(f"#### {permit_name}")
 
-            st_copy_to_clipboard(
-                email_text,
-                "📋 Copy Email",
-                "✅ Copied",
-                key=f"copy_{permit_name}"
-            )
-
-            st.markdown("")
+        st_copy_to_clipboard(
+            email_text,
+            "📋 Copy Email",
+            "✅ Copied",
+            key=f"copy_{permit_name}"
+        )
