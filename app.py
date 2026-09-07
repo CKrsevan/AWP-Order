@@ -1122,7 +1122,7 @@ with tab1:
 
 with tab2:
 
-    st.header("📧 Sub-Permit Email Templates")
+    st.header("📧 Sub-Permit Email to SME")
     st.caption("Click a button to copy the email template to your clipboard.")
 
     emails = {
