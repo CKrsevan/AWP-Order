@@ -1249,7 +1249,7 @@ with tab2:
     """
     }
 
-    cols = st.columns(4, gap="medium")
+    cols = st.columns(5, gap="medium")
 
     for i, (permit_name, email_text) in enumerate(emails.items()):
 
