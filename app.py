@@ -1138,7 +1138,7 @@ Thanks,
 """
     }
 
-        for permit_name, email_text in emails.items():
+    for permit_name, email_text in emails.items():
 
         with st.container(border=True):
 
