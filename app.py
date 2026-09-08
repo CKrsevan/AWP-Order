@@ -1247,32 +1247,35 @@ Your review and response would be appreciated at your earliest convenience.
 """
     }
 
-    cols = st.columns(5, gap="small")
+cols = st.columns(5, gap="small")
 
-    for i, (permit_name, email_text) in enumerate(emails.items()):
+for i, (permit_name, email_text) in enumerate(emails.items()):
 
-        with cols[i % 5]:
+    with cols[i % 5]:
 
-            with st.container(border=True):
+        with st.container(border=True):
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align: center;
-                        font-size: 17px;
-                        font-weight: 700;
-                        min-height: 55px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        padding: 4px;
-                    ">
-                        {permit_name}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            st.markdown(
+                f"""
+                <div style="
+                    text-align: center;
+                    font-size: 17px;
+                    font-weight: 700;
+                    min-height: 55px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 4px;
+                ">
+                    {permit_name}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
+            left, middle, right = st.columns([0.1, 0.8, 0.1])
+
+            with middle:
                 st_copy_to_clipboard(
                     email_text.strip(),
                     "📋 COPY EMAIL",
