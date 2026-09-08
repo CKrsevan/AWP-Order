@@ -1122,11 +1122,10 @@ with tab1:
 
 with tab2:
 
-    st.header("📧 Sub-Permit Email to SME")
-    st.caption("Click a button to copy the email template to your clipboard.")
+    st.header("📧 Sub-Permit Email Templates")
+    st.caption("Click COPY EMAIL to copy the full email template to your clipboard.")
 
     emails = {
-
         "🚨 Dry Fire": """
 Subject: SME Review Required – Dry Fire Isolation Permit
 
@@ -1230,7 +1229,7 @@ Hi Team,
 
 Please review the attached Material Import Permit application.
 
-Could you please assess the proposed materials, compliance requirements, environmental considerations, biosecurity risks (where applicable), and any operational impacts. Please advise if you support approval and provide any required conditions.
+Could you please assess the proposed materials, compliance requirements, environmental considerations, biosecurity risks where applicable, and any operational impacts. Please advise if you support approval and provide any required conditions.
 
 Your review and response would be appreciated at your earliest convenience.
 """,
@@ -1248,7 +1247,7 @@ Your review and response would be appreciated at your earliest convenience.
 """
     }
 
-  cols = st.columns(5)
+    cols = st.columns(5, gap="small")
 
     for i, (permit_name, email_text) in enumerate(emails.items()):
 
@@ -1257,7 +1256,20 @@ Your review and response would be appreciated at your earliest convenience.
             with st.container(border=True):
 
                 st.markdown(
-                    f"<div style='text-align:center;font-size:18px;font-weight:bold;padding:8px'>{permit_name}</div>",
+                    f"""
+                    <div style="
+                        text-align: center;
+                        font-size: 17px;
+                        font-weight: 700;
+                        min-height: 55px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 4px;
+                    ">
+                        {permit_name}
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
 
