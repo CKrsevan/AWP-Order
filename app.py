@@ -1227,38 +1227,201 @@ Your review and response would be appreciated at your earliest convenience.
 """
     }
 
-cols = st.columns(5, gap="small")
+    cols = st.columns(5, gap="small")
 
-for i, (permit_name, email_text) in enumerate(emails.items()):
+    for i, (permit_name, email_text) in enumerate(emails.items()):
 
-    with cols[i % 5]:
+        with cols[i % 5]:
 
-        with st.container(border=True):
+            with st.container(border=True):
 
-            st.markdown(
-                f"""
-                <div style="
-                    text-align: center;
-                    font-size: 17px;
-                    font-weight: 700;
-                    min-height: 55px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 4px;
-                ">
-                    {permit_name}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-            left, middle, right = st.columns([0.2, 0.6, 0.2])
-
-            with middle:
-                st_copy_to_clipboard(
-                    email_text.strip(),
-                    "📋 COPY EMAIL",
-                    "✅ COPIED",
-                    key=f"copy_{permit_name}"
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align: center;
+                        font-size: 17px;
+                        font-weight: 700;
+                        min-height: 55px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 4px;
+                    ">
+                        {permit_name}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
+
+                left, middle, right = st.columns([0.2, 0.6, 0.2])
+
+                with middle:
+                    st_copy_to_clipboard(
+                        email_text.strip(),
+                        "📋 COPY EMAIL",
+                        "✅ COPIED",
+                        key=f"copy_{permit_name}"
+                    )
+
+    st.divider()
+
+    st.header("🔄 Sub-Permit Resubmission Templates")
+    st.caption("Click COPY RESUBMISSION to copy the full resubmission email template.")
+
+    resubmission_emails = {
+        "🚨 Dry Fire Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Dry Fire Isolation Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed isolation scope, impacts to fire protection systems, mitigation measures, and any operational constraints. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "💧 Wet Fire Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Wet Fire Isolation Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed works, affected wet fire services, impairment controls, reinstatement arrangements, and any operational impacts. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "🏗️ Crane Lift Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Crane Lift Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed lifting activities, crane locations, lift methodology, exclusion zones, airside/landside impacts, and any operational or safety considerations. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "🌙 Out of Hours Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Out of Hours Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed activities, timing of works, potential operational impacts, noise considerations, resource availability, and any associated risks. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "⛏️ Excavation Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Excavation & Penetration Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed excavation/penetration activities, asset protection measures, service locating arrangements, and any potential impacts to existing infrastructure. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "🔥 Hot Work Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Hot Work Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed hot work activities, fire prevention controls, monitoring arrangements, surrounding risks, and any operational impacts. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "⚡ HV/LV Entry Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted HV/LV Switch Room Entry Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed access requirements, work activities, electrical safety controls, competency requirements, and any impacts to electrical infrastructure. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "🔌 Isolation Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Isolation Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed isolation scope, affected systems, lockout/tagout arrangements, operational impacts, and reinstatement methodology. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "📦 Material Import Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Material Import Permit application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed materials, compliance requirements, environmental considerations, biosecurity risks where applicable, and any operational impacts. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+""",
+
+        "🚧 Road Occupancy Resubmission": """
+Hi Team,
+
+Please review the attached resubmitted Road Occupancy Licence application.
+
+The application has been updated following the previous review.
+
+Could you please reassess the proposed road occupancy, traffic management arrangements, access impacts, stakeholder notifications, and any safety or operational considerations. Please advise whether you support approval or if any further conditions or amendments are required.
+
+Your review and response would be appreciated at your earliest convenience.
+"""
+    }
+
+    resubmission_cols = st.columns(5, gap="small")
+
+    for i, (permit_name, email_text) in enumerate(resubmission_emails.items()):
+
+        with resubmission_cols[i % 5]:
+
+            with st.container(border=True):
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align: center;
+                        font-size: 17px;
+                        font-weight: 700;
+                        min-height: 55px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 4px;
+                    ">
+                        {permit_name}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                left, middle, right = st.columns([0.1, 0.8, 0.1])
+
+                with middle:
+                    st_copy_to_clipboard(
+                        email_text.strip(),
+                        "🔄 RESUBMISSION",
+                        "✅ COPIED",
+                        key=f"resubmission_copy_{permit_name}"
+                    )
