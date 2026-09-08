@@ -1273,7 +1273,7 @@ for i, (permit_name, email_text) in enumerate(emails.items()):
                 unsafe_allow_html=True
             )
 
-            left, middle, right = st.columns([0.1, 0.8, 0.1])
+            left, middle, right = st.columns([0.05, 0.9, 0.05])
 
             with middle:
                 st_copy_to_clipboard(
