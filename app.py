@@ -1127,8 +1127,6 @@ with tab2:
 
     emails = {
         "🚨 Dry Fire": """
-Subject: SME Review Required – Dry Fire Isolation Permit
-
 Hi Team,
 
 Please review the attached Dry Fire Isolation Permit application.
@@ -1139,8 +1137,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "💧 Wet Fire": """
-Subject: SME Review Required – Wet Fire Isolation Permit
-
 Hi Team,
 
 Please review the attached Wet Fire Isolation Permit application.
@@ -1151,8 +1147,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "🏗️ Crane Lift": """
-Subject: SME Review Required – Crane Lift Permit
-
 Hi Team,
 
 Please review the attached Crane Lift Permit application.
@@ -1163,8 +1157,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "🌙 Out of Hours": """
-Subject: SME Review Required – Out of Hours Works Permit
-
 Hi Team,
 
 Please review the attached Out of Hours Permit application.
@@ -1175,8 +1167,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "⛏️ Excavation": """
-Subject: SME Review Required – Excavation & Penetration Permit
-
 Hi Team,
 
 Please review the attached Excavation & Penetration Permit application.
@@ -1187,8 +1177,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "🔥 Hot Work": """
-Subject: SME Review Required – Hot Work Permit
-
 Hi Team,
 
 Please review the attached Hot Work Permit application.
@@ -1199,8 +1187,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "⚡ HV/LV Entry": """
-Subject: SME Review Required – HV/LV Switch Room Entry Permit
-
 Hi Team,
 
 Please review the attached HV/LV Switch Room Entry Permit application.
@@ -1211,8 +1197,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "🔌 Isolation": """
-Subject: SME Review Required – Isolation Permit
-
 Hi Team,
 
 Please review the attached Isolation Permit application.
@@ -1223,8 +1207,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "📦 Material Import": """
-Subject: SME Review Required – Material Import Permit
-
 Hi Team,
 
 Please review the attached Material Import Permit application.
@@ -1235,8 +1217,6 @@ Your review and response would be appreciated at your earliest convenience.
 """,
 
         "🚧 Road Occupancy": """
-Subject: SME Review Required – Road Occupancy Licence
-
 Hi Team,
 
 Please review the attached Road Occupancy Licence application.
