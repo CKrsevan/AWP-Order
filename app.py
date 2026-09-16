@@ -1216,12 +1216,14 @@ Could you please assess the proposed materials, compliance requirements, environ
 Your review and response would be appreciated at your earliest convenience.
 """,
 
-        "🚧 Road Occupancy": """
+"🚧 Operational Resource Closure": """
 Hi Team,
 
-Please review the attached Road Occupancy Licence application.
+Please review the attached Operational Resource Closure Sub-Permit application.
 
-Could you please assess the proposed road occupancy, traffic management arrangements, access impacts, stakeholder notifications, and any safety or operational considerations. Please advise if you support approval and provide any required conditions.
+The application has been updated following the previous review.
+
+Could you please reassess the proposed resource closure requirements, affected operational resources, access restrictions, stakeholder coordination arrangements, mitigation measures, and any safety or operational considerations. Please advise whether you support approval or if any further conditions or amendments are required.
 
 Your review and response would be appreciated at your earliest convenience.
 """
@@ -1377,10 +1379,10 @@ Could you please reassess the proposed materials, compliance requirements, envir
 Your review and response would be appreciated at your earliest convenience.
 """,
 
-"🚧 Operational Resource Closure": """
+"🚧 Operational Resource Closure Resubmission": """
 Hi Team,
 
-Please review the attached Operational Resource Closure Sub-Permit application.
+Please review the attached resubmitted Operational Resource Closure Sub-Permit application.
 
 The application has been updated following the previous review.
 
