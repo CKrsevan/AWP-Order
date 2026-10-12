@@ -6,41 +6,6 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 from datetime import datetime
 
-import json
-from pathlib import Path
-
-STATS_FILE = Path("stats.json")
-
-
-def load_stats():
-    default_stats = {
-        "processed": 0,
-        "emails": 0
-    }
-
-    if not STATS_FILE.exists():
-        return default_stats
-
-    try:
-        with open(STATS_FILE, "r", encoding="utf-8") as file:
-            saved_stats = json.load(file)
-
-        return {
-            "processed": saved_stats.get("processed", 0),
-            "emails": saved_stats.get("emails", 0)
-        }
-
-    except (json.JSONDecodeError, OSError):
-        return default_stats
-
-
-def save_stats(stats):
-    with open(STATS_FILE, "w", encoding="utf-8") as file:
-        json.dump(stats, file)
-
-
-stats = load_stats()
-
 st.set_page_config(layout="wide", page_title="AWP Format/Excel")
 
 st.markdown("""
@@ -98,14 +63,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-metric_col1, metric_col2 = st.columns(2)
-
-with metric_col1:
-    st.metric("📄 AWPs Processed", stats["processed"])
-
-with metric_col2:
-    st.metric("📧 Emails Copied", stats["emails"])
 
 # Centered main heading
 st.markdown(
@@ -483,10 +440,6 @@ with tab1:
     # ---------- PROCESS ----------
     if process_clicked:
 
-        if raw.strip():
-            stats["processed"] += 1
-            save_stats(stats)
-
         lines = [l.strip() for l in raw.split("\n") if l.strip()]
         data = {}
         key = None
@@ -845,18 +798,8 @@ with tab1:
                 st.markdown(f"<div class='label'>{label}</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{val}</div>", unsafe_allow_html=True)
             with col2:
-                copy_result = copy_button(
-                    email_text.strip(),
-                    tooltip="Copy email",
-                    copied_label="😉 COPIED",
-                    icon="st",
-                    key=f"copy_{permit_name}"
-                )
+                st_copy_to_clipboard(val, "Copy", "😉 👍", key=f"{label}_{i}")
 
-                if copy_result is True:
-                    stats["emails"] += 1
-                    save_stats(stats)
-                    st.rerun()
         # ---------- GENERAL ----------
         section = "General"
         add_section(section)
@@ -903,18 +846,7 @@ with tab1:
             st.markdown("<div class='label'>Type of Work Other</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='value'>{other_work}</div>", unsafe_allow_html=True)
         with col2:
-            copy_result = copy_button(
-                email_text.strip(),
-                tooltip="Copy email",
-                copied_label="😉 COPIED",
-                icon="st",
-                key=f"copy_{permit_name}"
-            )
-
-            if copy_result is True:
-                stats["emails"] += 1
-                save_stats(stats)
-                st.rerun()
+            st_copy_to_clipboard(other_work, "Copy", "😉 👍", key="type_of_work_other")
 
         field("Detailed Location of Works", "Detailed location", 202, section)
         field("Detailed Scope of Works", "Detailed scope", 203, section)
@@ -1047,18 +979,7 @@ with tab1:
                 st.markdown("<div class='label'>Other Area</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{other_area}</div>", unsafe_allow_html=True)
             with col2:
-                copy_result = copy_button(
-                    email_text.strip(),
-                    tooltip="Copy email",
-                    copied_label="😉 COPIED",
-                    icon="st",
-                    key=f"copy_{permit_name}"
-                )
-
-                if copy_result is True:
-                    stats["emails"] += 1
-                    save_stats(stats)
-                    st.rerun()
+                st_copy_to_clipboard(other_area, "Copy", "😉 👍", key="other_area_copy")
 
         # ---------- ACCESS ----------
         section = "Access"
@@ -1084,18 +1005,7 @@ with tab1:
                 st.markdown("<div class='label'>Other Access</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{other_access}</div>", unsafe_allow_html=True)
             with col2:
-                copy_result = copy_button(
-                    email_text.strip(),
-                    tooltip="Copy email",
-                    copied_label="😉 COPIED",
-                    icon="st",
-                    key=f"copy_{permit_name}"
-                )
-
-                if copy_result is True:
-                    stats["emails"] += 1
-                    save_stats(stats)
-                    st.rerun()
+                st_copy_to_clipboard(other_access, "Copy", "😉 👍", key="other_access_copy")
 
         # ---------- DAYS ----------
         section = "Days"
@@ -1148,18 +1058,7 @@ with tab1:
                 st.markdown("<div class='label'>Other System</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{other_system}</div>", unsafe_allow_html=True)
             with col2:
-                copy_result = copy_button(
-                    email_text.strip(),
-                    tooltip="Copy email",
-                    copied_label="😉 COPIED",
-                    icon="st",
-                    key=f"copy_{permit_name}"
-                )
-
-                if copy_result is True:
-                    stats["emails"] += 1
-                    save_stats(stats)
-                    st.rerun()
+                st_copy_to_clipboard(other_system, "Copy", "😉 👍", key="other_system_copy")
 
         # ---------- PERMITS ----------
         section = "Permits"
@@ -1224,18 +1123,7 @@ with tab1:
                 st.markdown("<div class='label'>Other Shutdown Type</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{shutdown_other}</div>", unsafe_allow_html=True)
             with col2:
-                copy_result = copy_button(
-                    email_text.strip(),
-                    tooltip="Copy email",
-                    copied_label="😉 COPIED",
-                    icon="st",
-                    key=f"copy_{permit_name}"
-                )
-
-                if copy_result is True:
-                    stats["emails"] += 1
-                    save_stats(stats)
-                    st.rerun()
+                st_copy_to_clipboard(shutdown_other, "Copy", "😉 👍", key="other_shutdown_copy")
 
         # ---------- REASON FOR SHUTDOWN ----------
         section = "Reason For Shutdown"
@@ -1264,18 +1152,7 @@ with tab1:
                 st.markdown("<div class='label'>Other Reason</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{other_reason}</div>", unsafe_allow_html=True)
             with col2:
-                copy_result = copy_button(
-                    email_text.strip(),
-                    tooltip="Copy email",
-                    copied_label="😉 COPIED",
-                    icon="st",
-                    key=f"copy_{permit_name}"
-                )
-
-                if copy_result is True:
-                    stats["emails"] += 1
-                    save_stats(stats)
-                    st.rerun()
+                st_copy_to_clipboard(other_reason, "Copy", "😉 👍", key="other_reason_reason_copy")
 
         # ---------- SHUTDOWN DETAILS ----------
         section = "Shutdown Details"
@@ -1433,18 +1310,12 @@ Your review and response would be appreciated at your earliest convenience.
                 left, middle, right = st.columns([0.2, 0.6, 0.2])
 
                 with middle:
-                    copy_result = copy_button(
+                    st_copy_to_clipboard(
                         email_text.strip(),
-                        tooltip="Copy email",
-                        copied_label="😉 COPIED",
-                        icon="st",
+                        "COPY EMAIL",
+                        "😉 👍",
                         key=f"copy_{permit_name}"
                     )
-
-                    if copy_result is True:
-                        stats["emails"] += 1
-                        save_stats(stats)
-                        st.rerun()
 
     st.divider()
 
@@ -1602,15 +1473,9 @@ Your review and response would be appreciated at your earliest convenience.
                 left, middle, right = st.columns([0.1, 0.8, 0.1])
 
                 with middle:
-                    copy_result = copy_button(
+                    st_copy_to_clipboard(
                         email_text.strip(),
-                        tooltip="Copy email",
-                        copied_label="😉 COPIED",
-                        icon="st",
-                        key=f"copy_{permit_name}"
+                        "COPY EMAIL",
+                        "😉 👍",
+                        key=f"resubmission_copy_{permit_name}"
                     )
-
-                    if copy_result is True:
-                        stats["emails"] += 1
-                        save_stats(stats)
-                        st.rerun()
