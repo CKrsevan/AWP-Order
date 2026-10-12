@@ -35,6 +35,19 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(2) button:hover {
     border-color: #D65C5C !important;
 }
 
+/* Download button - soft green */
+div[data-testid="stDownloadButton"] button {
+    background-color: #7DCEA0 !important;
+    color: white !important;
+    border: 1px solid #7DCEA0 !important;
+}
+
+div[data-testid="stDownloadButton"] button:hover {
+    background-color: #68B98A !important;
+    border-color: #68B98A !important;
+}
+
+
 </style>
 """, unsafe_allow_html=True)
 
