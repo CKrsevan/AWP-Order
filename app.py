@@ -10,16 +10,25 @@ st.set_page_config(layout="wide", page_title="AWP Format/Excel")
 
 st.markdown("""
 <style>
-div[data-testid="stButton"] button[kind="secondary"] {
-    background-color: #dc3545;
-    color: white;
-    border: 1px solid #dc3545;
+
+/* Process button (first button) */
+div[data-testid="stHorizontalBlock"] > div:nth-child(1) button {
+    background-color: #0d6efd !important;
+    color: white !important;
+    border: 1px solid #0d6efd !important;
 }
 
-div[data-testid="stButton"] button[kind="secondary"]:hover {
-    background-color: #bb2d3b;
-    border-color: #bb2d3b;
+/* Clear button (second button) */
+div[data-testid="stHorizontalBlock"] > div:nth-child(2) button {
+    background-color: #dc3545 !important;
+    color: white !important;
+    border: 1px solid #dc3545 !important;
 }
+
+div[data-testid="stHorizontalBlock"] > div:nth-child(2) button:hover {
+    background-color: #bb2d3b !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
