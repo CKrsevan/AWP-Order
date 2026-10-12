@@ -1221,7 +1221,7 @@ Hi Team,
 
 Please review the attached Operational Resource Closure Sub-Permit application.
 
-Could you please reassess the proposed resource closure requirements, affected operational resources, access restrictions, stakeholder coordination arrangements, mitigation measures, and any safety or operational considerations. Please advise whether you support approval or if any further conditions or amendments are required.
+Could you please assess the proposed resource closure requirements, affected operational resources, access restrictions, stakeholder coordination arrangements, mitigation measures, and any safety or operational considerations. Please advise whether you support approval or if any further conditions or amendments are required.
 
 Your review and response would be appreciated at your earliest convenience.
 """
