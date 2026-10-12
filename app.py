@@ -8,6 +8,22 @@ from datetime import datetime
 
 st.set_page_config(layout="wide", page_title="AWP Format/Excel")
 
+st.markdown("""
+<style>
+div[data-testid="stButton"] button[kind="secondary"] {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+}
+
+div[data-testid="stButton"] button[kind="secondary"]:hover {
+    background-color: #bb2d3b;
+    border-color: #bb2d3b;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 st.image("logo.png", width=150)
 
 # Pull the main content up
@@ -377,7 +393,7 @@ with tab1:
         process_clicked = st.button("Process", key="process_button", use_container_width=True)
 
     with col2:
-        if st.button("Clear", key="clear_button", use_container_width=True):
+        if st.button("Clear", key="clear_button", use_container_width=True, type="secondary"):
             st.session_state["clear_trigger"] = True
             st.session_state["data"] = None
             st.rerun()
