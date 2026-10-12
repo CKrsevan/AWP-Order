@@ -798,7 +798,7 @@ with tab1:
                 st.markdown(f"<div class='label'>{label}</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{val}</div>", unsafe_allow_html=True)
             with col2:
-                st_copy_to_clipboard(val, "Copy", "Done", key=f"{label}_{i}")
+                st_copy_to_clipboard(val, "Copy", "😉", key=f"{label}_{i}")
 
         # ---------- GENERAL ----------
         section = "General"
@@ -846,7 +846,7 @@ with tab1:
             st.markdown("<div class='label'>Type of Work Other</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='value'>{other_work}</div>", unsafe_allow_html=True)
         with col2:
-            st_copy_to_clipboard(other_work, "Copy", "Done", key="type_of_work_other")
+            st_copy_to_clipboard(other_work, "Copy", "😉", key="type_of_work_other")
 
         field("Detailed Location of Works", "Detailed location", 202, section)
         field("Detailed Scope of Works", "Detailed scope", 203, section)
@@ -979,7 +979,7 @@ with tab1:
                 st.markdown("<div class='label'>Other Area</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{other_area}</div>", unsafe_allow_html=True)
             with col2:
-                st_copy_to_clipboard(other_area, "Copy", "Done", key="other_area_copy")
+                st_copy_to_clipboard(other_area, "Copy", "😉", key="other_area_copy")
 
         # ---------- ACCESS ----------
         section = "Access"
@@ -1005,7 +1005,7 @@ with tab1:
                 st.markdown("<div class='label'>Other Access</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{other_access}</div>", unsafe_allow_html=True)
             with col2:
-                st_copy_to_clipboard(other_access, "Copy", "Done", key="other_access_copy")
+                st_copy_to_clipboard(other_access, "Copy", "😉", key="other_access_copy")
 
         # ---------- DAYS ----------
         section = "Days"
@@ -1058,7 +1058,7 @@ with tab1:
                 st.markdown("<div class='label'>Other System</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{other_system}</div>", unsafe_allow_html=True)
             with col2:
-                st_copy_to_clipboard(other_system, "Copy", "Done", key="other_system_copy")
+                st_copy_to_clipboard(other_system, "Copy", "😉", key="other_system_copy")
 
         # ---------- PERMITS ----------
         section = "Permits"
@@ -1123,7 +1123,7 @@ with tab1:
                 st.markdown("<div class='label'>Other Shutdown Type</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{shutdown_other}</div>", unsafe_allow_html=True)
             with col2:
-                st_copy_to_clipboard(shutdown_other, "Copy", "Done", key="other_shutdown_copy")
+                st_copy_to_clipboard(shutdown_other, "Copy", "😉", key="other_shutdown_copy")
 
         # ---------- REASON FOR SHUTDOWN ----------
         section = "Reason For Shutdown"
@@ -1152,7 +1152,7 @@ with tab1:
                 st.markdown("<div class='label'>Other Reason</div>", unsafe_allow_html=True)
                 st.markdown(f"<div class='value'>{other_reason}</div>", unsafe_allow_html=True)
             with col2:
-                st_copy_to_clipboard(other_reason, "Copy", "Done", key="other_reason_reason_copy")
+                st_copy_to_clipboard(other_reason, "Copy", "😉", key="other_reason_reason_copy")
 
         # ---------- SHUTDOWN DETAILS ----------
         section = "Shutdown Details"
