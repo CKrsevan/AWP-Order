@@ -22,7 +22,7 @@ st.markdown(
 
 # Centered main heading
 st.markdown(
-    "<h1 style='text-align:center; margin-top:0;'>AWP Formatter</h1>",
+    "<h1 style='text-align:center; margin-top:0;'>AWP/Sub-Permit Hub</h1>",
     unsafe_allow_html=True
 )
 
