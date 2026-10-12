@@ -1475,7 +1475,7 @@ Your review and response would be appreciated at your earliest convenience.
                 with middle:
                     st_copy_to_clipboard(
                         email_text.strip(),
-                        "COPY",
+                        "COPY EMAIL",
                         "😉 👍",
                         key=f"resubmission_copy_{permit_name}"
                     )
