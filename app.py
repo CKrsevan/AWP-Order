@@ -11,22 +11,28 @@ st.set_page_config(layout="wide", page_title="AWP Format/Excel")
 st.markdown("""
 <style>
 
-/* Process button (first button) */
+/* Process button - lighter blue */
 div[data-testid="stHorizontalBlock"] > div:nth-child(1) button {
-    background-color: #0d6efd !important;
+    background-color: #4A90E2 !important;
     color: white !important;
-    border: 1px solid #0d6efd !important;
+    border: 1px solid #4A90E2 !important;
 }
 
-/* Clear button (second button) */
+div[data-testid="stHorizontalBlock"] > div:nth-child(1) button:hover {
+    background-color: #357ABD !important;
+    border-color: #357ABD !important;
+}
+
+/* Clear button - lighter red */
 div[data-testid="stHorizontalBlock"] > div:nth-child(2) button {
-    background-color: #dc3545 !important;
+    background-color: #E57373 !important;
     color: white !important;
-    border: 1px solid #dc3545 !important;
+    border: 1px solid #E57373 !important;
 }
 
 div[data-testid="stHorizontalBlock"] > div:nth-child(2) button:hover {
-    background-color: #bb2d3b !important;
+    background-color: #D65C5C !important;
+    border-color: #D65C5C !important;
 }
 
 </style>
