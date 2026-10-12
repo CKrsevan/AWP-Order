@@ -1268,7 +1268,7 @@ Please review the attached Material Import Permit application.
 Could you please assess the proposed materials, compliance requirements, environmental considerations, biosecurity risks where applicable, and any operational impacts. Please advise if you support approval and provide any required conditions.
 
 Your review and response would be appreciated at your earliest convenience.
-""",
+""",cop
 
 "🚧 Operational Resource Closure": """
 Hi Team,
@@ -1312,8 +1312,8 @@ Your review and response would be appreciated at your earliest convenience.
                 with middle:
                     st_copy_to_clipboard(
                         email_text.strip(),
-                        "📋 COPY EMAIL",
-                        "✅ COPIED",
+                        "COPY EMAIL",
+                        "😉 👍",
                         key=f"copy_{permit_name}"
                     )
 
@@ -1475,7 +1475,7 @@ Your review and response would be appreciated at your earliest convenience.
                 with middle:
                     st_copy_to_clipboard(
                         email_text.strip(),
-                        "🔄 RESUBMISSION",
-                        "✅ COPIED",
+                        "COPY",
+                        "😉 👍",
                         key=f"resubmission_copy_{permit_name}"
                     )
