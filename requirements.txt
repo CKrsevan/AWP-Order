@@ -1,4 +1,4 @@
 streamlit
 pandas
 openpyxl
-st-copy
+st-copy-to-clipboard==0.1.6
