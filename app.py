@@ -444,13 +444,79 @@ with tab1:
         data = {}
         key = None
 
+        MULTILINE_FIELDS = {
+            "detailed location of works/activity",
+            "detailed scope of works/activity",
+            "work/activity description",
+            "impacts on airport operations",
+            "mitigation measures for operational impacts",
+            "provide details of your waste management plan",
+        }
+
+        # These identify the beginning of genuine AWP questions/fields.
+        KNOWN_FIELD_STARTS = (
+            "requested by",
+            "email address",
+            "phone",
+            "contact",
+            "account",
+            "are you submitting",
+            "who is your wsi representative",
+            "do you have airport building controller",
+            "please provide a reason abc",
+            "type of work",
+            "if other, please input the type of work",
+            "work/activity description",
+            "what area(s) is the work/activity located in",
+            "detailed location of works/activity",
+            "detailed scope of works/activity",
+            "will the work include tapping",
+            "proposed start date",
+            "proposed end date",
+            "days required",
+            "working hours",
+            "what access point",
+            "i acknowledge",
+            "provide details of your waste management plan",
+            "will equipment, materials or chemicals be stored",
+            "what systems will be affected",
+            "impacts on airport operations",
+            "mitigation measures for operational impacts",
+            "will the work require any hoarding",
+            "will the work require road occupancy",
+            "will the work/activity require any shutdowns",
+            "will tools be carried",
+            "work hours site supervisor name",
+            "work hours site supervisor phone number",
+            "site emergency/after hours contact person name",
+            "site emergency/after hours contact person phone number",
+        )
+
         for line in lines:
+            is_new_field = False
+            candidate_key = ""
+            candidate_value = ""
+
             if ":" in line:
-                k, v = line.split(":", 1)
-                key = k.strip()
-                data[key] = v.strip()
+                candidate_key, candidate_value = line.split(":", 1)
+                candidate_key = candidate_key.strip()
+                candidate_value = candidate_value.strip()
+
+                candidate_lower = candidate_key.lower()
+
+                is_new_field = any(
+                    candidate_lower.startswith(field_start)
+                    for field_start in KNOWN_FIELD_STARTS
+                )
+
+            if is_new_field:
+                key = candidate_key
+                data[key] = candidate_value
+
             elif key:
-                data[key] += " " + line.strip()
+                # Keep colons in multiline answers, such as:
+                # "DV-001 Domestic Terminal: Beverage vending machine..."
+                data[key] += "\n" + line.strip()
 
         st.session_state["data"] = data
 
