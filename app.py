@@ -493,6 +493,13 @@ with tab1:
             "work hours site supervisor phone number",
             "site emergency/after hours contact person name",
             "site emergency/after hours contact person phone number",
+            "other area",
+            "other access",
+            "other system",
+            "other reason",
+            "other shutdown",
+            "other isolation",
+            "other type of work",
         )
 
         for line in lines:
