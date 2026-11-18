@@ -466,6 +466,9 @@ with tab1:
             "please provide a reason abc",
             "type of work",
             "if other, please input the type of work",
+            "if other",
+            "are there any special conditions",
+            "do you require any asset information",
             "work/activity description",
             "what area(s) is the work/activity located in",
             "detailed location of works/activity",
@@ -1054,7 +1057,7 @@ with tab1:
 
         access_list = [
             "Airside Vehicle Gate", "Terminal Main Entry", "Terminal Staff Entry",
-            "Loading Dock", "Other"
+            "Loading Dock", "Landside", "Other"
         ]
 
         c1, c2 = st.columns(2)
@@ -1063,15 +1066,25 @@ with tab1:
             (c1 if i % 2 == 0 else c2).markdown(result)
             add_export(section, a, check(a, combined_access))
 
+        # Landside has no column in the import template, so it goes into
+        # "Other Access Point" (ACC_OTHER), together with any "If other" text
+        other_access_parts = []
+        if check("Landside", access) == "\u2611":
+            other_access_parts.append("Landside")
         if check("Other", access) == "\u2611" and other_access:
-            add_export(section, "Other Access", other_access)
+            other_access_parts.append(other_access)
+
+        other_access_value = ", ".join(other_access_parts)
+
+        if other_access_value:
+            add_export(section, "Other Access", other_access_value)
 
             col1, col2 = st.columns([6, 1])
             with col1:
                 st.markdown("<div class='label'>Other Access</div>", unsafe_allow_html=True)
-                st.markdown(f"<div class='value'>{other_access}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='value'>{other_access_value}</div>", unsafe_allow_html=True)
             with col2:
-                st_copy_to_clipboard(other_access, "Copy", "😉 👍", key="other_access_copy")
+                st_copy_to_clipboard(other_access_value, "Copy", "😉 👍", key="other_access_copy")
 
         # ---------- DAYS ----------
         section = "Days"
