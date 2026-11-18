@@ -1050,7 +1050,7 @@ with tab1:
             with col2:
                 st_copy_to_clipboard(other_area, "Copy", "😉 👍", key="other_area_copy")
 
-        # ---------- ACCESS ----------
+         # ---------- ACCESS ----------
         section = "Access"
         add_section(section)
         st.markdown("<div class='section'>Access</div>", unsafe_allow_html=True)
@@ -1060,21 +1060,47 @@ with tab1:
             "Loading Dock", "Landside", "Other"
         ]
 
+        # Split the access answer into individual selections
+        access_parts = [
+            p.strip()
+            for p in re.split(r",|\n|<br>", access)
+            if p.strip()
+        ]
+
+        # Anything that isn't a known option (or the word "Other") is treated as Other
+        known_access = [a for a in access_list if a != "Other"]
+        unknown_access = []
+        for p in access_parts:
+            p_clean = re.sub(r'[^a-z0-9\s]', '', p.lower()).strip()
+            if p_clean == "other":
+                continue
+            if any(re.sub(r'[^a-z0-9\s]', '', k.lower()) in p_clean for k in known_access):
+                continue
+            unknown_access.append(p)
+
+        # Build the Other Access text: unknown selections + any "If other" text
+        other_access_parts = list(unknown_access)
+        if other_access and other_access not in other_access_parts:
+            other_access_parts.append(other_access)
+        other_access_value = ", ".join(other_access_parts)
+
+        other_ticked = "\u2611" if (check("Other", access) == "\u2611" or unknown_access) else "\u2610"
+
         c1, c2 = st.columns(2)
         for i, a in enumerate(access_list):
-            result = f"{check(a, combined_access)} {a}"
-            (c1 if i % 2 == 0 else c2).markdown(result)
-            add_export(section, a, check(a, combined_access))
+            tick = other_ticked if a == "Other" else check(a, combined_access)
+            (c1 if i % 2 == 0 else c2).markdown(f"{tick} {a}")
+            add_export(section, a, tick)
 
-        if check("Other", access) == "\u2611" and other_access:
-            add_export(section, "Other Access", other_access)
+        if other_ticked == "\u2611" and other_access_value:
+            add_export(section, "Other Access", other_access_value)
 
             col1, col2 = st.columns([6, 1])
             with col1:
                 st.markdown("<div class='label'>Other Access</div>", unsafe_allow_html=True)
-                st.markdown(f"<div class='value'>{other_access}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='value'>{other_access_value}</div>", unsafe_allow_html=True)
             with col2:
-                st_copy_to_clipboard(other_access, "Copy", "😉 👍", key="other_access_copy")
+                st_copy_to_clipboard(other_access_value, "Copy", "😉 👍", key="other_access_copy")
 
         # ---------- DAYS ----------
         section = "Days"
