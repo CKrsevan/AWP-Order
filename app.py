@@ -500,6 +500,15 @@ with tab1:
             "other shutdown",
             "other isolation",
             "other type of work",
+            # --- added: shutdown / sub-permit questions ---
+            "what sub permits",
+            "what type of shutdown",
+            "what is the reason for the shutdown",
+            "will temporary services",
+            "total duration",
+            "provide details of your communication plan",
+            "management plan for equipment",
+            "details associated with tapping",
         )
 
         for line in lines:
