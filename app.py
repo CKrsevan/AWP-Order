@@ -375,13 +375,13 @@ FIELD_TO_CODE = {
 
 # ---------- CARD BACKGROUND IMAGES ----------
 CARD_IMAGES = {
-    "🚨 Dry Fire": "images/dry_fire.jpg",
+    "🚨 Dry Fire": "images/dry_fire.png",
     "🏗️ Crane Lift": "images/crane_lift.png",
     "🛑 Shutdown": "images/shutdown.png",
     "⛏️ Excavation": "images/excavation.png",
     "🔥 Hot Work": "images/hot_work.png",
+    "🚧 Operational Resource Closure": "images/ops_closure.png",
 }
-
 
 @st.cache_data
 def _cached_b64(path, mtime):
