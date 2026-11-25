@@ -1321,12 +1321,12 @@ Could you please assess the proposed lifting activities, crane locations, lift m
 Your review and response would be appreciated at your earliest convenience.
 """,
 
-        "🌙 Out of Hours": """
+        "🛑 Shutdown": """
 Hi Team,
 
-Please review the attached Out of Hours Permit application.
+Please review the attached Shutdown Permit application.
 
-Could you please assess the proposed activities, timing of works, potential operational impacts, noise considerations, resource availability, and any associated risks. Please advise if you support approval and provide any required conditions.
+Could you please assess the proposed shutdown scope, affected systems and services, timing and duration of the shutdown, operational impacts, stakeholder notification arrangements, and reinstatement methodology. Please advise if you support approval and provide any required conditions.
 
 Your review and response would be appreciated at your earliest convenience.
 """,
@@ -1470,14 +1470,14 @@ Could you please reassess the proposed lifting activities, crane locations, lift
 Your review and response would be appreciated at your earliest convenience.
 """,
 
-        "🌙 Out of Hours Resubmission": """
+        "🛑 Shutdown Resubmission": """
 Hi Team,
 
-Please review the attached resubmitted Out of Hours Permit application.
+Please review the attached resubmitted Shutdown Permit application.
 
 The application has been updated following the previous review.
 
-Could you please reassess the proposed activities, timing of works, potential operational impacts, noise considerations, resource availability, and any associated risks. Please advise whether you support approval or if any further conditions or amendments are required.
+Could you please reassess the proposed shutdown scope, affected systems and services, timing and duration of the shutdown, operational impacts, stakeholder notification arrangements, and reinstatement methodology. Please advise whether you support approval or if any further conditions or amendments are required.
 
 Your review and response would be appreciated at your earliest convenience.
 """,
