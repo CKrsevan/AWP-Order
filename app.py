@@ -390,7 +390,15 @@ def img_to_base64(path):
 
 
 def build_card_css(card_key, permit_name):
-    img_path = CARD_IMAGES.get(permit_name, "")
+    # Match on the text after the emoji, so emoji differences don't matter
+    def _name_only(s):
+        return s.split(" ", 1)[-1].replace(" Resubmission", "").strip().lower()
+
+    img_path = ""
+    for k, v in CARD_IMAGES.items():
+        if _name_only(k) == _name_only(permit_name):
+            img_path = v
+            break
     b64 = img_to_base64(img_path) if img_path else ""
     if not b64:
         return ""
