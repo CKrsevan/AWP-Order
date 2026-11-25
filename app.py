@@ -381,6 +381,7 @@ CARD_IMAGES = {
     "🛑 Shutdown": "images/shutdown.png",
     "⛏️ Excavation": "images/excavation.png",
     "🔥 Hot Work": "images/hot_work.png",
+    "📦 Material Import": "images/material_import.png",
     "🚧 Operational Resource Closure": "images/ops_closure.png",
 }
 
