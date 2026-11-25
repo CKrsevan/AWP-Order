@@ -376,6 +376,7 @@ FIELD_TO_CODE = {
 # ---------- CARD BACKGROUND IMAGES ----------
 CARD_IMAGES = {
     "🚨 Dry Fire": "images/dry_fire.png",
+    "💧 Wet Fire": "images/wet_fire.png",
     "🏗️ Crane Lift": "images/crane_lift.png",
     "🛑 Shutdown": "images/shutdown.png",
     "⛏️ Excavation": "images/excavation.png",
