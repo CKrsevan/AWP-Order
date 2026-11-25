@@ -378,6 +378,8 @@ CARD_IMAGES = {
     "🚨 Dry Fire": "images/dry_fire.jpg",
     "🏗️ Crane Lift": "images/crane_lift.png",
     "🛑 Shutdown": "images/shutdown.png",
+    "⛏️ Excavation": "images/excavation.png",
+    "🔥 Hot Work": "images/hot_work.png",
 }
 
 
