@@ -384,6 +384,7 @@ CARD_IMAGES = {
     "⚡ HV/LV Entry": "images/hv_lv.png",
     "📦 Material Import": "images/material_import.png",
     "🚧 Operational Resource Closure": "images/ops_closure.png",
+        "🔌 Isolation": "images/isolation.png",
 }
 
 @st.cache_data
