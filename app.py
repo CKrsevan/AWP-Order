@@ -382,11 +382,15 @@ CARD_IMAGES = {
 
 
 @st.cache_data
+def _cached_b64(path, mtime):
+    return base64.b64encode(Path(path).read_bytes()).decode()
+
+
 def img_to_base64(path):
     p = Path(path)
     if not p.exists():
         return ""
-    return base64.b64encode(p.read_bytes()).decode()
+    return _cached_b64(str(p), p.stat().st_mtime)
 
 
 def build_card_css(card_key, permit_name):
@@ -407,7 +411,7 @@ def build_card_css(card_key, permit_name):
     .st-key-{card_key} {{
         background-image:
             linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-            url("data:image/jpeg;base64,{b64}");
+            url("data:image/{'png' if img_path.lower().endswith('.png') else 'jpeg'};base64,{b64}");
         background-size: cover;
         background-position: center;
         border-radius: 0.5rem;
