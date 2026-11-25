@@ -5,6 +5,8 @@ from io import BytesIO
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 from datetime import datetime
+import base64
+from pathlib import Path
 
 st.set_page_config(layout="wide", page_title="AWP Format/Excel")
 
@@ -368,6 +370,43 @@ FIELD_TO_CODE = {
     ("Shutdown Details", "Shutdown End"): "SD_ENDDATE",
     ("Shutdown Details", "Shutdown Duration"): "SD_DURATION",
 }
+
+
+
+# ---------- CARD BACKGROUND IMAGES ----------
+CARD_IMAGES = {
+    "🚨 Dry Fire": "images/dry_fire.jpg",
+}
+
+
+@st.cache_data
+def img_to_base64(path):
+    p = Path(path)
+    if not p.exists():
+        return ""
+    return base64.b64encode(p.read_bytes()).decode()
+
+
+def build_card_css(card_key, permit_name):
+    img_path = CARD_IMAGES.get(permit_name, "")
+    b64 = img_to_base64(img_path) if img_path else ""
+    if not b64:
+        return ""
+
+    return f"""
+    .st-key-{card_key} {{
+        background-image:
+            linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+            url("data:image/jpeg;base64,{b64}");
+        background-size: cover;
+        background-position: center;
+        border-radius: 0.5rem;
+    }}
+    .st-key-{card_key} .card-title {{
+        color: white !important;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }}
+    """
 
 
 tab1, tab2 = st.tabs(["AWP Formatter", "Sub-Permit Emails"])
@@ -1392,17 +1431,24 @@ Your review and response would be appreciated at your earliest convenience.
 """
     }
 
+    card_css = "".join(
+        build_card_css(f"email_card_{i}", name)
+        for i, name in enumerate(emails.keys())
+    )
+    if card_css:
+        st.markdown(f"<style>{card_css}</style>", unsafe_allow_html=True)
+
     cols = st.columns(5, gap="small")
 
     for i, (permit_name, email_text) in enumerate(emails.items()):
 
         with cols[i % 5]:
 
-            with st.container(border=True):
+            with st.container(border=True, key=f"email_card_{i}"):
 
                 st.markdown(
                     f"""
-                    <div style="
+                    <div class="card-title" style="
                         text-align: center;
                         font-size: 17px;
                         font-weight: 700;
